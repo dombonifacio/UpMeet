@@ -37,25 +37,17 @@ import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
 
 export const App = () => {
- const { user, loading } = useContext(UserContext);
-  
-  useEffect(() => {
-    if (user) {
-      console.log(user,' user')
-    }
-  }, [user])
 
   let element = useRoutes([
     {
       path: "/",
 
-      element: user ? <HomePage /> : <AuthPage />
+      element: <HomePage />
     },
     {
       path: "/auth",
-      element: <AuthPage />,
+      element: <AuthPage />
     },
-
     {
       path: "/profile",
       element: <ProfilePage />,

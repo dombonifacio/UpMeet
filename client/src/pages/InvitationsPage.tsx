@@ -1,10 +1,10 @@
-import Header from "../components/Header";
+
 import { InvitationContainer } from "../components/Invitations/InvitationContainer";
 
 export const InvitationsPage = () => {
   return (
     <>
-      <Header />
+
     
       <div className="mx-auto flex flex-col sm:flex-row justify-center md:block max-w-[1260px] w-screen sm:p-4 md:w-screen">
         <InvitationContainer />

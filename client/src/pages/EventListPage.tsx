@@ -10,8 +10,6 @@ import { Link, useParams } from "react-router-dom";
 // axios
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-// import Header from "../components/EventList/Header";
-import Header from "../components/Header";
 
 // interfaces
 import { IError } from "../interfaces/Message.ts";
@@ -34,6 +32,7 @@ import { FilterComponent } from "../components/Filter/FilterComponent.tsx";
 import { NavbarSearch } from "../components/Navbar/NavbarSearch.tsx";
 
 import MainBody from "../components/EventList/MainBody.tsx";
+import { Navbar } from "../components/Navbar/Navbar.tsx";
 
 const EventListPage = () => {
   const { genre, country, city } = useContext(FilterContext);
@@ -292,7 +291,8 @@ const EventListPage = () => {
 
   return (
     <>
-      <Header />
+  
+    
 
       <div className="max-w-[1260px] mx-auto z-1 relative p-6">
         <NavbarSearch

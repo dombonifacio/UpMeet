@@ -17,6 +17,7 @@ import moment from "moment-timezone";
 import { timezones } from "../utils/constants/Timezones";
 import { notifyUser } from "../utils/helpers/toastify";
 import { ToastContainer } from "react-toastify";
+import { Navbar } from "../components/Navbar/Navbar";
 
 interface IUser {
   _id: string;
@@ -206,13 +207,17 @@ const ProfilePage = () => {
 
   return (
     <>
-    <ToastContainer />
-      <ProfileHeader />
-      <div className="mx-auto max-w-[1260px]  ">
+      <ToastContainer />
+
+      <div className="mx-auto max-w-[1260px] h-full">
+      
+          <Navbar />
+      
+  
         <div className="flex flex-row">
           <div className="flex flex-row p-8">
             <div className="p-5 ">
-            {user.image ? (
+              {user.image ? (
                 <div className="relative group">
                   <div className="absolute inset-0 bg-gradient-to-t from-black opacity-0 group-hover:opacity-100 rounded-full w-48 h-48 transition-opacity flex items-end justify-center">
                     <p className="hidden group-hover:block text-slate-300 font-semibold text-xl mb-2">
@@ -273,15 +278,15 @@ const ProfilePage = () => {
 
               {/* IMAGE SAVING */}
               <div className="p-3 flex justify-center">
-              {selectedImage && (
-                <button
-                  className="text-white text-xl font-bold text-center p-2 px-4 bg-green-700 rounded-lg mt-2 hover:bg-green-900"
-                  onClick={handleImageUpload}
-                >
-                  Save
-                </button>
-              )}
-            </div>
+                {selectedImage && (
+                  <button
+                    className="text-white text-xl font-bold text-center p-2 px-4 bg-green-700 rounded-lg mt-2 hover:bg-green-900"
+                    onClick={handleImageUpload}
+                  >
+                    Save
+                  </button>
+                )}
+              </div>
               {/* IMAGE SAVING */}
             </div>
 
@@ -338,8 +343,6 @@ const ProfilePage = () => {
           <PreviousEvents data={previousEvents} loading={loading} />
         )}
       </div>
-
-   
     </>
   );
 };

@@ -1,12 +1,12 @@
 
 import MainInfo from "../components/EventInfoPage/MainInfo";
-import Header from "../components/Header";
+
 
 
 const EventInfoPage = () => {
   return (
     <>
-      <Header />
+   
       <div className="mx-auto max-w-[1260px] flex justify-center md:h-screen md:w-screen md:items-center">
       
         {/* 
