@@ -209,9 +209,11 @@ const ProfilePage = () => {
     <>
       <ToastContainer />
 
-      <div className="mx-auto max-w-[1260px] h-full">
-      
+      <div className="mx-auto max-w-[1260px] h-screen relative">
+         <div className="absolute h-full w-full top-0 border-4">
+
           <Navbar />
+         </div>
       
   
         <div className="flex flex-row">

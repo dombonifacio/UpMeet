@@ -20,23 +20,26 @@ export const Navbar = () => {
   return (
     <>
       {/* MOBILE RESPONSIVE DESIGN */}
-      <div className="flex justify-between h-full">
-        <div className={`p-4 ${showMenu ? "hidden" : "block"}`} >
-          <Logo/>
+      <div className="flex justify-between h-full w-full">
+        <div className={`p-4 ${showMenu ? "hidden" : "block"} md:block`}>
+          <Logo />
         </div>
-       
-       {/* MENU */}
-        <div className={`bg-vader w-[60%] p-4 ${showMenu ? "block" : "hidden"} `}>
+
+        {/* MENU */}
+        <div
+          className={`bg-vader w-[60%] sm:w-[40%] p-4 ${showMenu ? "block" : "hidden"} md:bg-inherit md:w-full md:flex`}
+        >
           {/* LOGO AND EXIT MENU */}
-          <div className="flex justify-between">
+          <div className="flex justify-between md:hidden">
             <Logo />
             <button onClick={handleShowMenu}>
-
               <HiOutlineXMark size={"1.8rem"} />
             </button>
           </div>
           {/* END OF LOGO AND EXIT MENU */}
-          <ul className="mt-5 space-y-6">
+
+          
+          <ul className="mt-5 space-y-6 md:space-y-0 md:mt-0 md:flex md:space-x-6 md:ml-auto">
             <li>
               <Link
                 to={"/"}
@@ -74,7 +77,7 @@ export const Navbar = () => {
         {/* End of Menu */}
 
         {/* Hamburger Menu */}
-        <div className={`p-4 `}>
+        <div className={`p-4 md:hidden`}>
           <button onClick={handleShowMenu}>
             <CgMenuRight size={"1.8rem"} />
           </button>

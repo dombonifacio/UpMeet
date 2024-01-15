@@ -60,12 +60,10 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className="h-screen w-full">
-       
-        <div className="h-full md:hidden">
+      <div className="h-screen w-full mx-auto max-w-[1260px] relative">
+        <div className="h-full">
           <Navbar />
         </div>
-
       </div>
 
       {/* <div className="mx-auto flex justify-center md:block max-w-[1260px] w-screen sm:p-4 md:w-screen"></div> */}
