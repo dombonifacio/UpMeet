@@ -3,9 +3,10 @@ export const Logo = () => {
   return (
     <>
       <div className="flex items-center">
-        <GiFlexibleStar size={"1.7rem"} color="white" />
+        <GiFlexibleStar className="text-white text-3xl md:text-4xl lg:text-4xl xl:text-5xl" />
+
         <div className="flex-col items-center">
-          <h1 className="font-extrabold text-xl">JAMCON</h1>
+          <h1 className="font-extrabold text-xl md:text-2xl lg:text-3xl">JAMCON</h1>
         </div>
       </div>
     </>

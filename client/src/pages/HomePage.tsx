@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import logo from "../components/logo.png";
+import header from "../assets/header.png"
 
 // react hooks
 import { useState, useEffect, useContext } from "react";
@@ -22,6 +23,8 @@ import { CategoryCardComponent } from "../components/CategoryCardComponent.tsx";
 import { UserContext } from "../context/UserContext.tsx";
 import { Navbar } from "../components/Navbar/Navbar.tsx";
 import { Logo } from "../components/Logo/Logo.tsx";
+
+
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -60,10 +63,26 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className="h-screen w-full mx-auto max-w-[1260px] relative">
-        <div className="h-full">
-          <Navbar />
+      <div className="w-full ">
+        <div
+          style={{
+            background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${header})`,
+            backgroundSize: 'cover',
+            height: "100vh",
+            width:"100vw"
+            // other styles...
+          }}
+          className="w-full"
+        >
+          {/* Your component content */}
+          <div className="absolute top-0 right-0 left-0 bottom-0  mx-auto max-w-[1260px]">
+            <Navbar />
+            <div className="title">
+              <h1 className="text-5xl text-wihte">JAMCON</h1>
+            </div>
+          </div>
         </div>
+      
       </div>
 
       {/* <div className="mx-auto flex justify-center md:block max-w-[1260px] w-screen sm:p-4 md:w-screen"></div> */}

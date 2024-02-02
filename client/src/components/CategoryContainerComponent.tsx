@@ -1,18 +1,18 @@
 
 // images
-import artsCategory from '../assets/artsCategory.jpg'
-import concertCategory from '../assets/concertCategory.jpeg'
-import familyCategory from '../assets/familyCategory.jpg'
+import artsCategory from '../assets/artsCategory.png'
+import concertCategory from '../assets/concertCategory.jpg'
+import familyCategory from '../assets/familyCategory.png'
 import sportsCategory from '../assets/sportsCategory.jpg'
 import { CategoryCardComponent } from "./CategoryCardComponent"
 
 // interfaces
-import { Category } from '../interfaces/Category'
+import { ICategory } from '../interfaces/Category'
 export const CategoryContainerComponent = () => {
     
 
   // make an array and make the type be Category type. intialize all the necessary data
-    const categoryList: Category[] = [
+    const categoryList: ICategory[] = [
     {
       name: "Concerts",
       image: concertCategory,
