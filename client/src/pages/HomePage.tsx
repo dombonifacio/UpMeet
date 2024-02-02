@@ -64,25 +64,41 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <div className="w-full ">
-        <div
-          style={{
-            background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${header})`,
-            backgroundSize: 'cover',
-            height: "100vh",
-            width:"100vw"
-            // other styles...
-          }}
-          className="w-full"
-        >
-          {/* Your component content */}
-          <div className="absolute top-0 right-0 left-0 bottom-0  mx-auto max-w-[1260px]">
-            <Navbar />
-            <div className="title">
-              <h1 className="text-5xl text-wihte">JAMCON</h1>
+        <header>
+          <div
+            style={{
+              background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${header})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundAttachment: "fixed",
+              height: "100vh",
+              width: "100vw",
+              // other styles...
+            }}
+            className="w-full"
+          >
+            {/* Your component content */}
+            <div className="absolute top-0 right-0 left-0 bottom-0  mx-auto max-w-[1260px]">
+              <div className="h-full absolute w-full">
+                <Navbar />
+              </div>
+              <div className="title">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-wihte font-bold">
+                  JAMCON
+                </h1>
+                <p className="text-sm text-slate-300 lg:text-lg xl:text-xl">
+                  Discover new friendships through the power of shared
+                  experiences, connecting people beyond events
+                </p>
+
+                <button className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium">
+                  Browse Categories
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      
+        </header>
       </div>
 
       {/* <div className="mx-auto flex justify-center md:block max-w-[1260px] w-screen sm:p-4 md:w-screen"></div> */}

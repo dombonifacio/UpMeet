@@ -44,7 +44,7 @@ export const Navbar = () => {
   return (
     <>
       {/* MOBILE RESPONSIVE DESIGN */}
-      <div className="flex justify-between h-full w-full">
+      <div className={`flex justify-between h-full w-full ${showMenu && "absolute z-10"} `}>
         <div className={`p-4 ${showMenu ? "hidden" : "block"} md:block`}>
           <Logo />
         </div>
