@@ -60,9 +60,9 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      <div className="w-full ">
-        <header>
-          <div className="relative">
+      <div className="w-full min-h-screen min-w-screen">
+        <header className="relative">
+          {/* <div className="relative">
             <div
               style={{
                 background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${header})`,
@@ -71,34 +71,42 @@ export const HomePage: React.FC = () => {
                 backgroundRepeat: "no-repeat",
                 backgroundAttachment: "fixed",
 
-                // other styles...
+  
               }}
               className="w-full min-h-screen"
             >
-              {/* Your component content */}
+             
               <div className="absolute top-0 right-0 left-0 bottom-0  mx-auto max-w-[1260px]">
                 <div className="h-full absolute w-full">
                   <Navbar />
                 </div>
-                <div className="title">
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-wihte font-bold">
-                    JAMCON
-                  </h1>
-                  <p className="text-sm text-slate-300 lg:text-lg xl:text-xl">
-                    Discover new friendships through the power of shared
-                    experiences, connecting people beyond events
-                  </p>
-
-                  <button className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium">
-                    Browse Categories
-                  </button>
-                </div>
+                
               </div>
             </div>
+          </div> */}
+
+          <div className="absolute bg-gradient-to-t from-vader w-full h-full bg-black/40">
+            <div className="max-w-[1260px] mx-auto">
+              <Navbar />
+            </div>
+            <div className="title">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-wihte font-bold">
+                JAMCON
+              </h1>
+              <p className="text-sm text-slate-300 lg:text-lg xl:text-xl">
+                Discover new friendships through the power of shared
+                experiences, connecting people beyond events
+              </p>
+
+              <button className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium">
+                Browse Categories
+              </button>
+            </div>
           </div>
+          <img src={header} className="w-full h-screen object-cover" />
         </header>
         <section>
-          <div>helo</div>
+          <div>hello there</div>
         </section>
       </div>
 
