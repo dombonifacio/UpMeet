@@ -34,21 +34,23 @@ const CategoryCard = () => {
     },
   ];
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-4 ">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-5 ">
       {categoryList.map((category: ICategory) => (
-        <div className="relative ">
-          <div className="absolute h-full flex flex-col justify-between p-4 bg-black/50 w-full">
+        <div className="relative rounded-2xl">
+          <div className="absolute h-full flex flex-col justify-between p-4 bg-black/70 w-full rounded-2xl">
             <div>
               <p className="font-bold text-cardText text-xl sm:text-2xl">
                 {category.name}
               </p>
-              <p className="text-xs text-indigo-200">{category.desc}</p>
+              <p className="text-xs md:text-sm text-indigo-200">
+                {category.desc}
+              </p>
             </div>
             <ButtonCard text="See More" />
           </div>
           <img
             src={category.image}
-            className="object-cover h-36 md:h-44 w-full rounded-2xl"
+            className="object-cover h-36 md:h-52 w-full rounded-2xl"
           />
         </div>
       ))}
