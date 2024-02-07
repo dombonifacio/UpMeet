@@ -23,6 +23,8 @@ import { CategoryCardComponent } from "../components/CategoryCardComponent.tsx";
 import { UserContext } from "../context/UserContext.tsx";
 import { Navbar } from "../components/Navbar/Navbar.tsx";
 import { Logo } from "../components/Logo/Logo.tsx";
+import Title from "../components/Texts/Title.tsx";
+import CategoryCard from "../components/Cards/CategoryCard.tsx";
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,57 +36,13 @@ export const HomePage: React.FC = () => {
     country.setSelectedCountry(event.target.value);
   };
 
-  // make an array and make the type be Category type. intialize all the necessary data
-  const categoryList: ICategory[] = [
-    {
-      name: "Concerts",
-      image:
-        "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
-    },
-    {
-      name: "Arts & Theatre",
-      image:
-        "https://images.unsplash.com/photo-1539964604210-db87088e0c2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
-    },
-    {
-      name: "Sports",
-      image:
-        "https://images.unsplash.com/photo-1607627000458-210e8d2bdb1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2049&q=80",
-    },
-    {
-      name: "Family",
-      image:
-        "https://images.unsplash.com/photo-1472653816316-3ad6f10a6592?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
-    },
-  ];
+  
 
   return (
     <>
       <div className="w-full min-h-screen min-w-screen">
         <header className="relative">
-          {/* <div className="relative">
-            <div
-              style={{
-                background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${header})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundAttachment: "fixed",
-
-  
-              }}
-              className="w-full min-h-screen"
-            >
-             
-              <div className="absolute top-0 right-0 left-0 bottom-0  mx-auto max-w-[1260px]">
-                <div className="h-full absolute w-full">
-                  <Navbar />
-                </div>
-                
-              </div>
-            </div>
-          </div> */}
-
+         
           <div className="absolute bg-gradient-to-t from-vader w-full h-full bg-black/40">
             <div className="max-w-[1260px] mx-auto">
               <Navbar />
@@ -105,8 +63,23 @@ export const HomePage: React.FC = () => {
           </div>
           <img src={header} className="w-full h-screen object-cover" />
         </header>
-        <section>
-          <div>hello there</div>
+        <section id="categories">
+          <div className="max-w-[1260px] mx-auto p-4 my-4">
+            <div className="">
+              <p className="font-bold text-lg md:text-xl ">Explore each</p>
+           
+
+                <Title text="Categories" />
+          
+              <p className="my-6">
+                Discover a variety of available events, each offering a unique
+                experience for unforgettable moments. Find your perfect match
+                among a diverse selection of sports, concerts, family outings,
+                and theatrical performances.
+              </p>
+            </div>
+            <CategoryCard />
+          </div>
         </section>
       </div>
 

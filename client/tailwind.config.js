@@ -12,6 +12,7 @@ export default {
         lavender: "#4c49c9",
         electric: "#B7C4FF",
         borderInput: "#414865",
+        cardText: "#ADBCFF",
       },
     },
   },
