@@ -42,7 +42,7 @@ const CategoryCard = () => {
               <p className="font-bold text-cardText text-xl sm:text-2xl">
                 {category.name}
               </p>
-              <p className="text-xs md:text-sm text-indigo-200">
+              <p className="text-xs md:text-sm text-iwhite">
                 {category.desc}
               </p>
             </div>
