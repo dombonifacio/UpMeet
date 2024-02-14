@@ -32,6 +32,7 @@ import { Logo } from "../components/Logo/Logo.tsx";
 import Title from "../components/Texts/Title.tsx";
 import CategoryCard from "../components/Cards/CategoryCard.tsx";
 import ButtonCard from "../components/Buttons/ButtonCard.tsx";
+import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
 
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
@@ -102,7 +103,7 @@ export const HomePage: React.FC = () => {
             const event: IEvent = {
               eventId: id as string,
               // some events do not have attractions array
-              artist: attractions ? attractions[0].name : "",
+              artist: attractions ? attractions[0].name : name,
               images: imagesArr,
               // check to see if there are more than 1 array. if there is more than 1, that means there is a guest. the first array is the original artist
               eventName: name,
@@ -137,9 +138,10 @@ export const HomePage: React.FC = () => {
       });
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+    console.log(events, "events");
+  }, []);
   return (
     <>
       <div className="w-full min-h-screen min-w-screen">
@@ -219,36 +221,14 @@ export const HomePage: React.FC = () => {
                   />
                 </div>
                 <div className=" grid grid-rows-4 gap-y-4 h-72">
-                  <div className="bg-borderInput p-2 pr-[4px] flex items-center">
-                    <div className="bg-blue-500 h-[80%] w-1"></div>
-                    {/* Dates */}
-                    <div className=" px-2">
-                      <p className="text-xs md:text-sm text-slate-300 text-center">
-                        18
-                      </p>
-                      <p className="font-bold ">DEC</p>
-                    </div>
-                    {/* Artist and location */}
-                    <div className="pl-[6px]  w-full">
-                      <div>
-                        <p className="font-bold text-md">Wonka</p>
-                        <p className="text-slate-300 text-sm">
-                          Vancouver, Canada
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-input p-2 flex items-center px-4">
-                    <div className="bg-pink-500 h-[80%] w-1"></div>
-                  </div>
-                  <div className="bg-input p-2 flex items-center px-4">
-                    {" "}
-                    <div className="bg-purple-500 h-[80%] w-1"></div>
-                  </div>
-                  <div className="bg-input p-2 flex items-center px-4">
-                    {" "}
-                    <div className="bg-green-500 h-[80%] w-1"></div>
-                  </div>
+                  {events.map((event) => (
+                    <FeaturedCard
+                      artist={event.artist}
+                      city={event.city}
+                      country={event.country}
+                      date={event.date}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
