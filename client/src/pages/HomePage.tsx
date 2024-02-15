@@ -22,7 +22,7 @@ import { Link, useNavigate } from "react-router-dom";
 // icons
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
-
+import { MdOutlineDateRange } from "react-icons/md";
 // countries utils
 import { countries } from "../utils/constants/Countries.ts";
 import { CategoryCardComponent } from "../components/CategoryCardComponent.tsx";
@@ -36,6 +36,7 @@ import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
 
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
+  const [eventCount, setEventCount] = useState<number>(0);
   const navigate = useNavigate();
   const { country } = useContext(FilterContext);
   const [error, setError] = useState<IError>({
@@ -138,6 +139,17 @@ export const HomePage: React.FC = () => {
       });
   };
 
+  const handleForward = () => {
+    if (eventCount === 3) return setEventCount(0);
+    setEventCount((prevState) => prevState + 1);
+  };
+  const handleBackward = () => {
+    if (eventCount === 0) return setEventCount(events.length - 1);
+    setEventCount((prevState) => prevState - 1);
+  };
+  useEffect(() => {
+    console.log(eventCount, "event count");
+  }, [eventCount]);
   useEffect(() => {
     fetchData();
     console.log(events, "events");
@@ -188,18 +200,35 @@ export const HomePage: React.FC = () => {
               <Title text="FEATURED MUSIC EVENTS" />
               <div className="grid md:grid-cols-3 gap-x-6">
                 <div className=" md:col-span-2 relative">
-                  <div className="absolute bg-black/40 h-full w-full flex justify-between p-4 items-center">
+                  <div className="absolute bg-black/50 h-full w-full flex justify-between p-4 items-center">
                     <div className=" w-full flex gap-x-4 sm:w-[75%] md:w-[65%] h-full items-center">
-                      <button>
+                      <button onClick={handleBackward} className=" ">
                         <FaArrowCircleLeft className="text-white text-3xl md:text-4xl" />
                       </button>
                       <div>
+                        <div className="flex flex-col my-2">
+                          <p className="font-bold text-xs md:text-sm">
+                            {events[eventCount]?.date}
+                          </p>
+                          <div className="h-1 bg-lavender w-[15%]"></div>
+                        </div>
+
                         <h1 className="text-white font-bold text-3xl sm:text-4xl">
-                          Wonka
+                          {events[eventCount]?.artist}
                         </h1>
                         <p className="text-sm md:text-md mb-4">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Esse perferendis, quia quod iste suscipit neque.
+                          Get ready to join the excitement as you and your
+                          friends prepare to experience{" "}
+                          {events[eventCount]?.artist} together!{" "}
+                          {events[eventCount]?.guests && (
+                            <span>
+                              {" Keep an eye out for "}
+                              <span className="font-bold text-indigo-200">
+                                {events[eventCount]?.guests}
+                              </span>
+                              {" as a guest!"}
+                            </span>
+                          )}
                         </p>
                         <Link
                           to=""
@@ -209,24 +238,24 @@ export const HomePage: React.FC = () => {
                         </Link>
                       </div>
                     </div>
-                    <div>
-                      <button>
-                        <FaArrowCircleRight className="text-white text-3xl md:text-4xl" />
-                      </button>
-                    </div>
+
+                    <button onClick={handleForward} className="">
+                      <FaArrowCircleRight className="text-white text-3xl md:text-4xl" />
+                    </button>
                   </div>
                   <img
-                    src="https://images.unsplash.com/photo-1682685797303-0ad51eb23e13?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={events[eventCount]?.images[0].url}
                     className="max-h-[450px] w-full object-cover"
                   />
                 </div>
                 <div className=" grid grid-rows-4 gap-y-4 h-72">
-                  {events.map((event) => (
+                  {events.map((event: IEvent, index: number) => (
                     <FeaturedCard
                       artist={event.artist}
                       city={event.city}
                       country={event.country}
                       date={event.date}
+                      isFocused={index === eventCount ? true : false}
                     />
                   ))}
                 </div>
