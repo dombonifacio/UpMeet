@@ -3,7 +3,7 @@ import logo from "../components/logo.png";
 import header from "../assets/header.png";
 
 // react hooks
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 
 // third-party libraries
 import axios, { AxiosError, AxiosResponse } from "axios";
@@ -35,6 +35,14 @@ import ButtonCard from "../components/Buttons/ButtonCard.tsx";
 import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
 import FooterComponent from "../components/Footer/FooterComponent.tsx";
 
+// images
+
+import artsCategory from "../assets/artsCategory.png";
+import familyCategory from "../assets/familyCategory.png";
+import sportsCategory from "../assets/sportsCategory.jpg";
+import concertCategory from "../assets/concertCategory.jpg";
+import { EventsContext } from "../context/EventsContext.tsx";
+
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
   const [eventCount, setEventCount] = useState<number>(0);
@@ -45,7 +53,8 @@ export const HomePage: React.FC = () => {
     message: "",
   });
 
-  const [events, setEvents] = useState<IEvent[]>([] as IEvent[]);
+  const [eventList, setEventList] = useState<IEvent[]>([] as IEvent[]);
+  const { setEvents } = useContext(EventsContext);
 
   console.log(country, "country");
   const query: string = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&countryCode=${country.selectedCountry}&page=0&size=4&apikey=${API_KEY}`;
@@ -126,6 +135,7 @@ export const HomePage: React.FC = () => {
             return result;
           });
           console.log(data, "data");
+          setEventList(data);
           setEvents(data);
         } else {
           console.log("No events found");
@@ -145,16 +155,42 @@ export const HomePage: React.FC = () => {
     setEventCount((prevState) => prevState + 1);
   };
   const handleBackward = () => {
-    if (eventCount === 0) return setEventCount(events.length - 1);
+    if (eventCount === 0) return setEventCount(eventList.length - 1);
     setEventCount((prevState) => prevState - 1);
   };
-  useEffect(() => {
-    console.log(eventCount, "event count");
-  }, [eventCount]);
+  const categoryList: ICategory[] = [
+    {
+      name: "Concerts",
+      image: artsCategory,
+      desc: "Catch your favorite artists live and get to meet new people!",
+    },
+    {
+      name: "Arts & Theatre",
+      image: familyCategory,
+      desc: "Enjoy art and theater events, connect with fellow enthusiasts",
+    },
+    {
+      name: "Sports",
+      image: sportsCategory,
+      desc: "Get to see NBA, NHL, NFL, and more with friends!",
+    },
+    {
+      name: "Family",
+      image: concertCategory,
+      desc: "Discover family fun with events like Disney on Ice and more!",
+    },
+  ];
+
+  const categoriesRef = useRef(null);
+
+  const scrollToCategories = () => {
+    categoriesRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     fetchData();
-    console.log(events, "events");
   }, []);
+
   return (
     <>
       <div className="w-full min-h-screen min-w-screen">
@@ -172,7 +208,10 @@ export const HomePage: React.FC = () => {
                 experiences, connecting people beyond events
               </p>
 
-              <button className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium">
+              <button
+                className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium"
+                onClick={scrollToCategories}
+              >
                 Browse Categories
               </button>
             </div>
@@ -180,7 +219,7 @@ export const HomePage: React.FC = () => {
           <img src={header} className="w-full h-screen object-cover" />
         </header>
         <div className="max-w-[1260px] mx-auto py-4 px-6 my-4">
-          <section id="categories">
+          <section id="categories" ref={categoriesRef}>
             <div className="">
               <p className="font-bold text-lg md:text-xl ">Explore each</p>
 
@@ -193,13 +232,17 @@ export const HomePage: React.FC = () => {
                 and theatrical performances.
               </p>
             </div>
-            <CategoryCard />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-5 ">
+              {categoryList.map((category: ICategory) => (
+                <CategoryCard categoryCard={category} />
+              ))}
+            </div>
           </section>
 
           <section id="featured">
             <div className="mt-16">
               <Title text="FEATURED MUSIC EVENTS" />
-              <div className="grid md:grid-cols-3 gap-x-6">
+              <div className="grid md:grid-cols-3 gap-x-6 mt-4 lg:mt-8 ">
                 <div className=" md:col-span-2 relative">
                   <div className="absolute bg-black/50 h-full w-full flex justify-between p-4 items-center">
                     <div className=" w-full flex gap-x-4 sm:w-[75%] md:w-[65%] h-full items-center">
@@ -209,30 +252,30 @@ export const HomePage: React.FC = () => {
                       <div>
                         <div className="flex flex-col my-2">
                           <p className="font-bold text-xs md:text-sm">
-                            {events[eventCount]?.date}
+                            {eventList[eventCount]?.date}
                           </p>
                           <div className="h-1 bg-lavender w-[15%]"></div>
                         </div>
 
                         <h1 className="text-white font-bold text-3xl sm:text-4xl">
-                          {events[eventCount]?.artist}
+                          {eventList[eventCount]?.artist}
                         </h1>
                         <p className="text-sm md:text-md mb-4">
                           Get ready to join the excitement as you and your
                           friends prepare to experience{" "}
-                          {events[eventCount]?.artist} together!{" "}
-                          {events[eventCount]?.guests && (
+                          {eventList[eventCount]?.artist} together!{" "}
+                          {eventList[eventCount]?.guests && (
                             <span>
                               {" Keep an eye out for "}
                               <span className="font-bold text-indigo-200">
-                                {events[eventCount]?.guests}
+                                {eventList[eventCount]?.guests}
                               </span>
                               {" as a guest!"}
                             </span>
                           )}
                         </p>
                         <Link
-                          to=""
+                          to={`event_info/${eventList[eventCount]?.eventId}`}
                           className="bg-lavender text-white hover:text-white p-2 px-3 text-xs md:text-sm md:p-2 md:px-5 rounded-md hover:bg-indigo-800 duration-75 font-bold "
                         >
                           See Event
@@ -245,12 +288,12 @@ export const HomePage: React.FC = () => {
                     </button>
                   </div>
                   <img
-                    src={events[eventCount]?.images[0].url}
+                    src={eventList[eventCount]?.images[0].url}
                     className="max-h-[450px] w-full object-cover"
                   />
                 </div>
-                <div className=" grid grid-rows-4 gap-y-4 h-72">
-                  {events.map((event: IEvent, index: number) => (
+                <div className=" grid grid-rows-4 gap-y-4 h-72 mt-8 md:mt-0">
+                  {eventList.map((event: IEvent, index: number) => (
                     <FeaturedCard
                       artist={event.artist}
                       city={event.city}

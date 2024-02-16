@@ -104,7 +104,6 @@ export default function MainInfo() {
     }
   };
 
-
   return (
     <>
       {loading ? (
@@ -189,8 +188,12 @@ export default function MainInfo() {
                 </button>
               )}
 
-              <Link to={`/attendees/${id}`} className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2">See Attendees</Link>
-             
+              <Link
+                to={`/attendees/${id}`}
+                className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+              >
+                See Attendees
+              </Link>
             </div>
           </div>
         </div>

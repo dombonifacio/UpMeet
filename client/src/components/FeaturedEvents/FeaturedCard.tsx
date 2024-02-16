@@ -50,27 +50,6 @@ const FeaturedCard = ({
         </div>
       </div>
 
-      {/* <div
-        className={`w-full bg-${
-          isFocused ? `borderInput` : `input`
-        } p-2 pr-[4px] flex items-center`}
-      >
-        <div className=" px-2">
-          <p className="text-xs md:text-sm text-slate-300 text-center">
-            {daySelected}
-          </p>
-          <p className="font-bold ">{getFormattedMonth}</p>
-        </div>
-
-        <div className="pl-[6px]  w-full">
-          <div>
-            <p className="font-bold text-md">{artist}</p>
-            <p className="text-slate-300 text-sm">
-              {city}, {country}
-            </p>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

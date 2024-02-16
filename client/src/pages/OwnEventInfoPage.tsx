@@ -8,30 +8,34 @@ import { ToastContainer } from "react-toastify";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import EventPicture from "../components/EventInfoPage/EventPicture";
+import { EventsContext } from "../context/EventsContext";
 
 export const OwnEventInfoPage = () => {
   const { id } = useParams();
   const { user, setUser } = useContext(UserContext);
-  const [selectedEvent, setSelectedEvent] = useState<IEvent>({} as IEvent);
+  const { events } = useContext(EventsContext);
+  // collect only the event selected
+  const selectedEventArr = events.filter((event) => event.eventId === id);
+  const selectedEvent = selectedEventArr[0];
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [isAttending, setIsAttending] = useState<boolean>(false);
-  console.log(id, "id");
-  const getEvent = () => {
-    setLoading(true);
-    axios
-      .get(`/api/events/event_info/${id}`)
-      .then((res: AxiosResponse) => {
-        setSelectedEvent(res.data);
-        console.log(res, "response");
-      })
-      .catch((error: AxiosResponse) => {
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+
+  // const getEvent = () => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`/api/events/event_info/${id}`)
+  //     .then((res: AxiosResponse) => {
+  //       // setSelectedEvent(res.data);
+  //       console.log(res, "response");
+  //     })
+  //     .catch((error: AxiosResponse) => {
+  //       setError(true);
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
   const getSelfEvents = () => {
     setLoading;
@@ -54,9 +58,6 @@ export const OwnEventInfoPage = () => {
         setLoading(false);
       });
   };
-  useEffect(() => {
-    getEvent();
-  }, []);
 
   useEffect(() => {
     getSelfEvents();
