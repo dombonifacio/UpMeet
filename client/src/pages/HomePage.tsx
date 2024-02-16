@@ -33,6 +33,7 @@ import Title from "../components/Texts/Title.tsx";
 import CategoryCard from "../components/Cards/CategoryCard.tsx";
 import ButtonCard from "../components/Buttons/ButtonCard.tsx";
 import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
+import FooterComponent from "../components/Footer/FooterComponent.tsx";
 
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
@@ -263,6 +264,7 @@ export const HomePage: React.FC = () => {
             </div>
           </section>
         </div>
+        <FooterComponent />
       </div>
     </>
   );

@@ -28,8 +28,8 @@ const FeaturedCard = ({
   const getFormattedMonth = getKeyByValue(Months, dateSelect);
   return (
     <div
-      className={`flex w-full items-center  px-4 bg-${
-        isFocused ? `borderInput` : `input`
+      className={`flex w-full items-center  px-4 ${
+        isFocused ? `bg-borderInput` : `bg-input`
       }`}
     >
       {isFocused ? <div className="bg-pink-500 h-[75%] w-1"></div> : ""}
