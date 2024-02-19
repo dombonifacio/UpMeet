@@ -11,6 +11,7 @@ export const getUserInfo = async (
     const user = await UserModel.findById(req.user.id).select(
       "_id email name country age image"
     );
+    console.log(user, 'user')
     return res.status(200).json(user);
   } catch (err) {
     return next(err);

@@ -88,11 +88,11 @@ export const loginUsers = async (req: Request, res: Response) => {
       const token = jwt.sign(payload, "secret", {
         expiresIn: "1d",
       });
-
+      
       res
         .cookie("access_token", token)
         .status(200)
-        .json({ message: `Welcome Back, ${user.name}!` });
+        .json({ message: `Welcome Back, ${user.name}!`, userId: user._id });
     } else if (!user) {
       // if no user with matching email
       res.status(400).json({ error: "No user exists with such email." });

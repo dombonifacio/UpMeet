@@ -1,28 +1,24 @@
 import { useContext, useEffect, useState } from "react";
-
-import AttendeesCard from "./AttendeesCard";
-
-import { useParams } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
 import { IEvent } from "../../interfaces/Event";
 import { ToastContainer } from "react-toastify";
 import { EventsCard } from "./EventsCard";
 import { UserContext } from "../../context/UserContext";
-import { FilterContext } from "../../context/FilterContext";
 
 export const EventsContainer = () => {
-
   const [loading, setLoading] = useState<boolean>(false);
   const [savedEvents, setSavedEvents] = useState<IEvent[]>([]);
   const [error, setError] = useState<string>("");
 
+  const { user } = useContext(UserContext);
+
   const getSavedEvents = () => {
+    console.log("Calling getSavedEvents...");
     setLoading(true);
     axios
       .get("/api/eventAttendance/get_saved_events")
       .then((res: AxiosResponse) => {
-        console.log(res.data, 'res data')
         setSavedEvents(res.data);
       })
       .catch((error) => {
@@ -37,32 +33,31 @@ export const EventsContainer = () => {
       });
   };
 
+   const handleUnsaveEvent = (eventId: string) => {
+     const userId = user?._id;
+
+     axios
+       .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
+       .then((res: AxiosResponse) => {
+         if (res.status === 201 || 200) {
+           notifyUser(res.data.message, "success");
+         }
+       })
+       .catch((error) => {
+         if (error.status === 500) {
+           notifyUser(error.data.error, "error");
+         } else {
+           notifyUser(error.response?.data.error, "error");
+         }
+       });
+   };
+
   useEffect(() => {
     getSavedEvents();
+    
   }, []);
 
-  // c
-  const { user } = useContext(UserContext);
-
-  const handleUnsaveEvent = (eventId: string) => {
-    const userId = user?._id;
-
-    axios
-      .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
-      .then((res: AxiosResponse) => {
-        if (res.status === 201 || 200) {
-          notifyUser(res.data.message, "success");
-        }
-      })
-      .catch((error) => {
-        if (error.status === 500) {
-          notifyUser(error.data.error, "error");
-        } else {
-          notifyUser(error.response?.data.error, "error");
-        }
-      });
-  };
-
+  
   return (
     <>
       <ToastContainer />

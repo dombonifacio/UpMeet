@@ -48,7 +48,7 @@ export const EventsCard: React.FC<EventsCardProps> = ({
   startTime,
   unsaveEvent,
 }) => {
-  console.log(images, " imgess");
+
   const dateFormat = date.toString();
   const dateSelect = dateFormat.substring(5, 7);
   const daySelected = dateFormat.substring(8, 10);
@@ -100,7 +100,7 @@ export const EventsCard: React.FC<EventsCardProps> = ({
           ))}
         </div>
 
-        <div className="w-full h-full">
+        <div className="w-full h-full  flex items-end">
           <div className="block my-2 md:hidden ">
             <Link
               className="bg-lavender hover:bg-indigo-800 hover:text-white p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
@@ -109,7 +109,7 @@ export const EventsCard: React.FC<EventsCardProps> = ({
               See Event
             </Link>
           </div>
-          <div className="hidden  px-2 pb-6 md:pb-0 md:px-6 md:flex md:items-center md:gap-x-2">
+          <div className="hidden pb-6 md:pb-0 md:flex md:mt-8 md:mb-1 md:grow">
             <Link
               className="bg-lavender hover:bg-indigo-800 p-2 hover:text-white text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
               to={`/event_info/${eventId}`}

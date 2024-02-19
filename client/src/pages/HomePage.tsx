@@ -186,8 +186,9 @@ export const HomePage: React.FC = () => {
   const scrollToCategories = () => {
     categoriesRef.current.scrollIntoView({ behavior: "smooth" });
   };
-
+  const { user } = useContext(UserContext);
   useEffect(() => {
+    console.log(user, 'user data')
     fetchData();
   }, []);
 

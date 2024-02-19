@@ -128,18 +128,12 @@ export const AuthPage = () => {
         // Check if the response status is 200 or another success indicator
         if (res.status === 200) {
           
-          setUser({
-            name: "Hi",
-            age: 5,
-            country: "Canada",
-            image: "",
-            _id: "sdf",
-          });
+         
           notifyUser(
             res.data.message,
             "success"
           );
-          console.log(user, 'user')
+         
 
           setTimeout(() => {
             navigate("/");
