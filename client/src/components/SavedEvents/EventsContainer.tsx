@@ -14,7 +14,6 @@ export const EventsContainer = () => {
   const { user } = useContext(UserContext);
 
   const getSavedEvents = () => {
-    console.log("Calling getSavedEvents...");
     setLoading(true);
     axios
       .get("/api/eventAttendance/get_saved_events")
@@ -33,38 +32,36 @@ export const EventsContainer = () => {
       });
   };
 
-   const handleUnsaveEvent = (eventId: string) => {
-     const userId = user?._id;
+  const handleUnsaveEvent = (eventId: string) => {
+    const userId = user?._id;
 
-     axios
-       .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
-       .then((res: AxiosResponse) => {
-         if (res.status === 201 || 200) {
-           notifyUser(res.data.message, "success");
-         }
-       })
-       .catch((error) => {
-         if (error.status === 500) {
-           notifyUser(error.data.error, "error");
-         } else {
-           notifyUser(error.response?.data.error, "error");
-         }
-       });
-   };
+    axios
+      .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
+      .then((res: AxiosResponse) => {
+        if (res.status === 201 || 200) {
+          notifyUser(res.data.message, "success");
+        }
+      })
+      .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser(error.response?.data.error, "error");
+        }
+      });
+  };
 
   useEffect(() => {
     getSavedEvents();
-    
   }, []);
 
-  
   return (
     <>
       <ToastContainer />
       {loading ? (
         <p className="text-white text-4xl font-bold">Loading</p>
       ) : (
-        <div className="mt-5 space-y-6 p-4 w-5/6 md:w-full">
+        <div className="my-6 space-y-6 py-4 px-6 md:w-full  md:px-6">
           {savedEvents?.length === 0 || !savedEvents ? (
             <div className="w-full h-full">
               <p className="text-4xl text-center w-full font-bold">

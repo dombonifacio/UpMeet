@@ -126,9 +126,11 @@ export const AuthPage = () => {
       })
       .then((res: AxiosResponse) => {
         // Check if the response status is 200 or another success indicator
+        
         if (res.status === 200) {
           
          
+          localStorage.setItem("isLoggedIn", true.toString());
           notifyUser(
             res.data.message,
             "success"

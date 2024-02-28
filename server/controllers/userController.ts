@@ -11,7 +11,7 @@ export const getUserInfo = async (
     const user = await UserModel.findById(req.user.id).select(
       "_id email name country age image"
     );
-    console.log(user, 'user')
+
     return res.status(200).json(user);
   } catch (err) {
     return next(err);
@@ -20,7 +20,7 @@ export const getUserInfo = async (
 
 export const updateUserImage = async (req: Request, res: Response) => {
   // Get image from user
-  const userId: ObjectId =  req.user.id;
+  const userId: ObjectId = req.user.id;
   const { image } = req.body;
 
   try {
@@ -31,7 +31,7 @@ export const updateUserImage = async (req: Request, res: Response) => {
     if (updateUser.matchedCount === 0) {
       return res.status(400).json({ error: "No User Found with ID" });
     }
-    return res.status(200).json({message: "Successfully changed image!"})
+    return res.status(200).json({ message: "Successfully changed image!" });
   } catch (error) {
     return res.status(500).json({ error: "Server Internal Error" });
   }

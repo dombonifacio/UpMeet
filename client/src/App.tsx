@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 // hooks
 import { useRoutes } from "react-router-dom";
 
-
 // interfaces
 
 import "./App.css";
@@ -37,16 +36,25 @@ import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
 
 export const App = () => {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const { setUser, user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getUserData = () => {
+        axios.get("/api/users/profile").then((res: AxiosResponse) => {
+          setUser(res.data);
+        });
+      };
+      getUserData();
+    }
+  }, [isLoggedIn]);
 
   let element = useRoutes([
     {
       path: "/",
 
-      element: <HomePage />
-    },
-    {
-      path: "/auth",
-      element: <AuthPage />
+      element: isLoggedIn ? <HomePage /> : <AuthPage />,
     },
     {
       path: "/profile",
@@ -85,7 +93,7 @@ export const App = () => {
           <EventsContextProvider>
             <>
               {/* Render your components here */}
-           
+
               {element}
             </>
           </EventsContextProvider>

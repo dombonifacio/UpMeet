@@ -188,7 +188,7 @@ export const HomePage: React.FC = () => {
   };
   const { user } = useContext(UserContext);
   useEffect(() => {
-    console.log(user, 'user data')
+    console.log(user, "user data");
     fetchData();
   }, []);
 
@@ -233,7 +233,7 @@ export const HomePage: React.FC = () => {
                 and theatrical performances.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-5 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-5 ">
               {categoryList.map((category: ICategory) => (
                 <CategoryCard categoryCard={category} />
               ))}
@@ -244,14 +244,14 @@ export const HomePage: React.FC = () => {
             <div className="mt-16">
               <Title text="FEATURED MUSIC EVENTS" />
               <div className="grid md:grid-cols-3 gap-x-6 mt-4 lg:mt-8 ">
-                <div className=" md:col-span-2 relative">
-                  <div className="absolute bg-black/50 h-full w-full flex justify-between p-4 items-center">
+                <div className=" md:col-span-2 relative ">
+                  <div className=" absolute bg-black/50 h-full w-full flex justify-between p-4 items-center">
                     <div className=" w-full flex gap-x-4 sm:w-[75%] md:w-[65%] h-full items-center">
                       <button onClick={handleBackward} className=" ">
                         <FaArrowCircleLeft className="text-white text-3xl md:text-4xl" />
                       </button>
-                      <div>
-                        <div className="flex flex-col my-2">
+                      <div className="">
+                        <div className="flex flex-col">
                           <p className="font-bold text-xs md:text-sm">
                             {eventList[eventCount]?.date}
                           </p>
@@ -261,9 +261,8 @@ export const HomePage: React.FC = () => {
                         <h1 className="text-white font-bold text-3xl sm:text-4xl">
                           {eventList[eventCount]?.artist}
                         </h1>
-                        <p className="text-sm md:text-md mb-4">
-                          Get ready to join the excitement as you and your
-                          friends prepare to experience{" "}
+                        <p className="text-xs md:text-sm mb-4">
+                          Join with your friends friends prepare to experience{" "}
                           {eventList[eventCount]?.artist} together!{" "}
                           {eventList[eventCount]?.guests && (
                             <span>
@@ -277,7 +276,7 @@ export const HomePage: React.FC = () => {
                         </p>
                         <Link
                           to={`event_info/${eventList[eventCount]?.eventId}`}
-                          className="bg-lavender text-white hover:text-white p-2 px-3 text-xs md:text-sm md:p-2 md:px-5 rounded-md hover:bg-indigo-800 duration-75 font-bold "
+                          className="bg-lavender text-white  hover:text-white p-2 px-3 text-xs md:text-sm md:p-2 md:px-5 rounded-md hover:bg-indigo-800 duration-75 font-bold "
                         >
                           See Event
                         </Link>
@@ -290,7 +289,7 @@ export const HomePage: React.FC = () => {
                   </div>
                   <img
                     src={eventList[eventCount]?.images[0].url}
-                    className="max-h-[450px] w-full object-cover"
+                    className="min-h-[150px] max-h-[450px] w-full object-cover"
                   />
                 </div>
                 <div className=" grid grid-rows-4 gap-y-4 h-72 mt-8 md:mt-0">

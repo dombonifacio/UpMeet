@@ -39,7 +39,7 @@ const CategoryCard = ({ categoryCard }: CategoryProps) => {
 
   return (
     <div className="relative rounded-2xl">
-      <div className="absolute h-full flex flex-col justify-between p-4 bg-black/70 w-full rounded-2xl">
+      <div className="absolute h-full flex flex-col justify-between p-4 bg-black/70 w-full rounded-2xl ">
         <div>
           <p className="font-bold text-cardText text-xl sm:text-2xl">
             {categoryCard?.name}
@@ -48,14 +48,14 @@ const CategoryCard = ({ categoryCard }: CategoryProps) => {
         </div>
         <button
           onClick={handleCategoryNavigate}
-          className="bg-lavender p-2 px-3 text-xs md:text-sm md:p-2 md:px-4 rounded-md hover:bg-indigo-800 duration-75 font-bold inline-block w-[45%]"
+          className="bg-lavender p-2 text-xs md:text-sm  rounded-md hover:bg-indigo-800 duration-75 font-bold inline-block max-w-[100px] md:min-w-[110px]"
         >
           See More
         </button>
       </div>
       <img
         src={categoryCard?.image}
-        className="object-cover h-36 md:h-52 w-full rounded-2xl"
+        className="object-cover h-48 md:h-52 w-full rounded-2xl"
       />
     </div>
   );

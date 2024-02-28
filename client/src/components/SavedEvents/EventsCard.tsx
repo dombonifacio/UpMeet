@@ -48,10 +48,10 @@ export const EventsCard: React.FC<EventsCardProps> = ({
   startTime,
   unsaveEvent,
 }) => {
-
   const dateFormat = date.toString();
   const dateSelect = dateFormat.substring(5, 7);
   const daySelected = dateFormat.substring(8, 10);
+  const yearSelected = dateFormat.substring(0, 4);
   const getKeyByValue = (object: any, value: any) => {
     return Object.keys(object).find((key) => object[key] === value);
   };
@@ -74,6 +74,9 @@ export const EventsCard: React.FC<EventsCardProps> = ({
           <p className=" text-lightText font-bold  text-2xl md:text-2xl">
             {" "}
             {getFormattedMonth}
+          </p>
+          <p className="text-lightText font-bold  text-xl md:text-xl">
+            {yearSelected}
           </p>
         </div>
 
@@ -101,7 +104,7 @@ export const EventsCard: React.FC<EventsCardProps> = ({
         </div>
 
         <div className="w-full h-full  flex items-end">
-          <div className="block my-2 md:hidden ">
+          <div className="block mt-6 mb-2 md:hidden ">
             <Link
               className="bg-lavender hover:bg-indigo-800 hover:text-white p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
               to={`/event_info/${eventId}`}
@@ -109,7 +112,7 @@ export const EventsCard: React.FC<EventsCardProps> = ({
               See Event
             </Link>
           </div>
-          <div className="hidden pb-6 md:pb-0 md:flex md:mt-8 md:mb-1 md:grow">
+          <div className="hidden pb-10 md:pb-0 md:flex md:mt-8 md:mb-1 md:grow">
             <Link
               className="bg-lavender hover:bg-indigo-800 p-2 hover:text-white text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
               to={`/event_info/${eventId}`}
