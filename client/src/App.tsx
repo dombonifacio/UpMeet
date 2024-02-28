@@ -82,17 +82,15 @@ export const App = () => {
 
   return (
     <>
-      <UserContextProvider>
-        <FilterContextProvider>
-          <EventsContextProvider>
-            <>
-              {/* Render your components here */}
+      <FilterContextProvider>
+        <EventsContextProvider>
+          <>
+            {/* Render your components here */}
 
-              {element}
-            </>
-          </EventsContextProvider>
-        </FilterContextProvider>
-      </UserContextProvider>
+            {element}
+          </>
+        </EventsContextProvider>
+      </FilterContextProvider>
     </>
   );
 };
