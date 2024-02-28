@@ -22,7 +22,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import EventListPage from "./pages/EventListPage.tsx";
 import { Navbar } from "./components/Navbar/Navbar.tsx";
 import EventInfoPage from "./pages/EventInfoPage.tsx";
-import { UserContext, UserContextProvider } from "./context/UserContext.tsx";
+
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { SavedEvents } from "./pages/SavedEvents.tsx";
 import AttendeesPage from "./pages/AttendeesPage.tsx";
@@ -34,27 +34,21 @@ import {
 } from "./context/isAuthenticatedContext.tsx";
 import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
+import { UserContext, UserContextProvider } from "./context/UserContext.tsx";
 
 export const App = () => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const { setUser, user } = useContext(UserContext);
+  const authenticated = localStorage.getItem("authenticated");
+  const { data } = useContext(UserContext);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const getUserData = () => {
-        axios.get("/api/users/profile").then((res: AxiosResponse) => {
-          setUser(res.data);
-        });
-      };
-      getUserData();
-    }
-  }, [isLoggedIn]);
+    console.log(data, "data is");
+  }, [data]);
 
   let element = useRoutes([
     {
       path: "/",
 
-      element: isLoggedIn ? <HomePage /> : <AuthPage />,
+      element: data.isLoggedIn ? <HomePage /> : <AuthPage />,
     },
     {
       path: "/profile",

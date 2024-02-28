@@ -5,15 +5,18 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 
 export const SavedEvents = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { data, setData } = useContext(UserContext);
   const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    console.log(data, "data");
+  }, [data]);
   const getUserInfo = () => {
     setLoading(true);
     axios
       .get("/api/users/profile")
       .then((res) => {
-        setUser(res.data);
+        setData({ ...data, user: res.data, isLoggedIn: true });
       })
       .catch((error) => console.log(error))
       .finally(() => {

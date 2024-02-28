@@ -9,33 +9,36 @@ import {
 import { IUser } from "../interfaces/User";
 import axios from "axios";
 
-export interface UserContextInterface {
+interface UserAuthenticate {
   user: IUser | null;
-  setUser: Dispatch<SetStateAction<IUser | null>>;
+  isLoggedIn: boolean;
+}
 
-
+export interface UserContextInterface {
+  data: UserAuthenticate;
+  setData: Dispatch<SetStateAction<UserAuthenticate>>;
 }
 
 const defaultState: UserContextInterface = {
-  user: null,
-
-
-
-  setUser: () => {},
+  data: {
+    user: null,
+    isLoggedIn: false,
+  },
+  setData: () => {},
 };
 
 type UserProviderProps = {
   children: ReactNode;
 };
 
-export const UserContext = createContext(defaultState);
+export const UserContext = createContext<UserContextInterface>(defaultState);
 
 export const UserContextProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  
-  
+  const [data, setData] = useState(defaultState.data);
+
   return (
-    <UserContext.Provider value={{ user, setUser}}>
+    <UserContext.Provider value={{ data, setData }}>
+      {/* Wrap data and setData in an object */}
       {children}
     </UserContext.Provider>
   );

@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { InputComponent } from "../components/Form/InputComponent";
 import { ButtonComponent } from "../components/Form/ButtonComponent";
 import { Blob } from "../components/Background/Blob";
-import concert from "../assets/concert.jpg"
+import concert from "../assets/concert.jpg";
 
 // React Toastify
 import { ToastContainer } from "react-toastify";
@@ -40,7 +40,7 @@ export const AuthPage = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [message, setMessage] = useState<IMessage>({} as IMessage);
 
-  const { setUser, user } = useContext(UserContext)
+  const { setData, data } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleUserInput = (
@@ -85,7 +85,7 @@ export const AuthPage = () => {
   };
 
   const handleSignUp = async () => {
-    const fixName = formData.name.toLowerCase()
+    const fixName = formData.name.toLowerCase();
     const userData = {
       email: formData.email,
       name: fixName.charAt(0).toUpperCase() + fixName.slice(1),
@@ -100,10 +100,7 @@ export const AuthPage = () => {
       .post("api/auth/register", userData)
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
-          notifyUser(
-            res.data.message,
-            "success"
-          );
+          notifyUser(res.data.message, "success");
           setTimeout(() => {
             setShowSignUp(false);
           }, 2500);
@@ -113,7 +110,6 @@ export const AuthPage = () => {
         if (error.status === 500) {
           notifyUser(error.data.error, "error");
         } else {
-          
           notifyUser(error.response?.data.error, "error");
         }
       });
@@ -126,16 +122,12 @@ export const AuthPage = () => {
       })
       .then((res: AxiosResponse) => {
         // Check if the response status is 200 or another success indicator
-        
+
         if (res.status === 200) {
-          
-         
-          localStorage.setItem("isLoggedIn", true.toString());
-          notifyUser(
-            res.data.message,
-            "success"
-          );
-         
+          localStorage.setItem("authenticated", true.toString());
+          setData({ ...data, isLoggedIn: true });
+          console.log("successfully logged in", data.isLoggedIn);
+          notifyUser(res.data.message, "success");
 
           setTimeout(() => {
             navigate("/");
@@ -156,7 +148,6 @@ export const AuthPage = () => {
         }
       });
   };
-
 
   return (
     <>
@@ -181,7 +172,9 @@ export const AuthPage = () => {
         </FormContainer>
         {/* {showSignUp ? <LoginComponent /> : null} */}
         {/* Right Side */}
-        <div className="hidden lg:flex h-full"><img src={concert} className="h-full object-cover"/></div>
+        <div className="hidden lg:flex h-full">
+          <img src={concert} className="h-full object-cover" />
+        </div>
       </div>
     </>
   );
