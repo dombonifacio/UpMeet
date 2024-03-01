@@ -125,12 +125,9 @@ export const AuthPage = () => {
 
         if (res.status === 200) {
           localStorage.setItem("authenticated", true.toString());
-          setData({ ...data, isLoggedIn: true });
-          console.log("successfully logged in", data.isLoggedIn);
           notifyUser(res.data.message, "success");
-
           setTimeout(() => {
-            navigate("/");
+            setData({ ...data, isLoggedIn: true });
           }, 2500);
 
           // Navigate after a delay (if needed)

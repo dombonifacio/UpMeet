@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 // hooks
 import { useRoutes } from "react-router-dom";
@@ -14,35 +14,31 @@ import { AuthPage } from "./pages/AuthPage.tsx";
 
 // Context APIs
 import { FilterContextProvider } from "./context/FilterContext.tsx";
-import { TestPage } from "./pages/TestPage.tsx";
 
 import { EventsContextProvider } from "./context/EventsContext.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
-import LoginPage from "./pages/LoginPage.tsx";
+
 import EventListPage from "./pages/EventListPage.tsx";
-import { Navbar } from "./components/Navbar/Navbar.tsx";
+
 import EventInfoPage from "./pages/EventInfoPage.tsx";
 
-import axios, { AxiosResponse, AxiosError } from "axios";
 import { SavedEvents } from "./pages/SavedEvents.tsx";
 import AttendeesPage from "./pages/AttendeesPage.tsx";
-import useLocalStorage from "./hooks/useLocalStorage.tsx";
 
-import {
-  AuthContext,
-  AuthContextProvider,
-} from "./context/isAuthenticatedContext.tsx";
 import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
-import { UserContext, UserContextProvider } from "./context/UserContext.tsx";
+import { UserContext } from "./context/UserContext.tsx";
 
 export const App = () => {
   const authenticated = localStorage.getItem("authenticated");
-  const { data } = useContext(UserContext);
+  const { data, setData } = useContext(UserContext);
 
+  // Check first if it authenticated local storage is set to true
   useEffect(() => {
-    console.log(data, "data is");
-  }, [data]);
+    if (authenticated) {
+      setData({ ...data, isLoggedIn: true });
+    }
+  }, []);
 
   let element = useRoutes([
     {

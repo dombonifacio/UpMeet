@@ -113,7 +113,7 @@ const ProfilePage = () => {
           res.data.message + " Redirecting you to login page...",
           "success"
         );
-        setSelectedImage("")
+        setSelectedImage("");
       })
       .catch((error) => {
         if (error.status === 500) {
@@ -209,16 +209,14 @@ const ProfilePage = () => {
     <>
       <ToastContainer />
 
-      <div className="mx-auto max-w-[1260px] h-screen relative">
-         <div className="absolute h-full w-full top-0 border-4">
-
+      <div className="mx-auto max-w-[1260px] h-screen relative ">
+        <div className="absolute h-full w-full top-0 ">
           <Navbar />
-         </div>
-      
-  
-        <div className="flex flex-row">
-          <div className="flex flex-row p-8">
-            <div className="p-5 ">
+        </div>
+
+        <div className="flex flex-row pt-24">
+          <div className="flex flex-row px-6">
+            <div className=" ">
               {user.image ? (
                 <div className="relative group">
                   <div className="absolute inset-0 bg-gradient-to-t from-black opacity-0 group-hover:opacity-100 rounded-full w-48 h-48 transition-opacity flex items-end justify-center">
@@ -304,15 +302,18 @@ const ProfilePage = () => {
         </div> */}
         </div>
 
-        <div className="flex flex-row  text-white text-[20px]">
+        <div className="flex flex-row  text-white text-[20px] relative z-50 px-6 ">
           <div className="flex-1 ">
             {isOpen.showEvents ? (
-              <p className="text-indigo-300 text-[30px] no-underline border-b-[3px] border-solid  border-white text-center">
+              <p
+                className="text-indigo-300 no-underline border-b-[3px] border-solid  border-white text-center text-md"
+                onClick={toggle}
+              >
                 Future Events
               </p>
             ) : (
               <p
-                className=" text-indigo-300 text-[30px] text-center cursor-pointer border-b-[1px] border-solid border-gray-400 "
+                className=" text-indigo-300  text-center cursor-pointer border-b-[1px] border-solid border-gray-400 text-md"
                 onClick={toggle}
               >
                 {" "}
@@ -322,12 +323,15 @@ const ProfilePage = () => {
           </div>
           <div className="flex-1 ">
             {isOpen.showFavourites ? (
-              <p className="text-indigo-300 text-[30px] text-center border-b-[3px] border-solid border-white ">
+              <p
+                className="text-indigo-300 text-center border-b-[3px] border-solid border-white text-md"
+                onClick={toggle}
+              >
                 Previous Events
               </p>
             ) : (
               <p
-                className="text-indigo-300 text-[30px] text-center cursor-pointer border-b-[1px] border-solid border-gray-400 "
+                className="text-indigo-300 text=md text-center cursor-pointer border-b-[1px] border-solid border-gray-400"
                 onClick={toggle}
               >
                 {" "}
@@ -338,12 +342,13 @@ const ProfilePage = () => {
         </div>
 
         <br />
-
-        {isOpen.showEvents ? (
-          <FutureEvents data={futureEvents} loading={loading} />
-        ) : (
-          <PreviousEvents data={previousEvents} loading={loading} />
-        )}
+        <div className=" relative z-50 px-6">
+          {isOpen.showEvents ? (
+            <FutureEvents data={futureEvents} loading={loading} />
+          ) : (
+            <PreviousEvents data={previousEvents} loading={loading} />
+          )}
+        </div>
       </div>
     </>
   );

@@ -27,15 +27,6 @@ export const SavedEvents = () => {
     getUserInfo();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="max-w-[1260px] mx-auto">
-        <Navbar />
-        <div>Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="max-w-[1260px] mx-auto">

@@ -59,7 +59,7 @@ export const EventsContainer = () => {
     <>
       <ToastContainer />
       {loading ? (
-        <p className="text-white text-4xl font-bold">Loading</p>
+        <p className="text-white text-4xl font-bold text-center">Loading</p>
       ) : (
         <div className="my-6 space-y-6 py-4 px-6 md:w-full  md:px-6">
           {savedEvents?.length === 0 || !savedEvents ? (
