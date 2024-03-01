@@ -11,7 +11,6 @@ export const EventsContainer = () => {
   const [savedEvents, setSavedEvents] = useState<IEvent[]>([]);
   const [error, setError] = useState<string>("");
 
-  const { user } = useContext(UserContext);
 
   const getSavedEvents = () => {
     setLoading(true);

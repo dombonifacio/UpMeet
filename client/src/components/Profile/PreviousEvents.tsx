@@ -32,7 +32,7 @@ export const PreviousEvents = ({ data, loading }: PreviousEventsProps) => {
                       />
 
                       {/* Event Information beside image */}
-                      <div className="px-2 my-2 sm:my-0 md:px-4 flex flex-col  grow flex-wrap">
+                      <div className="p-4 sm:my-0 md:px-4 flex flex-col  grow flex-wrap">
                         {/* First Line Arist, time, city, country */}
                         <div className="flex gap-x-2 items-center max-w-[80%] md:w-full">
                           {/* If there is event artist then show the artist name */}

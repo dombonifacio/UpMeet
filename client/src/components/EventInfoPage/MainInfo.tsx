@@ -20,7 +20,7 @@ import { FaRegHeart } from "react-icons/fa";
 export default function MainInfo() {
   const { id } = useParams();
   const { events } = useContext(EventsContext);
-  const { user, setUser } = useContext(UserContext);
+  const { data } = useContext(UserContext);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [isAttending, setIsAttending] = useState<boolean>(false);
@@ -31,7 +31,7 @@ export default function MainInfo() {
 
   const getSelfEvents = () => {
     setLoading(true);
-    if (user) {
+    if (data.user) {
       axios
         .get("/api/eventAttendance/get_attending_events")
         .then((res: AxiosResponse) => {
@@ -57,7 +57,7 @@ export default function MainInfo() {
 
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
-    if (user) {
+    if (data.user) {
       axios
         .post("/api/eventAttendance/create_attending_events", selectedEvent)
 
@@ -81,9 +81,9 @@ export default function MainInfo() {
 
   // Handle "Delete to I'm Going to the event" logic
   const handleDeleteEvent = () => {
-    const userId = user?._id;
+    const userId = data?.user?._id;
 
-    if (user) {
+    if (data.user) {
       axios
         .delete(`/api/eventAttendance/delete_attending/${id}/${userId}`)
         .then((res: AxiosResponse) => {

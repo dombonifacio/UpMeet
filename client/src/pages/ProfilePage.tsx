@@ -215,12 +215,12 @@ const ProfilePage = () => {
         </div>
 
         <div className="flex flex-row pt-24">
-          <div className="flex flex-row px-6">
+          <div className="flex flex-row px-6 gap-x-6">
             <div className=" ">
               {user.image ? (
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black opacity-0 group-hover:opacity-100 rounded-full w-48 h-48 transition-opacity flex items-end justify-center">
-                    <p className="hidden group-hover:block text-slate-300 font-semibold text-xl mb-2">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black opacity-0 group-hover:opacity-100 rounded-full w-36 h-36 md:h-48 h:w-48 transition-opacity flex items-end justify-center">
+                    <p className="hidden group-hover:block text-slate-300 font-semibold text-sm p-4 md:text-lg mb-2">
                       Edit Picture
                     </p>
                   </div>
@@ -242,7 +242,7 @@ const ProfilePage = () => {
                           : user?.image
                       }
                       alt="User Image"
-                      className="object-cover z-10 rounded-full w-48 h-48"
+                      className="object-cover z-10 rounded-full w-36 h-36 md:h-48 h:w-48"
                     />
                   </label>
                 </div>
@@ -257,13 +257,13 @@ const ProfilePage = () => {
                   {/* Image icon as a label for the file input */}
                   <label
                     htmlFor="fileInput"
-                    className="cursor-pointer block w-48 h-48 rounded-full object-cover"
+                    className="cursor-pointer block w-36 h-36 md:h-48 h:w-48 rounded-full object-cover"
                   >
                     {selectedImage ? (
                       <img
                         src={URL.createObjectURL(selectedImage as Blob)}
                         alt="Selected Image"
-                        className="object-cover z-10 rounded-full w-48 h-48"
+                        className="object-cover z-10 rounded-full w-36 h-36 md:h-48 h:w-48"
                       />
                     ) : (
                       <img
@@ -290,9 +290,19 @@ const ProfilePage = () => {
               {/* IMAGE SAVING */}
             </div>
 
-            <div className="flex gap-x-4 items-center">
-              <p className="text-indigo-300 font-bold text-4xl">{user?.name}</p>
-              <p className="text-indigo-300 font-light text-2xl">{user?.age}</p>
+            <div className="flex flex-col justify-center ">
+              <div className="flex items-center gap-x-3                                                                                                ">
+                <p>Name: </p>
+                <p className="text-indigo-300 font-bold text-2xl sm:text-3xl md:text-4xl">
+                  {user?.name}
+                </p>
+              </div>
+              <div className="flex items-center gap-x-3">
+                <p>Age:</p>
+                <p className="text-indigo-300 font-light text-lg sm:text-xl md:text-2xl">
+                  {user?.age}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -302,7 +312,7 @@ const ProfilePage = () => {
         </div> */}
         </div>
 
-        <div className="flex flex-row  text-white text-[20px] relative z-50 px-6 ">
+        <div className="flex flex-row  text-white text-[20px] relative px-6 ">
           <div className="flex-1 ">
             {isOpen.showEvents ? (
               <p
@@ -342,7 +352,7 @@ const ProfilePage = () => {
         </div>
 
         <br />
-        <div className=" relative z-50 px-6">
+        <div className=" relative px-6">
           {isOpen.showEvents ? (
             <FutureEvents data={futureEvents} loading={loading} />
           ) : (

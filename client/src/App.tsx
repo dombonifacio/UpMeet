@@ -59,16 +59,16 @@ export const App = () => {
       element: <InvitationsPage />,
     },
     {
+      path: "/event/:country/:id",
+      element: <EventInfoPage />,
+    },
+    {
       path: "/event_info/:id",
       element: <OwnEventInfoPage />,
     },
     {
       path: "/attendees/:id",
       element: <AttendeesPage />,
-    },
-    {
-      path: "/event/:country/:id",
-      element: <EventInfoPage />,
     },
     {
       path: "/:category",
