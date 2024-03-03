@@ -12,7 +12,7 @@ import { EventsContext } from "../context/EventsContext";
 
 export const OwnEventInfoPage = () => {
   const { id } = useParams();
-  const { user, setUser } = useContext(UserContext);
+  const { data } = useContext(UserContext);
   const { events } = useContext(EventsContext);
   // collect only the event selected
   const selectedEventArr = events.filter((event) => event.eventId === id);
@@ -20,38 +20,24 @@ export const OwnEventInfoPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [isAttending, setIsAttending] = useState<boolean>(false);
-
-  // const getEvent = () => {
-  //   setLoading(true);
-  //   axios
-  //     .get(`/api/events/event_info/${id}`)
-  //     .then((res: AxiosResponse) => {
-  //       // setSelectedEvent(res.data);
-  //       console.log(res, "response");
-  //     })
-  //     .catch((error: AxiosResponse) => {
-  //       setError(true);
-  //     })
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // };
-
+  console.log(events, "events event");
   const getSelfEvents = () => {
-    setLoading;
+    setLoading(true);
     axios
       .get("/api/eventAttendance/get_attending_events")
       .then((res: AxiosResponse) => {
+        setLoading(false);
         console.log("API Response:", res.data);
         const getCurrentEvent = res.data?.some(
           (event: IEvent) => event.eventId === id
         );
+
         if (getCurrentEvent) {
-          console.log("Condition is hit");
           setIsAttending(true);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.log("Error fetching data:", error);
       })
       .finally(() => {
@@ -85,7 +71,7 @@ export const OwnEventInfoPage = () => {
 
   // Handle "Delete to I'm Going to the event" logic
   const handleDeleteEvent = () => {
-    const userId = user?._id;
+    const userId = data.user?._id;
 
     axios
       .delete(`/api/eventAttendance/delete_attending/${id}/${userId}`)

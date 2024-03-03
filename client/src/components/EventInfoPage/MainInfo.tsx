@@ -21,7 +21,10 @@ import { SavedEventsContext } from "../../context/SavedEventsContext";
 export default function MainInfo() {
   const { id } = useParams();
   const { events } = useContext(EventsContext);
+<<<<<<< HEAD
   const { savedEvents } = useContext(SavedEventsContext);
+=======
+>>>>>>> 49af00ec9545bf43194bb48c2b8fe7fbacf5afa2
   const { data } = useContext(UserContext);
   const [loading, setLoading] = useState<boolean>(false);
 
