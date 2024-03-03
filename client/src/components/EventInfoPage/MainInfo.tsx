@@ -21,10 +21,7 @@ import { SavedEventsContext } from "../../context/SavedEventsContext";
 export default function MainInfo() {
   const { id } = useParams();
   const { events } = useContext(EventsContext);
-<<<<<<< HEAD
   const { savedEvents } = useContext(SavedEventsContext);
-=======
->>>>>>> 49af00ec9545bf43194bb48c2b8fe7fbacf5afa2
   const { data } = useContext(UserContext);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -35,8 +32,8 @@ export default function MainInfo() {
   const selectedEvent = selectedEventArr[0];
 
   const getSelfEvents = () => {
-    setLoading(true);
     if (data.user) {
+      setLoading(true);
       axios
         .get("/api/eventAttendance/get_attending_events")
         .then((res: AxiosResponse) => {
@@ -45,10 +42,13 @@ export default function MainInfo() {
           );
           if (getCurrentEvent) {
             setIsAttending(true);
+            setLoading(false);
           }
+          setLoading(false);
         })
         .catch((error) => {
           console.log(" error", error);
+          setLoading(false);
         })
         .finally(() => {
           setLoading(false);

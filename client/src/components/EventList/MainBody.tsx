@@ -38,42 +38,42 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
     }
   };
 
-  const getSavedEvents = () => {
-    setLoading(true);
-    axios
-      .get(`/api/eventAttendance/get_saved_events`)
-      .then((res: AxiosResponse) => {
-        console.log(res, "response");
-        const eventIds = res.data.map((event: IEvent) => event.eventId);
+  // const getSavedEvents = () => {
+  //   setLoading(true);
+  //   axios
+  //     .get(`/api/eventAttendance/get_saved_events`)
+  //     .then((res: AxiosResponse) => {
+  //       console.log(res, "response");
+  //       const eventIds = res.data.map((event: IEvent) => event.eventId);
 
-        setEvents((prevEvents) => {
-          // Update the events array to set isSaved to true for saved events
-          const updatedEvents = prevEvents?.map((event: IEvent) => ({
-            ...event,
-            isSaved: eventIds.includes(event.eventId),
-          }));
-          return updatedEvents;
-        });
-      })
-      .catch((error) => {
-        if (error.status === 500) {
-          notifyUser(error.data.error, "error");
-        } else {
-          notifyUser(error.response?.data.error, "error");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  //       setEvents((prevEvents) => {
+  //         // Update the events array to set isSaved to true for saved events
+  //         const updatedEvents = prevEvents?.map((event: IEvent) => ({
+  //           ...event,
+  //           isSaved: eventIds.includes(event.eventId),
+  //         }));
+  //         return updatedEvents;
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       if (error.status === 500) {
+  //         notifyUser(error.data.error, "error");
+  //       } else {
+  //         notifyUser(error.response?.data.error, "error");
+  //       }
+  //     })
+  //     .finally(() => {
+  //       setLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    getSavedEvents();
-  }, []); // Include 'events' as a dependency
+  // useEffect(() => {
+  //   getSavedEvents();
+  // }, []); // Include 'events' as a dependency
 
-  useEffect(() => {
-    getSavedEvents();
-  }, [savedEvent]);
+  // useEffect(() => {
+  //   getSavedEvents();
+  // }, [savedEvent]);
 
   const handleSaveEvents = (selectedEvent: IEvent) => {
     axios
@@ -231,7 +231,7 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                           className="bg-lavender hover:bg-indigo-800 hover:text-white p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
                           to={`/event/${country.selectedCountry}/${event.eventId}`}
                         >
-                          See Event
+                          See Event event herer
                         </Link>
                       </div>
                     </div>

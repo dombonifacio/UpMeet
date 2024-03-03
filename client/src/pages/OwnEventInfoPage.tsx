@@ -27,7 +27,7 @@ export const OwnEventInfoPage = () => {
       .get("/api/eventAttendance/get_attending_events")
       .then((res: AxiosResponse) => {
         setLoading(false);
-        console.log("API Response:", res.data);
+
         const getCurrentEvent = res.data?.some(
           (event: IEvent) => event.eventId === id
         );
