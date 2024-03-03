@@ -5,20 +5,22 @@ import { IEvent } from "../../interfaces/Event";
 import { ToastContainer } from "react-toastify";
 import { EventsCard } from "./EventsCard";
 import { UserContext } from "../../context/UserContext";
+import { SavedEventsContext } from "../../context/SavedEventsContext";
+import { EventsContext } from "../../context/EventsContext";
 
 export const EventsContainer = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [savedEvents, setSavedEvents] = useState<IEvent[]>([]);
+  const { events, setEvents } = useContext(EventsContext);
   const [error, setError] = useState<string>("");
 
-  const { user } = useContext(UserContext);
+  const { data } = useContext(UserContext);
 
   const getSavedEvents = () => {
     setLoading(true);
     axios
       .get("/api/eventAttendance/get_saved_events")
       .then((res: AxiosResponse) => {
-        setSavedEvents(res.data);
+        setEvents(res.data);
       })
       .catch((error) => {
         if (error.status === 500) {
@@ -33,7 +35,7 @@ export const EventsContainer = () => {
   };
 
   const handleUnsaveEvent = (eventId: string) => {
-    const userId = user?._id;
+    const userId = data?.user?._id;
 
     axios
       .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
@@ -62,7 +64,7 @@ export const EventsContainer = () => {
         <p className="text-white text-4xl font-bold text-center">Loading</p>
       ) : (
         <div className="my-6 space-y-6 py-4 px-6 md:w-full  md:px-6">
-          {savedEvents?.length === 0 || !savedEvents ? (
+          {events?.length === 0 || !events ? (
             <div className="w-full h-full">
               <p className="text-4xl text-center w-full font-bold">
                 You have no saved events. Try saving one!
@@ -78,7 +80,7 @@ export const EventsContainer = () => {
               </div>
 
               <div className="grid grid-cols-1 w-full place-items-center gap-y-5 sm:gap-x-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                {savedEvents.map((event) => (
+                {events.map((event) => (
                   <div key={event.eventId} className="h-full">
                     <EventsCard
                       artist={event.artist as string}

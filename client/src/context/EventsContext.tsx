@@ -7,7 +7,7 @@ import {
 } from "react";
 import { IEvent } from "../interfaces/Event";
 
-export interface EventsContextInterface {
+interface EventsContextInterface {
   events: IEvent[];
   setEvents: Dispatch<SetStateAction<IEvent[]>>;
 }
