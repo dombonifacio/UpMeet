@@ -9,18 +9,28 @@ import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineDateRange } from "react-icons/md";
 import EventPicture from "../components/EventInfoPage/EventPicture";
 import { EventsContext } from "../context/EventsContext";
+import { PreviousEventsContext } from "../context/SavedEventsContext";
+import { Navbar } from "../components/Navbar/Navbar";
 
 export const OwnEventInfoPage = () => {
   const { id } = useParams();
   const { data } = useContext(UserContext);
-  const { events } = useContext(EventsContext);
+  const { events, setEvents } = useContext(EventsContext);
+  const { previousEvents } = useContext(PreviousEventsContext);
   // collect only the event selected
   const selectedEventArr = events.filter((event) => event.eventId === id);
   const selectedEvent = selectedEventArr[0];
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [isAttending, setIsAttending] = useState<boolean>(false);
-  console.log(events, "events event");
+
+  useEffect(() => {
+    const combineEvents = () => {
+      setEvents([...previousEvents, ...events]);
+    };
+    combineEvents();
+  }, []);
+
   const getSelfEvents = () => {
     setLoading(true);
     axios
@@ -91,7 +101,10 @@ export const OwnEventInfoPage = () => {
   };
 
   return (
-    <div className="mx-auto max-w-[1260px] flex justify-center md:h-screen md:w-screen md:items-center">
+    <div className="flex flex-col mx-auto max-w-[1260px] h-screen">
+      <div>
+        <Navbar />
+      </div>
       {loading ? (
         <p className="text-white text-5xl">Loading...</p>
       ) : (
@@ -108,7 +121,7 @@ export const OwnEventInfoPage = () => {
           />
 
           {/* DATE AND VENUE*/}
-          <div className="p-6 w-full  h-full flex flex-col gap-y-4 md:px-6 md:flex-wrap justify-center">
+          <div className=" w-full  h-full p-4 md:flex md:flex-col gap-y-4 md:px-6 md:flex-wrap justify-center ">
             <div className="flex gap-x-2  flex-wrap gap-y-2">
               {/* DATE AND VENUE*/}
               <div className="flex items-center gap-x-1">
@@ -164,7 +177,7 @@ export const OwnEventInfoPage = () => {
               {/* FOR CHANIGNG THE UI OF BUTTON IF ATTENDING OR NOT */}
               {!isAttending ? (
                 <button
-                  className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                  className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
                   onClick={handleGoingEvent}
                 >
                   Join Event
@@ -172,7 +185,7 @@ export const OwnEventInfoPage = () => {
               ) : (
                 <button
                   onClick={handleDeleteEvent}
-                  className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                  className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
                 >
                   Cancel Event
                 </button>
@@ -180,7 +193,7 @@ export const OwnEventInfoPage = () => {
 
               <Link
                 to={`/attendees/${id}`}
-                className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
               >
                 See Attendees
               </Link>

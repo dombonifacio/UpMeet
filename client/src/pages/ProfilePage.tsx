@@ -1,5 +1,5 @@
 import axios, { Axios, AxiosError, AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import Events from "../components/Profile/FutureEvents";
@@ -18,6 +18,8 @@ import { timezones } from "../utils/constants/Timezones";
 import { notifyUser } from "../utils/helpers/toastify";
 import { ToastContainer } from "react-toastify";
 import { Navbar } from "../components/Navbar/Navbar";
+import { EventsContext } from "../context/EventsContext";
+import { PreviousEventsContext } from "../context/SavedEventsContext";
 
 interface IUser {
   _id: string;
@@ -124,8 +126,10 @@ const ProfilePage = () => {
       });
   };
 
-  const [previousEvents, setPreviousEvents] = useState<IEvent[]>([]);
-  const [futureEvents, setFutureEvents] = useState<IEvent[]>([]);
+  const { events, setEvents } = useContext(EventsContext);
+  const { previousEvents, setPreviousEvents } = useContext(
+    PreviousEventsContext
+  );
 
   const getTimezone = (offset: number): Date => {
     const d = new Date();
@@ -178,7 +182,7 @@ const ProfilePage = () => {
 
           // Clear the previous state and update with the new arrays
           setPreviousEvents(newPreviousEvents);
-          setFutureEvents(newFutureEvents);
+          setEvents(newFutureEvents);
         }
       })
       .catch((error: AxiosError) => {
@@ -192,18 +196,6 @@ const ProfilePage = () => {
   useEffect(() => {
     getSelfEvents();
   }, []);
-
-  useEffect(() => {
-    if (previousEvents.length > 0) {
-      console.log(previousEvents, "previous events\n");
-    }
-  }, [previousEvents]);
-
-  useEffect(() => {
-    if (futureEvents.length > 0) {
-      console.log(futureEvents, "futureEvents events\n");
-    }
-  }, [futureEvents]);
 
   return (
     <>
@@ -354,7 +346,7 @@ const ProfilePage = () => {
         <br />
         <div className=" relative px-6">
           {isOpen.showEvents ? (
-            <FutureEvents data={futureEvents} loading={loading} />
+            <FutureEvents data={events} loading={loading} />
           ) : (
             <PreviousEvents data={previousEvents} loading={loading} />
           )}

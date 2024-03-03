@@ -10,7 +10,6 @@ import { Link, useParams } from "react-router-dom";
 // axios
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-
 // interfaces
 import { IError } from "../interfaces/Message.ts";
 import { IEvent, IEventData, IImage } from "../interfaces/Event.ts";
@@ -291,10 +290,8 @@ const EventListPage = () => {
 
   return (
     <>
-  
-    
-
-      <div className="max-w-[1260px] mx-auto z-1 relative p-6">
+      <div className="max-w-[1260px] mx-auto z-1 relative mb-6">
+        <Navbar />
         <NavbarSearch
           handleSearchChange={handleSearchChange}
           handleSearchClick={handleSearchClick}
@@ -307,12 +304,14 @@ const EventListPage = () => {
         />
 
         {showSeeMoreBtn ? (
-          <button
-            onClick={seeMoreEvents}
-            className="bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
-          >
-            See More
-          </button>
+          <div className="px-4">
+            <button
+              onClick={seeMoreEvents}
+              className=" bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
+            >
+              See More
+            </button>
+          </div>
         ) : (
           ""
         )}

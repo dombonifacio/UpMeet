@@ -17,11 +17,11 @@ import { IEvent } from "../../interfaces/Event";
 
 import { FaHeart, FaRegBookmark } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
-import { SavedEventsContext } from "../../context/SavedEventsContext";
+
 export default function MainInfo() {
   const { id } = useParams();
   const { events } = useContext(EventsContext);
-  const { savedEvents } = useContext(SavedEventsContext);
+
   const { data } = useContext(UserContext);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -123,7 +123,7 @@ export default function MainInfo() {
           />
 
           {/* DATE AND VENUE*/}
-          <div className="p-6 w-full  h-full flex flex-col gap-y-4 md:px-6 md:flex-wrap justify-center">
+          <div className=" w-full  h-full p-4 md:flex md:flex-col gap-y-4 md:px-6 md:flex-wrap justify-center ">
             <div className="flex gap-x-2  flex-wrap gap-y-2">
               {/* DATE AND VENUE*/}
               <div className="flex items-center gap-x-1">
@@ -179,7 +179,7 @@ export default function MainInfo() {
               {/* FOR CHANIGNG THE UI OF BUTTON IF ATTENDING OR NOT */}
               {!isAttending ? (
                 <button
-                  className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                  className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
                   onClick={handleGoingEvent}
                 >
                   Join Event
@@ -187,7 +187,7 @@ export default function MainInfo() {
               ) : (
                 <button
                   onClick={handleDeleteEvent}
-                  className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                  className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
                 >
                   Cancel Event
                 </button>
@@ -195,7 +195,7 @@ export default function MainInfo() {
 
               <Link
                 to={`/attendees/${id}`}
-                className="bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
+                className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
               >
                 See Attendees
               </Link>

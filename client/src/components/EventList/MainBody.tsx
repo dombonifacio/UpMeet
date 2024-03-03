@@ -21,7 +21,7 @@ interface IMainBodyProps {
 export default function MainBody({ eventsShown }: IMainBodyProps) {
   const { events, setEvents } = useContext(EventsContext);
   const { country, city, genre } = useContext(FilterContext);
-  const { user } = useContext(UserContext);
+  const { data } = useContext(UserContext);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [savedEvent, setSavedEvent] = useState<boolean>(false);
@@ -38,42 +38,42 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
     }
   };
 
-  // const getSavedEvents = () => {
-  //   setLoading(true);
-  //   axios
-  //     .get(`/api/eventAttendance/get_saved_events`)
-  //     .then((res: AxiosResponse) => {
-  //       console.log(res, "response");
-  //       const eventIds = res.data.map((event: IEvent) => event.eventId);
+  const getSavedEvents = () => {
+    setLoading(true);
+    axios
+      .get(`/api/eventAttendance/get_saved_events`)
+      .then((res: AxiosResponse) => {
+        console.log(res, "response");
+        const eventIds = res.data.map((event: IEvent) => event.eventId);
 
-  //       setEvents((prevEvents) => {
-  //         // Update the events array to set isSaved to true for saved events
-  //         const updatedEvents = prevEvents?.map((event: IEvent) => ({
-  //           ...event,
-  //           isSaved: eventIds.includes(event.eventId),
-  //         }));
-  //         return updatedEvents;
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       if (error.status === 500) {
-  //         notifyUser(error.data.error, "error");
-  //       } else {
-  //         notifyUser(error.response?.data.error, "error");
-  //       }
-  //     })
-  //     .finally(() => {
-  //       setLoading(false);
-  //     });
-  // };
+        setEvents((prevEvents) => {
+          // Update the events array to set isSaved to true for saved events
+          const updatedEvents = prevEvents?.map((event: IEvent) => ({
+            ...event,
+            isSaved: eventIds.includes(event.eventId),
+          }));
+          return updatedEvents;
+        });
+      })
+      .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser(error.response?.data.error, "error");
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-  // useEffect(() => {
-  //   getSavedEvents();
-  // }, []); // Include 'events' as a dependency
+  useEffect(() => {
+    getSavedEvents();
+  }, []); // Include 'events' as a dependency
 
-  // useEffect(() => {
-  //   getSavedEvents();
-  // }, [savedEvent]);
+  useEffect(() => {
+    getSavedEvents();
+  }, [savedEvent]);
 
   const handleSaveEvents = (selectedEvent: IEvent) => {
     axios
@@ -94,7 +94,7 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
   };
 
   const handleUnsaveEvent = (eventId: string) => {
-    const userId = user?._id;
+    const userId = data?.user?._id;
 
     axios
       .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
@@ -118,7 +118,7 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
       <ToastContainer />
 
       {!loading ? (
-        <div className="lg:w-[80%]">
+        <div className="px-4">
           <div className="text-white text-3xl md:text-4xl lg:text-6xl text-left font-bold">
             <p className="mb-6">Music {}</p>
 
@@ -226,19 +226,25 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                           Genres: {event?.genre?.join(", ")}
                         </p>
                       </div>
-                      <div className="block my-2 md:hidden ">
+                      <div className="hidden mt-4 mb-6 lg:block ">
                         <Link
                           className="bg-lavender hover:bg-indigo-800 hover:text-white p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
                           to={`/event/${country.selectedCountry}/${event.eventId}`}
                         >
-                          See Event event herer
+                          See Event
                         </Link>
                       </div>
                     </div>
                     {/* End of Event Information beside image */}
 
                     {/* See More Info */}
-                    <div className="hidden  px-2 pb-6 md:pb-0 md:px-6 md:flex md:items-center md:gap-x-2">
+                    <div className=" lg:hidden flex items-center gap-x-2 px-2 pb-6 md:pb-0 md:px-6 md:flex md:items-center md:gap-x-2">
+                      <Link
+                        className="bg-lavender hover:bg-indigo-800 p-2 hover:text-white text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
+                        to={`/event/${country.selectedCountry}/${event.eventId}`}
+                      >
+                        See Event
+                      </Link>
                       {!event.isSaved ? (
                         <button onClick={() => handleSaveEvents(event)}>
                           <FaRegBookmark size={"1.4rem"} />
@@ -250,12 +256,6 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                           <FaBookmark size={"1.4rem"} />
                         </button>
                       )}
-                      <Link
-                        className="bg-lavender hover:bg-indigo-800 p-2 hover:text-white text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
-                        to={`/event/${country.selectedCountry}/${event.eventId}`}
-                      >
-                        See Event
-                      </Link>
                     </div>
                   </div>
                 );

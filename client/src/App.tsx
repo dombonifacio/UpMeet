@@ -28,7 +28,7 @@ import AttendeesPage from "./pages/AttendeesPage.tsx";
 import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
 import { UserContext } from "./context/UserContext.tsx";
-import { SavedEventsContextProvider } from "./context/SavedEventsContext.tsx";
+import { PreviousEventsContextProvider } from "./context/SavedEventsContext.tsx";
 
 export const App = () => {
   const authenticated = localStorage.getItem("authenticated");
@@ -81,13 +81,13 @@ export const App = () => {
     <>
       <FilterContextProvider>
         <EventsContextProvider>
-          <SavedEventsContextProvider>
+          <PreviousEventsContextProvider>
             <>
               {/* Render your components here */}
 
               {element}
             </>
-          </SavedEventsContextProvider>
+          </PreviousEventsContextProvider>
         </EventsContextProvider>
       </FilterContextProvider>
     </>

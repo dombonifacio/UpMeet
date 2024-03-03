@@ -9,31 +9,35 @@ import {
 } from "react";
 import { IEvent } from "../interfaces/Event";
 
-interface ISavedEventsContext {
-  savedEvents: IEvent[];
-  setSavedEvents: Dispatch<SetStateAction<IEvent[]>>;
+interface IPreviousEventsContext {
+  previousEvents: IEvent[];
+  setPreviousEvents: Dispatch<SetStateAction<IEvent[]>>;
 }
 
 const defaultState = {
-  savedEvents: [],
-  setSavedEvents: () => {},
+  previousEvents: [],
+  setPreviousEvents: () => {},
 };
 
-export const SavedEventsContext =
-  createContext<ISavedEventsContext>(defaultState);
+export const PreviousEventsContext =
+  createContext<IPreviousEventsContext>(defaultState);
 
-type SavedEventsProviderProps = {
+type PreviousEventsProps = {
   children: ReactNode;
 };
 
-export const SavedEventsContextProvider = ({
+export const PreviousEventsContextProvider = ({
   children,
-}: SavedEventsProviderProps) => {
-  const [savedEvents, setSavedEvents] = useState<IEvent[]>([] as IEvent[]);
+}: PreviousEventsProps) => {
+  const [previousEvents, setPreviousEvents] = useState<IEvent[]>(
+    [] as IEvent[]
+  );
 
   return (
-    <SavedEventsContext.Provider value={{ savedEvents, setSavedEvents }}>
+    <PreviousEventsContext.Provider
+      value={{ previousEvents, setPreviousEvents }}
+    >
       {children}
-    </SavedEventsContext.Provider>
+    </PreviousEventsContext.Provider>
   );
 };
