@@ -127,7 +127,7 @@ export const AuthPage = () => {
           localStorage.setItem("authenticated", true.toString());
           notifyUser(res.data.message, "success");
           setTimeout(() => {
-            setData({ ...data, isLoggedIn: true });
+            setData({ isLoggedIn: true, user: res.data.userId });
           }, 2500);
 
           // Navigate after a delay (if needed)

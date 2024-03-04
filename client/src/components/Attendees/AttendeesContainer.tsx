@@ -7,17 +7,28 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
 import { ToastContainer } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
+import { PreviousEventsContext } from "../../context/SavedEventsContext";
+import { IEvent } from "../../interfaces/Event";
 
 export default function AttendeesContainer() {
   // event id
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(false);
-  const { user } = useContext(UserContext);
+  const { data } = useContext(UserContext);
   const [attendees, setAttendees] = useState<IUser[]>([]);
   const [headerImages, setHeaderImages] = useState<string[]>([]);
+  const [eventEnded, setEventEnded] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  const userLoggedIn: IUser | null = user ? user : null;
+  // check if one of the events in the previousEvents matches with the useParams id. If it is, then the event has ended
+  const { previousEvents } = useContext(PreviousEventsContext);
+
+  useEffect(() => {
+    const checkIfEnded = previousEvents?.some(
+      (event: IEvent) => event.eventId === id
+    );
+    if (checkIfEnded) setEventEnded(true);
+  }, []);
 
   const getHeaderImages = () => {
     axios
@@ -39,9 +50,7 @@ export default function AttendeesContainer() {
     axios
       .get(`/api/eventAttendance/get_event_attendees/${id}`)
       .then((res: AxiosResponse) => {
-        if (res.data.count === 0) {
-          setAttendees([]);
-        } else {
+        if (res.data.count > 0) {
           setAttendees(res.data.eventAttendeesInfo);
         }
       })
@@ -62,7 +71,9 @@ export default function AttendeesContainer() {
     getEventAttendees();
   }, []);
 
-  console.log(attendees, "attendees");
+  useEffect(() => {
+    if (attendees) console.log("attendees: ", attendees);
+  }, [attendees]);
 
   const sendInvitations = (userId: string) => {
     const data = {
@@ -85,13 +96,23 @@ export default function AttendeesContainer() {
       });
   };
 
+  if (eventEnded) {
+    return (
+      <div className="px-4 flex items-center justify-center">
+        <h1 className="text-electric font-bold text-2xl md:text-3xl lg:text-4xl text-center ">
+          Unavailable to see people going. Event has ended
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <>
       <ToastContainer />
       {loading ? (
         <p className="text-white text-4xl font-bold">Loading</p>
       ) : (
-        <div className="mt-5 space-y-6 p-4 w-5/6 md:w-full">
+        <div className="mt-5 space-y-6 w-full px-4">
           {attendees?.length === 0 || !attendees ? (
             <div className="w-full h-full">
               <p className="text-4xl text-center w-full">No users are going</p>
@@ -100,21 +121,23 @@ export default function AttendeesContainer() {
             <>
               <div className="flex gap-x-2 sm:items-center">
                 <div className="bg-lavender w-2 sm:h-8"></div>
-                <h1 className="text-electric font-bold text-4xl ">
+                <h1 className="text-electric font-bold text-2xl md:text-3xl lg:text-4xl ">
                   Discover Who's Going
                 </h1>
               </div>
 
               <div className="grid grid-cols-1 w-full place-items-center gap-y-5 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-3 lg:grid-cols-4 ">
-              {attendees.map((user: IUser) => (
-  <AttendeesCard
-    key={`${user._id}-${userLoggedIn?._id}`}  // Add a key prop here
-    user={user}
-    headerImages={headerImages}
-    sendInvitations={() => user._id && sendInvitations(user._id)}
-    userLoggedIn={userLoggedIn}
-  />
-))}
+                {attendees?.map((user: IUser) => (
+                  <AttendeesCard
+                    key={user?._id} // Add a key prop here
+                    user={user}
+                    headerImages={headerImages}
+                    sendInvitations={() =>
+                      user?._id && sendInvitations(user?._id)
+                    }
+                    userLoggedIn={data.user}
+                  />
+                ))}
               </div>
             </>
           )}

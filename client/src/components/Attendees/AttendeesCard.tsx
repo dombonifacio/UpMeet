@@ -1,10 +1,11 @@
 import michael from "../../assets/michael.jpg";
+import noPicture from "../../assets/noPicture.png";
 import { IUser } from "../../interfaces/User";
 
 interface AttendeesCardProps {
   user: IUser;
   headerImages: string[];
-  userLoggedIn: IUser | null;
+  userLoggedIn: string;
   sendInvitations: () => void;
 }
 
@@ -16,6 +17,7 @@ const AttendeesCard: React.FC<AttendeesCardProps> = ({
 }) => {
   const randomImage =
     headerImages[Math.floor(Math.random() * headerImages.length)];
+
   return (
     <div className="relative w-full sm:w-full overflow-hidden rounded-2xl bg-input h-full">
       <img
@@ -26,7 +28,7 @@ const AttendeesCard: React.FC<AttendeesCardProps> = ({
 
       <div className="absolute w-full h-full flex top-0 mt-24 justify-center ">
         <img
-          src={michael}
+          src={user?.image === "" ? noPicture : user.image}
           className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover"
         />
       </div>
@@ -35,16 +37,16 @@ const AttendeesCard: React.FC<AttendeesCardProps> = ({
         <div className="bg-input rounded-b-2xl flex flex-col  justify-center h-full">
           <div className="flex gap-x-2">
             <p className="sm:text-sm md:text-md lg:text-lg font-semibold text-white">
-              {user.name.charAt(0).toUpperCase() +
-                user.name.slice(1).toLowerCase()}
+              {user?.name?.charAt(0).toUpperCase() +
+                user?.name?.slice(1).toLowerCase()}
             </p>
             <p className="sm:text-sm md:text-md lg:text-lg text-slate-300">
-              {user.age}
+              {user?.age}
             </p>
           </div>
         </div>
         <div className="overflow-hidden z-10">
-          {user._id !== userLoggedIn?._id ? (
+          {user?._id != userLoggedIn ? (
             <>
               <button
                 onClick={sendInvitations}

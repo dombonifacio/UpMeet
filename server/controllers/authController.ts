@@ -88,7 +88,7 @@ export const loginUsers = async (req: Request, res: Response) => {
       const token = jwt.sign(payload, "secret", {
         expiresIn: "1d",
       });
-      
+
       res
         .cookie("access_token", token)
         .status(200)
