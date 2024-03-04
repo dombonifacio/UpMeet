@@ -1,5 +1,6 @@
 export const timezones: { [key: string]: number } = {
   NST: -3,
+  ADT: -3,
   AST: -4,
   EST: -5,
   CST: -6,

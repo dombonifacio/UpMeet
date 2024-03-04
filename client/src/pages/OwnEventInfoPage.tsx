@@ -11,18 +11,75 @@ import EventPicture from "../components/EventInfoPage/EventPicture";
 import { EventsContext } from "../context/EventsContext";
 import { PreviousEventsContext } from "../context/SavedEventsContext";
 import { Navbar } from "../components/Navbar/Navbar";
+import moment from "moment";
+import { timezones } from "../utils/constants/Timezones";
 
 export const OwnEventInfoPage = () => {
   const { id } = useParams();
   const { data } = useContext(UserContext);
   const { events, setEvents } = useContext(EventsContext);
-  const { previousEvents } = useContext(PreviousEventsContext);
+  const { previousEvents, setPreviousEvents } = useContext(
+    PreviousEventsContext
+  );
   // collect only the event selected
   const selectedEventArr = events.filter((event) => event.eventId === id);
   const selectedEvent = selectedEventArr[0];
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [isAttending, setIsAttending] = useState<boolean>(false);
+  const [isPrevious, setIsPrevious] = useState<boolean>(false);
+
+  const getTimezone = (offset: number): Date => {
+    const d = new Date();
+    const localTime = d.getTime();
+    const localOffset = d.getTimezoneOffset() * 60000;
+    const utc = localTime + localOffset;
+    const eventCountry = utc + 3600000 * offset;
+    const convertedTimezone = new Date(eventCountry);
+
+    return convertedTimezone;
+  };
+
+  useEffect(() => {
+    const checkIfPrevious = () => {
+      const newPreviousEvents: IEvent[] = [];
+      events?.forEach((event: IEvent) => {
+        console.log("events context,", events);
+        const eventDateTime = event.dateTime;
+        const eventDateObj = new Date(eventDateTime);
+
+        // get timezone of the event
+        const convertTimezone = moment(eventDateTime);
+        const timezone: string = convertTimezone.tz(event.timezone).format("z");
+
+        // get UTC offset based on timezone. Use BST timezone if the event timezone is Europe/London
+        const offset =
+          event.timezone === "Europe/London" ? +1 : timezones[timezone];
+        const currentEventTimezone = getTimezone(offset);
+
+        // convert to date obj to be able to compare dates
+        const convertCurrentTimezone = new Date(currentEventTimezone);
+        // console.log(
+        //   "event date obj",
+        //   eventDateObj,
+        //   "current time zone",
+        //   currentEventTimezone,
+        //   "event",
+        //   event
+        // );
+
+        // save to previous/future events
+        if (convertCurrentTimezone > eventDateObj) {
+          console.log(event, "event pushed");
+          newPreviousEvents.push(event);
+
+          console.log(newPreviousEvents, "previosu events");
+        }
+        setPreviousEvents(newPreviousEvents);
+      });
+    };
+    checkIfPrevious();
+  }, []);
 
   useEffect(() => {
     const combineEvents = () => {
@@ -42,8 +99,19 @@ export const OwnEventInfoPage = () => {
           (event: IEvent) => event.eventId === id
         );
 
+        const checkIfPrevious = previousEvents?.some(
+          (event: IEvent) => event.eventId === id
+        );
+        const checkIfSavedPrevious = events?.some(
+          (event: IEvent) => event.eventId === id
+        );
+
         if (getCurrentEvent) {
           setIsAttending(true);
+        }
+        if (checkIfPrevious) {
+          setIsAttending(false);
+          setIsPrevious(true);
         }
       })
       .catch((error) => {
@@ -57,7 +125,7 @@ export const OwnEventInfoPage = () => {
 
   useEffect(() => {
     getSelfEvents();
-  }, []);
+  }, [previousEvents]);
 
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
@@ -175,7 +243,10 @@ export const OwnEventInfoPage = () => {
             </p>
             <div className="flex gap-x-4">
               {/* FOR CHANIGNG THE UI OF BUTTON IF ATTENDING OR NOT */}
-              {!isAttending ? (
+
+              {!isAttending && isPrevious ? (
+                ""
+              ) : !isAttending ? (
                 <button
                   className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"
                   onClick={handleGoingEvent}
@@ -190,7 +261,6 @@ export const OwnEventInfoPage = () => {
                   Cancel Event
                 </button>
               )}
-
               <Link
                 to={`/attendees/${id}`}
                 className="mt-3 md:mt-0 bg-lavender hover:bg-indigo-800 py-2 px-4 text-sm hover:text-white font-bold md:text-md md:px-3 md:py-2 text-white rounded-lg lg:px-6 lg:py-2"

@@ -226,19 +226,12 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                           Genres: {event?.genre?.join(", ")}
                         </p>
                       </div>
-                      <div className="hidden mt-4 mb-6 lg:block ">
-                        <Link
-                          className="bg-lavender hover:bg-indigo-800 hover:text-white p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
-                          to={`/event/${country.selectedCountry}/${event.eventId}`}
-                        >
-                          See Event
-                        </Link>
-                      </div>
+                    
                     </div>
                     {/* End of Event Information beside image */}
 
                     {/* See More Info */}
-                    <div className=" lg:hidden flex items-center gap-x-2 px-2 pb-6 md:pb-0 md:px-6 md:flex md:items-center md:gap-x-2">
+                    <div className=" flex items-center gap-x-2 px-2 pb-6 md:pb-0 md:px-6 md:flex md:items-center md:gap-x-2">
                       <Link
                         className="bg-lavender hover:bg-indigo-800 p-2 hover:text-white text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
                         to={`/event/${country.selectedCountry}/${event.eventId}`}
