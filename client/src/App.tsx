@@ -29,6 +29,7 @@ import { OwnEventInfoPage } from "./pages/OwnEventInfoPage.tsx";
 import { InvitationsPage } from "./pages/InvitationsPage.tsx";
 import { UserContext } from "./context/UserContext.tsx";
 import { PreviousEventsContextProvider } from "./context/SavedEventsContext.tsx";
+import LogoutPage from "./pages/LogoutPage.tsx";
 
 export const App = () => {
   const authenticated = localStorage.getItem("authenticated");
@@ -49,32 +50,37 @@ export const App = () => {
     },
     {
       path: "/profile",
-      element: <ProfilePage />,
+      element: data.isLoggedIn ? <ProfilePage /> : <AuthPage />,
     },
     {
       path: "/saved_events",
-      element: <SavedEvents />,
+      element: data.isLoggedIn ? <SavedEvents /> : <AuthPage />,
     },
     {
       path: "/invitations",
-      element: <InvitationsPage />,
+      element: data.isLoggedIn ? <InvitationsPage /> : <AuthPage />,
     },
     {
       path: "/event/:country/:id",
-      element: <EventInfoPage />,
+      element: data.isLoggedIn ? <EventInfoPage /> : <AuthPage />,
     },
     {
       path: "/event_info/:id",
-      element: <OwnEventInfoPage />,
+      element: data.isLoggedIn ? <OwnEventInfoPage /> : <AuthPage />,
     },
     {
       path: "/attendees/:id",
-      element: <AttendeesPage />,
+      element: data.isLoggedIn ? <AttendeesPage /> : <AuthPage />,
     },
     {
       path: "/:category",
-      element: <EventListPage />,
+      element: data.isLoggedIn ? <EventListPage /> : <AuthPage />,
     },
+    {
+      path: "/logout",
+      element: data.isLoggedIn ? <LogoutPage /> : <AuthPage />,
+
+    }
   ]);
 
   return (

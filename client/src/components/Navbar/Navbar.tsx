@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { CgMenuRight } from "react-icons/cg";
 import { Logo } from "../Logo/Logo";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
+import { UserContext } from "../../context/UserContext";
 
 export const Navbar = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const { data, setData } = useContext(UserContext)
   const navigate = useNavigate();
 
   const handleShowMenu = () => {
@@ -20,11 +22,12 @@ export const Navbar = () => {
     axios
       .get("api/auth/logout")
       .then((res: AxiosResponse) => {
-        notifyUser(
-          res.data.message + " Redirecting you to login page...",
-          "success"
-        );
+       
+        
+        navigate("/logout")
+        localStorage.removeItem("authenticated")
         setTimeout(() => {
+          setData({...data, isLoggedIn: false})
           navigate("/");
         }, 2000);
       })
@@ -37,9 +40,6 @@ export const Navbar = () => {
       });
   };
 
-  useEffect(() => {
-    console.log(showMenu, "show menu is");
-  }, [showMenu]);
 
   return (
     <>
