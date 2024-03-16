@@ -34,10 +34,10 @@ export const FilterComponent = ({
 
   return (
     <>
-      <div className=" flex flex-wrap items-center gap-x-2 gap-y-3 ">
+      <div className=" flex flex-wrap items-center gap-x-2 gap-y-3">
         <select
           name="genre"
-          className="text-sm font-bold h-10 p-2  text-white bg-lavender hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-center inline-flex items-center dark:bg-violet-950 dark:hover:bg-violet-850 dark:focus:ring-violet-800"
+          className="bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
           onChange={handleFilterChange}
         >
           {Object.entries(currentCategoryEnum).map(([id, title]) => (
@@ -49,7 +49,7 @@ export const FilterComponent = ({
         <select
           name="country"
           onChange={handleFilterChange}
-          className="text-sm font-bold h-10 p-2 text-white bg-lavender hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-center inline-flex items-center dark:bg-violet-950 dark:hover:bg-violet-850 dark:focus:ring-violet-800"
+          className="bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
           defaultValue={country.selectedCountry}
         >
           {countries.map((country) => (
@@ -61,7 +61,7 @@ export const FilterComponent = ({
         <select
           name="city"
           onChange={handleFilterChange}
-          className="text-sm font-bold h-10 p-2 text-white bg-lavender hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-lg text-center inline-flex items-center dark:bg-violet-950 dark:hover:bg-violet-850 dark:focus:ring-violet-800"
+          className="bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
         >
           {cities.map((countryName) => {
             if (countryName.country === country.selectedCountry) {

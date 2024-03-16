@@ -201,7 +201,7 @@ const ProfilePage = () => {
     <>
       <ToastContainer />
 
-      <div className="mx-auto max-w-[1260px] h-screen relative ">
+      <div className="mx-auto max-w-[1260px] h-screen relative">
         <div className="absolute h-full w-full top-0 ">
           <Navbar />
         </div>
@@ -344,7 +344,7 @@ const ProfilePage = () => {
         </div>
 
         <br />
-        <div className=" relative px-6">
+        <div className=" relative p-6">
           {isOpen.showEvents ? (
             <FutureEvents data={events} loading={loading} />
           ) : (

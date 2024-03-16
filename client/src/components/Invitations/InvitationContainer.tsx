@@ -132,27 +132,30 @@ export const InvitationContainer = () => {
     getReceivedInvitations();
     getSentInvitations();
   }, []);
-  console.log(invitations, 'received invitations')
+
   return (
     <>
       <ToastContainer />
-      <div className="flex gap-x-2 sm:items-center my-10">
-        <div className="bg-lavender w-2 sm:h-8"></div>
-        <h1 className="text-electric font-bold text-4xl ">Invitations</h1>
-      </div>
+      <div className="w-full flex flex-col gap-y-4 sm:gap-y-6">
+        <div className="flex gap-x-2">
 
+          <div className="bg-lavender w-2 "></div>
+          <h1 className="text-electric font-bold text-2xl sm:text-3xl md:text-4xl">Invitations</h1>
+        </div>
+        <div>
+          
       {loading ? (
         <p>loading</p>
       ) : (
         <>
-          <div className="flex w-full items-center">
+          <div className="flex  items-center">
             {isOpen.showReceivedInvitations ? (
-              <p className="text-indigo-300 text-[30px] no-underline border-b-[3px] border-solid  border-white text-center w-full">
+              <p className="text-indigo-300 text-2xl lg:text-3xl no-underline border-b-[3px] border-solid  border-white text-center w-full">
                 Received Invitations
               </p>
             ) : (
               <p
-                className=" text-indigo-300 text-[30px] text-center cursor-pointer border-b-[1px] border-solid border-gray-400 w-full "
+                className=" text-indigo-300 text-2xl lg:text-3xl text-center cursor-pointer border-b-[1px] border-solid border-gray-400 w-full "
                 onClick={toggle}
               >
                 {" "}
@@ -160,12 +163,12 @@ export const InvitationContainer = () => {
               </p>
             )}
             {isOpen.showSentInvitations ? (
-              <p className="text-indigo-300 text-[30px] text-center border-b-[3px] border-solid border-white w-full ">
+              <p className="text-indigo-300 text-2xl lg:text-3xl text-center border-b-[3px] border-solid border-white w-full ">
                 Sent Invitations
               </p>
             ) : (
               <p
-                className="text-indigo-300 text-[30px] text-center cursor-pointer border-b-[1px] border-solid border-gray-400 w-full"
+                className="text-indigo-300 text-2xl lg:text-3xl text-center cursor-pointer border-b-[1px] border-solid border-gray-400 w-full"
                 onClick={toggle}
               >
                 {" "}
@@ -228,7 +231,11 @@ export const InvitationContainer = () => {
             </>
           )}
         </>
-      )}
+      )} 
+        </div>
+      </div>
+     
+
     </>
   );
 };

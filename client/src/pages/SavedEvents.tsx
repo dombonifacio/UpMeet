@@ -11,7 +11,7 @@ export const SavedEvents = () => {
         <Navbar />
       </div>
 
-      <div className="mx-auto flex justify-center md:block max-w-[1260px] w-screen  md:w-screen ">
+      <div className="mx-auto flex justify-center md:block max-w-[1260px] w-screen  md:w-screen sm:px-4">
         <EventsContainer />
       </div>
     </>
