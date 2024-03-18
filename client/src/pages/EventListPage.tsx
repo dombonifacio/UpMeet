@@ -43,10 +43,11 @@ const EventListPage = () => {
 
   // store data here
 
-  const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
+  const API_KEY = import.meta.env.VITE_API_KEY;
 
   // checks what the category is to return the id enum for the genre selecting
   const currentCategoryEnum = getCategoryEnum();
+  console.log(API_KEY);
   const defaultGenreQuery: string = checkIfGenreDefault();
 
   // to prevent API from generating errors
@@ -292,42 +293,43 @@ const EventListPage = () => {
     <>
       <div className="max-w-[1260px] mx-auto z-1 relative mb-6">
         <Navbar />
-       
-         <div className="text-white text-3xl md:text-4xl lg:text-6xl text-left font-bold px-4">
-            <p className="mb-6">Music {}</p>
 
-            {/*  */}
+        <div className="text-white text-3xl md:text-4xl lg:text-6xl text-left font-bold px-4">
+          <p className="mb-6">Music {}</p>
 
-            <div className="grid grid-rows-1 md:grid-cols-5 md:grid-rows-4 content-center gap-y-4 gap-x-4 ">
-              <div className="md:col-span-3 md:row-span-4  ">
-                <img
-                  className="w-full h-full  "
-                  src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                  alt=""
-                />
-              </div>
-              <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 w-full">
-                <img
-                  className=""
-                  src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                  alt=""
-                />
-              </div>
-              <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 md:row-start-3 w-full">
-                <img
-                  className="w-full h-full "
-                  src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                  alt=""
-                />
-              </div>
+          {/*  */}
+
+          <div className="grid grid-rows-1 md:grid-cols-5 md:grid-rows-4 content-center gap-y-4 gap-x-4 ">
+            <div className="md:col-span-3 md:row-span-4  ">
+              <img
+                className="w-full h-full  "
+                src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+            </div>
+            <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 w-full">
+              <img
+                className=""
+                src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                alt=""
+              />
+            </div>
+            <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 md:row-start-3 w-full">
+              <img
+                className="w-full h-full "
+                src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                alt=""
+              />
             </div>
           </div>
-          <div className="px-4 my-4">
+        </div>
+        <div className="px-4 my-4">
           <NavbarSearch
-          handleSearchChange={handleSearchChange}
-          handleSearchClick={handleSearchClick}
-          searchText={searchText} />
-          </div>
+            handleSearchChange={handleSearchChange}
+            handleSearchClick={handleSearchClick}
+            searchText={searchText}
+          />
+        </div>
 
         <MainBody
           currentCategoryEnum={currentCategoryEnum}

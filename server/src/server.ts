@@ -20,12 +20,9 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // Server's Port Number
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-// Base URL (Client-Side)
-const BASE_URL = "http://127.0.0.1";
-// Client's Side Port Number
-const BASE_PORT = 5173;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // allows us to parse cookies
 app.use(cookieParser());
@@ -51,19 +48,13 @@ app.use("/api/invitation", authMiddleware, invitationRouter);
 
 // app.use('/auth', userRouter)
 // connect to our Cluster0 to have access to our database
-db.connect(
-  "mongodb+srv://dominique:7Y6PutEeEnKnH7Tk@cluster0.sc5j7yq.mongodb.net/JamConDB?retryWrites=true&w=majority"
-)
+db.connect(MONGODB_URI)
   .then((res: Response) => {
     console.log("Connected to MongoDB Successfully!");
   })
   .catch((error: Error) => {
     console.log("error connecting to the database", error);
   });
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express and Typescript Server");
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);

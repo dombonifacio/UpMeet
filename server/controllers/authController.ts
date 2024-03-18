@@ -7,6 +7,8 @@ import bcrypt from "bcrypt";
 import { UserModel } from "../models/userModel";
 import { ObjectId } from "mongodb";
 
+const SECRET_KEY = process.env.SECRET_KEY || "";
+
 // @desc   Register a User
 // @route  POST /users/register
 export const registerUsers = async (req: Request, res: Response) => {
@@ -85,7 +87,7 @@ export const loginUsers = async (req: Request, res: Response) => {
       };
 
       // create token
-      const token = jwt.sign(payload, "secret", {
+      const token = jwt.sign(payload, SECRET_KEY, {
         expiresIn: "1d",
       });
 
@@ -116,7 +118,7 @@ export const isLoggedIn = (req: Request, res: Response) => {
   if (!token) {
     return res.json(false);
   }
-  return jwt.verify(token, "secret", (err: any) => {
+  return jwt.verify(token, SECRET_KEY, (err: any) => {
     if (err) {
       return res.json(false);
     }
