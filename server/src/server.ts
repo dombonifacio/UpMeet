@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 const dotenv = require("dotenv");
 const db = require("mongoose");
 import { authRouter } from "../routes/authRoute";
