@@ -1,17 +1,18 @@
+
 import MainInfo from "../components/EventInfoPage/MainInfo";
-import { Navbar } from "../components/Navbar/Navbar";
+
 
 const EventInfoPage = () => {
   return (
-    <>
-      <div className="flex flex-col mx-auto max-w-[1260px] h-screen">
-        <div className="">
-
-        <Navbar />
-        </div>
-        <MainInfo />
-      </div>
-    </>
+    <div className="mx-auto max-w-[1260px] flex justify-center md:min-h-screen md:min-w-screen md:items-center">
+     
+      {/* 
+      <MainPhoto image={selectedEvent?.images[0]?.url} artistName={selectedEvent?.artist} eventName={selectedEvent?.eventName}/>
+      <MainInfo />
+      <h2>Event Name: {selectedEvent?.eventName}</h2> */}
+      {/* Display other event details here */}
+      <MainInfo />
+    </div>
   );
 };
 

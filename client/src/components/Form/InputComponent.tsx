@@ -4,9 +4,9 @@ interface InputComponent {
   type: React.HTMLInputTypeAttribute;
   placeholder: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  name: string;
-  size: string;
-  maxLength: number;
+  name: string,
+   size: string,
+   maxLength: number
 }
 
 export const InputComponent = ({
@@ -15,9 +15,10 @@ export const InputComponent = ({
   onChange,
   name,
   size,
-  maxLength,
+  maxLength
 }: InputComponent) => {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+
+    const [ isFocused, setIsFocused ] = useState<boolean>(false)
   return (
     <>
       <label htmlFor={type} className="relative">
@@ -29,10 +30,10 @@ export const InputComponent = ({
           }
           `}
         ></div>
-
+     
         <input
           type={type}
-          className={`p-2 bg-input text-slate-100 shadow-md outline-none indent-2  ${size}`}
+          className={`p-2 bg-input text-white shadow-md outline-none indent-2  ${size}`}
           placeholder={placeholder}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

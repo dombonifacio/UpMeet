@@ -23,16 +23,14 @@ declare global {
 export default (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
   if (!token) {
-    return res.json(false);
+    return res.json({ message: "no token" });
   }
-
-  const SECRET_KEY = process.env.SECRET_KEY || "";
 
   // particular
   // Verify and decode the JWT
-  return jwt.verify(token, SECRET_KEY, (err: any, decoded: any) => {
+  return jwt.verify(token, "secret", (err: any, decoded: any) => {
     if (err) {
-      return res.json("invalid token");
+      return res.status(401).json({ message: "invalid token" });
     }
     // add the decoded (payload we added) to the req property
     req.user = decoded;

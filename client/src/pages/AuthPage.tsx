@@ -6,42 +6,56 @@ import {
   ReactNode,
   SetStateAction,
   useEffect,
-  useContext,
 } from "react";
 
 // interfaces
 import { IUser } from "../interfaces/User";
 
+// uuid third party library
+import { v4 as uuid } from "uuid";
 import axios, { Axios, AxiosError } from "axios";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { InputComponent } from "../components/Form/InputComponent";
 import { ButtonComponent } from "../components/Form/ButtonComponent";
 import { Blob } from "../components/Background/Blob";
-import concert from "../assets/concert.jpg";
-
-// React Toastify
-import { ToastContainer } from "react-toastify";
-
-import {
-  AuthContext,
-  AuthContextProvider,
-} from "../context/isAuthenticatedContext";
-import { UserContext } from "../context/UserContext";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { IMessage, MessageType } from "../interfaces/Message";
-import { error } from "console";
-import { notifyUser } from "../utils/helpers/toastify";
 
 export const AuthPage = () => {
   const [formData, setFormData] = useState<IUser>({} as IUser);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [uploadedImage, setUploadedImage] = useState<string>("");
 
-  const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<IMessage>({} as IMessage);
+  const [error, setError] = useState<boolean>(false);
+  const handleImageUpload = () => {
+    if (selectedImage) {
+      // create form data
+      const formData = new FormData();
 
-  const { setData, data } = useContext(UserContext);
-  const navigate = useNavigate();
+      // cloudinary key
+      formData.append("upload_preset", "mystorage");
+      // upload to a specific folder
+      formData.append("file", selectedImage);
+
+      // call API for cloudinary
+      axios
+        .post("https://api.cloudinary.com/v1_1/dpj2su9ea/upload", formData)
+        .then((res: AxiosResponse) => {
+          setUploadedImage(res.data.url);
+        })
+        .catch((error: AxiosError) => {
+          setError(true);
+        });
+    } else {
+      console.log("error");
+    }
+  };
+
+  useEffect(() => {
+    if (selectedImage) {
+      console.log(selectedImage, "selected image");
+    }
+  }, [selectedImage]);
 
   const handleUserInput = (
     event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -53,67 +67,34 @@ export const AuthPage = () => {
       ...formData,
       [key]: value,
     });
+  };
 
-    // Calculate age if the input is the date of birth
-    if (key === "age") {
-      const calculatedAge = calculateAge(value);
-      setFormData({
-        ...formData,
-        [key]: calculatedAge,
-      }); // You can use the age as needed
+  const handleSignUp = () => {
+    handleImageUpload();
+    if (uploadedImage) {
+      const userData = {
+        email: formData.email,
+        name: formData.name,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        gender: formData.gender,
+        age: formData.age,
+        country: formData.country,
+        image: uploadedImage,
+      };
+      axios
+        // ****************** Need to use the server's URL and Port Number (Specified by server)
+        .post("/api/auth/register", userData)
+        .then((res: AxiosResponse) => {
+          console.log(res);
+        })
+        .catch((error: AxiosError) => {
+          console.log(error, "error");
+        });
     }
   };
 
-  const calculateAge = (birthday: string): number => {
-    const currentDate = new Date();
-    const birthDate = new Date(birthday);
-
-    // Calculate the difference in years
-    let age = currentDate.getFullYear() - birthDate.getFullYear();
-
-    // Check if the birthday has occurred this year
-    if (
-      currentDate.getMonth() < birthDate.getMonth() ||
-      (currentDate.getMonth() === birthDate.getMonth() &&
-        currentDate.getDate() < birthDate.getDate())
-    ) {
-      // Subtract 1 year if the birthday hasn't occurred yet
-      age -= 1;
-    }
-
-    return age;
-  };
-
-  const handleSignUp = async () => {
-    const fixName = formData.name.toLowerCase();
-    const userData = {
-      email: formData.email,
-      name: fixName.charAt(0).toUpperCase() + fixName.slice(1),
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-      gender: formData.gender,
-      age: formData.age,
-      country: formData.country,
-      image: "",
-    };
-    axios
-      .post("api/auth/register", userData)
-      .then((res: AxiosResponse) => {
-        if (res.status === 201 || 200) {
-          notifyUser(res.data.message, "success");
-          setTimeout(() => {
-            setShowSignUp(false);
-          }, 2500);
-        }
-      })
-      .catch((error) => {
-        if (error.status === 500) {
-          notifyUser(error.data.error, "error");
-        } else {
-          notifyUser(error.response?.data.error, "error");
-        }
-      });
-  };
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     axios
@@ -121,43 +102,28 @@ export const AuthPage = () => {
         withCredentials: true,
       })
       .then((res: AxiosResponse) => {
-        // Check if the response status is 200 or another success indicator
-
-        if (res.status === 200) {
-          localStorage.setItem("authenticated", true.toString());
-          notifyUser(res.data.message, "success");
-          setTimeout(() => {
-            setData({ isLoggedIn: true, user: res.data.userId });
-          }, 2500);
-
-          // Navigate after a delay (if needed)
-        } else {
-          // Handle other success indicators if needed
-          console.log("Login failed: ", res);
-        }
+        console.log(res.data.message);
+        setTimeout(() => {
+          navigate("/");
+        }, 2500);
       })
-      .catch((error) => {
-        if (error.status === 500) {
-          notifyUser(error.data.error, "error");
-        } else {
-          setMessage({ type: "error", message: error.response?.data.error });
-          notifyUser(error.response?.data.error, "error");
-        }
+
+      .catch((error: AxiosError) => {
+        console.log("error", error);
       });
   };
 
   return (
     <>
       <div className="h-screen w-screen md:flex">
-        <div>
-          <ToastContainer />
-        </div>
         <FormContainer>
           {showSignUp ? (
             <SignUpComponent
               handleUserInput={handleUserInput}
               setShowSignUp={setShowSignUp}
               handleEvent={handleSignUp}
+              handleImageUpload={handleImageUpload}
+              setSelectedImage={setSelectedImage}
             />
           ) : (
             <LoginComponent
@@ -169,9 +135,7 @@ export const AuthPage = () => {
         </FormContainer>
         {/* {showSignUp ? <LoginComponent /> : null} */}
         {/* Right Side */}
-        <div className="hidden lg:flex h-full">
-          <img src={concert} className="h-full object-cover" />
-        </div>
+        <div className="hidden lg:flex h-full relative border-4 border-blue-400"></div>
       </div>
     </>
   );
@@ -200,12 +164,16 @@ type AuthComponentProps = {
   ) => void;
   setShowSignUp: Dispatch<SetStateAction<boolean>>;
   handleEvent: () => void;
+  handleImageUpload?: () => void;
+  setSelectedImage?: Dispatch<SetStateAction<string>>;
 };
 
 export const SignUpComponent: React.FC<AuthComponentProps> = ({
   handleUserInput,
   setShowSignUp,
   handleEvent,
+  handleImageUpload,
+  setSelectedImage,
 }) => {
   return (
     <>
@@ -241,7 +209,7 @@ export const SignUpComponent: React.FC<AuthComponentProps> = ({
               maxLength={50}
             />
             <select
-              className="bg-input indent-2 p-2 text-white"
+              className="bg-input indent-2 p-2"
               name="gender"
               onChange={handleUserInput}
             >
@@ -250,7 +218,7 @@ export const SignUpComponent: React.FC<AuthComponentProps> = ({
               <option>Other</option>
             </select>
             <InputComponent
-              type="date"
+              type="number"
               placeholder="Year of Birth"
               onChange={handleUserInput}
               name="age"
@@ -278,7 +246,7 @@ export const SignUpComponent: React.FC<AuthComponentProps> = ({
           {/* Terms and Policy */}
           <div className="flex items-start gap-x-2">
             <input type="checkbox"></input>
-            <p className="text-sm text-white">
+            <p className="text-sm">
               I’ve read and agree with{" "}
               <span className="font-extrabold text-lightText">
                 Terms of Service
@@ -291,7 +259,7 @@ export const SignUpComponent: React.FC<AuthComponentProps> = ({
           </div>
           {/* END of Terms and Policy */}
           <ButtonComponent text="Sign up" handleEvent={handleEvent} />
-          <p className="text-md text-white">
+          <p className="text-md text-center">
             Already have an account?{" "}
             <button
               className="font-bold text-lightText hover:text-lg"
@@ -301,6 +269,12 @@ export const SignUpComponent: React.FC<AuthComponentProps> = ({
             </button>
           </p>
         </div>
+      </div>
+      <div>
+        <input
+          onChange={(event) => setSelectedImage(event.target.files[0])}
+          type="file"
+        />
       </div>
     </>
   );

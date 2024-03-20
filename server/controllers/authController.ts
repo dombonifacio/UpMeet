@@ -2,12 +2,10 @@ import { Request, Response } from "express";
 
 // third party
 import jwt from "jsonwebtoken";
-const bcrypt = require("bcryptjs")
+import bcrypt from "bcrypt";
 
 import { UserModel } from "../models/userModel";
 import { ObjectId } from "mongodb";
-
-const SECRET_KEY = process.env.SECRET_KEY || "";
 
 // @desc   Register a User
 // @route  POST /users/register
@@ -20,22 +18,13 @@ export const registerUsers = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Passwords do not match." });
     }
 
-    if (!email || !name || !password || !age || !confirmPassword) {
+    // hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    if (!email || !name || !password || !age) {
       return res
         .status(400)
         .json({ error: "Please enter the required fields." });
-    }
-
-    if (age < 16) {
-      return res
-        .status(400)
-        .json({ error: "Required age is at least 16 to sign up." });
-    }
-
-    // hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    if (!hashedPassword) {
-      return res.status(500).json({ error: "Bcrypt Error" });
     }
 
     // Create a user then store it in the database
@@ -61,7 +50,14 @@ export const registerUsers = async (req: Request, res: Response) => {
     const createUser = await UserModel.create(newUser);
 
     if (createUser) {
-      return res.status(201).json({ message: "Successfully registered!" });
+      return res.status(201).json({
+        id: createUser._id,
+        email: createUser.email,
+        name: createUser.name,
+        age: createUser.age,
+        country: createUser.country,
+        image: createUser.image,
+      });
     } else {
       return res.status(400).json({ error: "Invalid User Data" });
     }
@@ -87,14 +83,14 @@ export const loginUsers = async (req: Request, res: Response) => {
       };
 
       // create token
-      const token = jwt.sign(payload, SECRET_KEY, {
+      const token = jwt.sign(payload, "secret", {
         expiresIn: "1d",
       });
 
       res
         .cookie("access_token", token)
         .status(200)
-        .json({ message: `Welcome Back, ${user.name}!`, userId: user._id });
+        .json({ message: "login success" });
     } else if (!user) {
       // if no user with matching email
       res.status(400).json({ error: "No user exists with such email." });
@@ -118,11 +114,12 @@ export const isLoggedIn = (req: Request, res: Response) => {
   if (!token) {
     return res.json(false);
   }
-  return jwt.verify(token, SECRET_KEY, (err: any) => {
+  return jwt.verify(token, "secret", (err: any) => {
     if (err) {
       return res.json(false);
+    } else {
+      // if we have a token and verified successfully, return true
+      return res.json(true);
     }
-    // if we have a token and verified successfully, return true
-    return res.json(true);
   });
 };

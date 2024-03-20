@@ -9,36 +9,39 @@ import {
 import { IUser } from "../interfaces/User";
 import axios from "axios";
 
-interface UserAuthenticate {
-  user: IUser | null;
-  isLoggedIn: boolean;
-}
-
 export interface UserContextInterface {
-  data: UserAuthenticate;
-  setData: Dispatch<SetStateAction<UserAuthenticate>>;
+  user: IUser | null;
+  setUser: Dispatch<SetStateAction<IUser | null>>;
 }
 
 const defaultState: UserContextInterface = {
-  data: {
-    user: null,
-    isLoggedIn: false,
-  },
-  setData: () => {},
+  user: null,
+  setUser: () => {},
 };
 
 type UserProviderProps = {
   children: ReactNode;
 };
 
-export const UserContext = createContext<UserContextInterface>(defaultState);
+export const UserContext = createContext(defaultState);
 
 export const UserContextProvider = ({ children }: UserProviderProps) => {
-  const [data, setData] = useState(defaultState.data);
+  const [user, setUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      axios
+        .get("/api/users/me")
+        .then((res) => {
+          setUser(res.data);
+          console.log("User data:", res.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, []);
 
   return (
-    <UserContext.Provider value={{ data, setData }}>
-      {/* Wrap data and setData in an object */}
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );

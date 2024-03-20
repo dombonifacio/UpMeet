@@ -1,17 +1,20 @@
 import { Schema, Types, model } from "mongoose";
 
+interface IStatus {
+  attending: String;
+  attended: String;
+}
+
 interface IEventAttendance {
   userId: Types.ObjectId;
   eventId: String;
-  attending: Boolean;
-  saved: Boolean;
+  status: IStatus;
 }
 
 const EventAttendanceSchema = new Schema<IEventAttendance>({
   userId: { type: Schema.Types.ObjectId, ref: "users", required: true },
   eventId: { type: String, ref: "eventattendees", required: true },
-  attending: { type: Boolean, required: true },
-  saved: { type: Boolean, required: true },
+  status: { type: Schema.Types.Mixed, required: true },
 });
 
 export const EventAttendanceModel = model<IEventAttendance>(
