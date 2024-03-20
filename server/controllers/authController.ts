@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 // third party
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+const bcrypt = require("bcryptjs")
 
 import { UserModel } from "../models/userModel";
 import { ObjectId } from "mongodb";
