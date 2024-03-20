@@ -10,8 +10,11 @@ import { Link, useParams } from "react-router-dom";
 // axios
 import axios, { AxiosError, AxiosResponse } from "axios";
 
+// import Header from "../components/EventList/Header";
+import Header from "../components/Header";
+
 // interfaces
-import { IError } from "../interfaces/Message.ts";
+import { IError } from "../interfaces/Error.ts";
 import { IEvent, IEventData, IImage } from "../interfaces/Event.ts";
 
 import MainInfo from "../components/EventList/MainBody.tsx";
@@ -31,7 +34,6 @@ import { FilterComponent } from "../components/Filter/FilterComponent.tsx";
 import { NavbarSearch } from "../components/Navbar/NavbarSearch.tsx";
 
 import MainBody from "../components/EventList/MainBody.tsx";
-import { Navbar } from "../components/Navbar/Navbar.tsx";
 
 const EventListPage = () => {
   const { genre, country, city } = useContext(FilterContext);
@@ -43,11 +45,10 @@ const EventListPage = () => {
 
   // store data here
 
-  const API_KEY = import.meta.env.VITE_API_KEY;
+  const API_KEY = "Kfu5vWnk9nBkFUrEVAEgRg5xt3nkllAG";
 
   // checks what the category is to return the id enum for the genre selecting
   const currentCategoryEnum = getCategoryEnum();
-  console.log(API_KEY);
   const defaultGenreQuery: string = checkIfGenreDefault();
 
   // to prevent API from generating errors
@@ -69,8 +70,17 @@ const EventListPage = () => {
       const cityIndex = cities[countryIndex].cities;
       const defaultCityVal = Object.values(cityIndex)[0];
       city.setSelectedCity(defaultCityVal);
+      console.log("useeffect of changing defaultcity val is triggered.");
     }
   }, [country.selectedCountry]);
+
+  useEffect(() => {
+    console.log("country is: ", country.selectedCountry);
+  }, [country.selectedCountry]);
+
+  useEffect(() => {
+    console.log("selected city is ", city.selectedCity);
+  }, [city.selectedCity]);
 
   const fetchDataWithSearch: string = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=${
     category === "concerts"
@@ -97,6 +107,8 @@ const EventListPage = () => {
   }&apikey=${API_KEY}`;
 
   const fetchData = (): void => {
+    console.log("fetchData function called");
+    console.log('genre and genre id', genre.selectedTitle, genre.selectedGenreId)
     setLoading(true);
     axios
       .get<IEvent[]>(
@@ -111,11 +123,6 @@ const EventListPage = () => {
         // only check if there are concerts
         if (res.data._embedded.events) {
           const data = res.data._embedded.events.map((obj: IEventData) => {
-            // return null for cancelled events
-            if (obj.dates.status.code === "cancelled") {
-              return null;
-            }
-
             // gets the subGenre for an event
             const subGenre = obj.classifications[0].subGenre?.name;
 
@@ -135,7 +142,7 @@ const EventListPage = () => {
             const { localDate, localTime, dateTime } = obj.dates.start;
 
             // destructuring timezone
-            const { timezone } = obj.dates;
+            const { timezone } = obj.dates
 
             // destructuring id and name from obj
             const { name, id, _embedded } = obj;
@@ -158,14 +165,16 @@ const EventListPage = () => {
 
             // create an event object to only get necessary data
             const event: IEvent = {
-              eventId: id as string,
+              id: id,
               // some events do not have attractions array
               artist: attractions ? attractions[0].name : "",
+
               images: imagesArr,
               // check to see if there are more than 1 array. if there is more than 1, that means there is a guest. the first array is the original artist
+              guests: attractionsArrLength > 1 ? attractions[1].name : [],
               eventName: name,
               date: localDate,
-              startTime: localTime,
+              time: localTime,
               dateTime: dateTime,
               timezone: timezone,
               country: venues[0].country.name,
@@ -173,28 +182,23 @@ const EventListPage = () => {
               venue: venues[0].name,
               genre: [...genreArray, obj.classifications[0].genre.name],
             };
-            // only define guests property if there are guests, otherwise only return event object with no guests property
-            const result =
-              attractionsArrLength > 1
-                ? { guests: attractions[1].name, ...event }
-                : { ...event };
-            return result;
+            return event;
           });
-
-          // Filter out cancelled events (events that are null)
-          const filteredData = data.filter((event: IEvent) => event !== null);
 
           if (pageNumber === 0) {
             // If pageNumber is 0, set tempEvents directly to events
-            setEvents(filteredData);
+            setEvents(data);
           } else {
             // If pageNumber is greater than 0, concatenate tempEvents with events
 
-            setEvents((prevEvents) => [...prevEvents, ...filteredData]);
-            console.log(events, "events");
+            setEvents((prevEvents) => [...prevEvents, ...data]);
           }
+          console.log(
+            data,
+            "API CONSOLE LOGGING FROM DATA VARIABLE NOT FROM ANY LOCAL VARIABLES"
+          );
         } else {
-          console.log("no events");
+          console.log("no events found in this area.");
         }
 
         setLoading(false);
@@ -213,8 +217,6 @@ const EventListPage = () => {
   };
 
   const handleSearchClick = () => {
-    console.log(searchText, "search text");
-
     fetchData();
   };
 
@@ -280,6 +282,7 @@ const EventListPage = () => {
   useEffect(() => {
     if (events.length > eventsShown && pageNumber > 0 && pageNumber <= 3) {
       setEventsShown((prevState) => prevState + 5);
+      console.log("useEffect triggered events shown", eventsShown);
     }
   }, [events, pageNumber]);
 
@@ -289,62 +292,43 @@ const EventListPage = () => {
     }
   }, [pageNumber]);
 
+  useEffect(() => {
+    if (events.length > 0) {
+      console.log("events original showing ", events);
+    }
+  }, [events]);
+
   return (
     <>
-      <div className="max-w-[1260px] mx-auto z-1 relative mb-6">
-        <Navbar />
+           <Header/>
 
-        <div className="text-white text-3xl md:text-4xl lg:text-6xl text-left font-bold px-4">
-          <p className="mb-6">Music {}</p>
+      <div className="max-w-[1260px] mx-auto z-1 relative p-6">
+        <NavbarSearch
+          handleSearchChange={handleSearchChange}
+          handleSearchClick={handleSearchClick}
+          searchText={searchText}
+        />
 
-          {/*  */}
-
-          <div className="grid grid-rows-1 md:grid-cols-5 md:grid-rows-4 content-center gap-y-4 gap-x-4 ">
-            <div className="md:col-span-3 md:row-span-4  ">
-              <img
-                className="w-full h-full  "
-                src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                alt=""
-              />
-            </div>
-            <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 w-full">
-              <img
-                className=""
-                src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                alt=""
-              />
-            </div>
-            <div className="hidden md:block md:col-span-2 md:row-span-2 md:col-start-4 md:row-start-3 w-full">
-              <img
-                className="w-full h-full "
-                src="https://images.unsplash.com/photo-1501612780327-45045538702b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
-        <div className="px-4 my-4">
-          <NavbarSearch
-            handleSearchChange={handleSearchChange}
-            handleSearchClick={handleSearchClick}
-            searchText={searchText}
-          />
-        </div>
-
+   
+        <select name="sort" onChange={handleSortByChange}>
+          <option>Sort By</option>
+          <option value="nameAscending">Name (Ascending)</option>
+          <option value="nameDescending">Name (Descending)</option>
+          <option value="dateAscending">Date (Ascending)</option>
+          <option value="dateDescending">Date (Descending)</option>
+        </select>
         <MainBody
           currentCategoryEnum={currentCategoryEnum}
           eventsShown={eventsShown}
         />
 
         {showSeeMoreBtn ? (
-          <div className="px-4">
-            <button
-              onClick={seeMoreEvents}
-              className=" bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-4 md:py-2 text-white rounded-lg"
-            >
-              See More
-            </button>
-          </div>
+          <button
+            onClick={seeMoreEvents}
+            className="bg-lavender hover:bg-indigo-800 p-2 text-sm md:text-md md:px-3 md:py-2 text-white rounded-lg"
+          >
+            See More
+          </button>
         ) : (
           ""
         )}

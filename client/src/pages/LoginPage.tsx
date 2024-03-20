@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 
 // react hooks
 import { useEffect, useState } from "react";
-import { IError } from "../interfaces/Message";
+import { IError } from "../interfaces/Error";
 
 // react router
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ interface IUser {
 const LoginPage = () => {
   const [user, setUser] = useState<IUser | null>(null);
   const [error, setError] = useState<IError>({ isError: false, message: "" });
+ 
 
   const [formData, setFormData] = useState<IUser>({} as IUser);
   const handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,10 @@ const LoginPage = () => {
   };
 
   const navigate = useNavigate();
+
+
+
+  
 
   return (
     <>

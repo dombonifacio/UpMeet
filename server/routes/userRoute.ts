@@ -2,11 +2,10 @@
 import { Router } from "express";
 
 // controllers
-import { getUserInfo, updateUserImage } from "../controllers/userController";
+import { getUserInfo } from "../controllers/userController";
 
 const router = Router();
 
-router.get("/profile", getUserInfo);
-router.patch("/update_image", updateUserImage);
+router.get("/me", getUserInfo);
 
 export { router as userRouter };

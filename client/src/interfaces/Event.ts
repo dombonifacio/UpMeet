@@ -4,20 +4,19 @@ export interface IImage {
 }
 
 export interface IEvent {
-  eventId: string;
+  id: String;
   artist: String;
   eventName: String;
   guests?: String[];
-  date: Date;
+  date: String;
   images?: IImage[];
   country: String;
   city: String;
   venue: String;
-  startTime: String;
+  time: String;
   dateTime: Date;
-  timezone: string;
+  timezone: String
   genre?: String[];
-  isSaved?: boolean;
 }
 
 export interface IEventData {
@@ -35,14 +34,11 @@ export interface IEventData {
   };
   dates: {
     start: {
-      localDate: Date;
+      localDate: String;
       localTime: String;
       dateTime: Date;
     };
-    status: {
-      code: string;
-    };
-    timezone: string;
+    timezone: String
   };
   classifications: [
     {

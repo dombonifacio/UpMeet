@@ -1,313 +1,333 @@
 import Header from "../components/Header";
 import logo from "../components/logo.png";
-import header from "../assets/header.png";
 
 // react hooks
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext } from "react";
 
 // third-party libraries
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 // interfaces
-import { Event, IEvent, IEventData, IImage } from "../interfaces/Event";
+import { Event } from "../interfaces/Event";
 import { ICategory } from "../interfaces/Category.ts";
 import { CategoryContainerComponent } from "../components/CategoryContainerComponent";
-// interfaces
-import { IError } from "../interfaces/Message.ts";
 
 // contexts
 import { FilterContext } from "../context/FilterContext.tsx";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-// icons
-import { FaArrowCircleLeft } from "react-icons/fa";
-import { FaArrowCircleRight } from "react-icons/fa";
-import { MdOutlineDateRange } from "react-icons/md";
 // countries utils
 import { countries } from "../utils/constants/Countries.ts";
 import { CategoryCardComponent } from "../components/CategoryCardComponent.tsx";
 import { UserContext } from "../context/UserContext.tsx";
 import { Navbar } from "../components/Navbar/Navbar.tsx";
-import { Logo } from "../components/Logo/Logo.tsx";
-import Title from "../components/Texts/Title.tsx";
-import CategoryCard from "../components/Cards/CategoryCard.tsx";
-import ButtonCard from "../components/Buttons/ButtonCard.tsx";
-import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
-import FooterComponent from "../components/Footer/FooterComponent.tsx";
-
-// images
-
-import artsCategory from "../assets/artsCategory.png";
-import familyCategory from "../assets/familyCategory.png";
-import sportsCategory from "../assets/sportsCategory.jpg";
-import concertCategory from "../assets/concertCategory.jpg";
-import { EventsContext } from "../context/EventsContext.tsx";
 
 export const HomePage: React.FC = () => {
-  const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
-  const [eventCount, setEventCount] = useState<number>(0);
   const navigate = useNavigate();
-  const { country } = useContext(FilterContext);
-  const [error, setError] = useState<IError>({
-    isError: false,
-    message: "",
-  });
+  const { country, genre } = useContext(FilterContext);
+  const { user, setUser } = useContext(UserContext);
 
-  const [eventList, setEventList] = useState<IEvent[]>([] as IEvent[]);
-  const { setEvents } = useContext(EventsContext);
+  // store the country selected in a state
 
-  console.log(country, "country");
-  const query: string = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&countryCode=${country.selectedCountry}&page=0&size=4&apikey=${API_KEY}`;
+  const handleCountryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    country.setSelectedCountry(event.target.value);
+  };
 
-  const fetchData = (): void => {
+  const handleLogout = () => {
     axios
-      .get<IEvent[]>(query)
+      .get("/api/auth/logout")
       .then((res: AxiosResponse) => {
-        if (res.data._embedded.events) {
-          const data = res.data._embedded.events.map((obj: IEventData) => {
-            // return null for cancelled events
-            if (obj.dates.status.code === "cancelled") {
-              return null;
-            }
-
-            // gets the subGenre for an event
-            const subGenre = obj.classifications[0].subGenre?.name;
-
-            // gets genre for an event
-            const genre = obj.classifications[0].genre.name;
-
-            // genre array will have both subgenre and genre
-            const genreArray: String[] = [];
-            // checks if there is subgenre and only pushes subgenre if the subgenre is not the same as the genre to avoid duplication
-            if (subGenre && subGenre !== genre) {
-              genreArray.push(subGenre);
-            }
-            // attractions array return specific info of the artist, like name
-            const attractionsArrLength = obj._embedded.attractions?.length || 0;
-
-            // destructing dates object
-            const { localDate, localTime, dateTime } = obj.dates.start;
-
-            // destructuring timezone
-            const { timezone } = obj.dates;
-
-            // destructuring id and name from obj
-            const { name, id, _embedded } = obj;
-
-            // destructuring venues and attractions
-            const { venues, attractions } = _embedded;
-
-            // imageAPI returns duplicated images, we must remove duplicates and only get one of each ratio
-            const imagesArr: IImage[] = [];
-            const imageAPI: IImage[] = obj.images;
-            const checkIfAdded = {
-              "16_9": false,
-            };
-            imageAPI.forEach((image) => {
-              if (image.ratio === "16_9" && checkIfAdded["16_9"] === false) {
-                imagesArr.push(image);
-                checkIfAdded["16_9"] = true;
-              }
-            });
-
-            // create an event object to only get necessary data
-            const event: IEvent = {
-              eventId: id as string,
-              // some events do not have attractions array
-              artist: attractions ? attractions[0].name : name,
-              images: imagesArr,
-              // check to see if there are more than 1 array. if there is more than 1, that means there is a guest. the first array is the original artist
-              eventName: name,
-              date: localDate,
-              startTime: localTime,
-              dateTime: dateTime,
-              timezone: timezone,
-              country: venues[0].country.name,
-              city: venues[0].city.name,
-              venue: venues[0].name,
-              genre: [...genreArray, obj.classifications[0].genre.name],
-            };
-            // only define guests property if there are guests, otherwise only return event object with no guests property
-            const result =
-              attractionsArrLength > 1
-                ? { guests: attractions[1].name, ...event }
-                : { ...event };
-            return result;
-          });
-          console.log(data, "data");
-          setEventList(data);
-          setEvents(data);
-        } else {
-          console.log("No events found");
-          return [];
-        }
+        console.log(res.data);
+        navigate("/");
       })
-      .catch((error: AxiosError) => {
-        setError({
-          isError: true,
-          message: error.response ? "Server Error" : error.message,
-        });
+      .catch((err: Error) => {
+        console.log("error axios", err);
       });
   };
 
-  const handleForward = () => {
-    if (eventCount === 3) return setEventCount(0);
-    setEventCount((prevState) => prevState + 1);
-  };
-  const handleBackward = () => {
-    if (eventCount === 0) return setEventCount(eventList.length - 1);
-    setEventCount((prevState) => prevState - 1);
-  };
+  useEffect(() => {
+    axios
+      .get("/api/users/me")
+      .then((res: AxiosResponse) => {
+        setUser(res.data);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user, "user");
+    }
+  }, [user]);
+
+  // make an array and make the type be Category type. intialize all the necessary data
   const categoryList: ICategory[] = [
     {
       name: "Concerts",
-      image: artsCategory,
-      desc: "Catch your favorite artists live and get to meet new people!",
+      image:
+        "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
     },
     {
       name: "Arts & Theatre",
-      image: familyCategory,
-      desc: "Enjoy art and theater events, connect with fellow enthusiasts",
+      image:
+        "https://images.unsplash.com/photo-1539964604210-db87088e0c2c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
     },
     {
       name: "Sports",
-      image: sportsCategory,
-      desc: "Get to see NBA, NHL, NFL, and more with friends!",
+      image:
+        "https://images.unsplash.com/photo-1607627000458-210e8d2bdb1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2049&q=80",
     },
     {
       name: "Family",
-      image: concertCategory,
-      desc: "Discover family fun with events like Disney on Ice and more!",
+      image:
+        "https://images.unsplash.com/photo-1472653816316-3ad6f10a6592?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
     },
   ];
 
-  const categoriesRef = useRef(null);
-
-  const scrollToCategories = () => {
-    categoriesRef.current.scrollIntoView({ behavior: "smooth" });
-  };
-  
-  useEffect(() => {
-   
-    fetchData();
-  }, []);
-
   return (
     <>
-      <div className="w-full min-h-screen min-w-screen">
-        <header className="relative">
-          <div className="absolute bg-gradient-to-t from-vader w-full h-full bg-black/30">
-            <div className="max-w-[1260px] mx-auto">
-              <Navbar />
-            </div>
-            <div className="title">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-wihte font-bold">
-                JAMCON
-              </h1>
-              <p className="text-sm text-slate-300 lg:text-lg xl:text-xl">
-                Discover new friendships through the power of shared
-                experiences, connecting people beyond events
-              </p>
+      <Header />
+     
+      <div className="flex justify-center h-[450px] bg-heading ">
+        <img src={logo} />
+      </div>
 
-              <button
-                className="bg-lavender p-3 text-sm my-6 rounded-md hover:bg-indigo-800 duration-75 font-medium"
-                onClick={scrollToCategories}
+      <div className="p-20 bg-heading">
+        <div className="flex justify-center">
+          <label
+            htmlFor="search-dropdown"
+            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          >
+            Your Email
+          </label>
+
+          <div className="relative w-3/4">
+            <input
+              type="search"
+              id="search-dropdown"
+              className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+              placeholder="Search Artists, Venues, Events..."
+              required
+            />
+            <button
+              type="submit"
+              className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
               >
-                Browse Categories
-              </button>
-            </div>
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
           </div>
-          <img src={header} className="w-full h-screen object-cover" />
-        </header>
-        <div className="max-w-[1260px] mx-auto py-4 px-6 my-4">
-          <section id="categories" ref={categoriesRef}>
-            <div className="">
-              <p className="font-bold text-lg md:text-xl ">Explore each</p>
 
-              <Title text="Categories" />
-
-              <p className="my-6">
-                Discover a variety of available events, each offering a unique
-                experience for unforgettable moments. Find your perfect match
-                among a diverse selection of sports, concerts, family outings,
-                and theatrical performances.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-x-5 ">
-              {categoryList.map((category: ICategory) => (
-                <CategoryCard categoryCard={category} />
+          {/* Dropdown menu */}
+          <div className="mt-2 mx-5">
+            <label htmlFor="countries" className="text-white text-sm">
+              Select a Country
+            </label>
+          </div>
+          <div className="mt-2">
+            <select
+              name="countries"
+              className="border border-black"
+              onChange={handleCountryChange}
+              value={country.selectedCountry}
+            >
+              {countries.map((country) => (
+                <option value={country.abbreviation}>{country.country}</option>
               ))}
-            </div>
-          </section>
+            </select>
+          </div>
+        </div>
+      </div>
 
-          <section id="featured">
-            <div className="mt-16">
-              <Title text="FEATURED MUSIC EVENTS" />
-              <div className="grid md:grid-cols-3 gap-x-6 mt-4 lg:mt-8 ">
-                <div className=" md:col-span-2 relative ">
-                  <div className=" absolute bg-black/50 h-full w-full flex justify-between p-4 items-center">
-                    <div className=" w-full flex gap-x-4 sm:w-[75%] md:w-[65%] h-full items-center">
-                      <button onClick={handleBackward} className=" ">
-                        <FaArrowCircleLeft className="text-white text-3xl md:text-4xl" />
-                      </button>
-                      <div className="">
-                        <div className="flex flex-col">
-                          <p className="font-bold text-xs md:text-sm">
-                            {eventList[eventCount]?.date}
-                          </p>
-                          <div className="h-1 bg-lavender w-[15%]"></div>
-                        </div>
+      <div className="m-10 p-5 bg-white/10">
+        <div className="text-white text-[40px] text-center p-5">
+          <p>Browse Local Events Here</p>
+        </div>
 
-                        <h1 className="text-white font-bold text-3xl sm:text-4xl">
-                          {eventList[eventCount]?.artist}
-                        </h1>
-                        <p className="text-xs md:text-sm mb-4">
-                          Join with your friends friends prepare to experience{" "}
-                          {eventList[eventCount]?.artist} together!{" "}
-                          {eventList[eventCount]?.guests && (
-                            <span>
-                              {" Keep an eye out for "}
-                              <span className="font-bold text-indigo-200">
-                                {eventList[eventCount]?.guests}
-                              </span>
-                              {" as a guest!"}
-                            </span>
-                          )}
-                        </p>
-                        <Link
-                          to={`event_info/${eventList[eventCount]?.eventId}`}
-                          className="bg-lavender text-white  hover:text-white p-2 px-3 text-xs md:text-sm md:p-2 md:px-5 rounded-md hover:bg-indigo-800 duration-75 font-bold "
-                        >
-                          See Event
-                        </Link>
-                      </div>
-                    </div>
+        <div className="mx-20 m-10">
+          <div className="grid grid-cols-4 grid-rows-2 gap-4">
+            {categoryList.map((category, index) => {
+              return (
+                <CategoryCardComponent categoryCard={category} key={index} />
+              );
+            })}
 
-                    <button onClick={handleForward} className="">
-                      <FaArrowCircleRight className="text-white text-3xl md:text-4xl" />
-                    </button>
-                  </div>
-                  <img
-                    src={eventList[eventCount]?.images[0].url}
-                    className="min-h-[150px] max-h-[450px] w-full object-cover"
-                  />
-                </div>
-                <div className=" grid grid-rows-4 gap-y-4 h-72 mt-8 md:mt-0">
-                  {eventList.map((event: IEvent, index: number) => (
-                    <FeaturedCard
-                      artist={event.artist}
-                      city={event.city}
-                      country={event.country}
-                      date={event.date}
-                      isFocused={index === eventCount ? true : false}
-                    />
-                  ))}
-                </div>
+            {/* BIG PICTURE ON THE RIGHT */}
+            <div className="relative overflow-hidden bg-cover bg-no-repeat col-span-2 row-span-2 col-start-3 row-start-1">
+              <img
+                src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3538&q=80"
+                className=" h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-[250px] text-[50px]">
+                  {" "}
+                  Hot Deals
+                </p>
               </div>
             </div>
-          </section>
+          </div>
         </div>
-        <FooterComponent />
+      </div>
+
+      <div className="m-10 p-5 bg-white/10">
+        <div>
+          <p className="text-white text-[30px] ml-20 underline mb-4">
+            {" "}
+            Best Selling{" "}
+          </p>
+        </div>
+
+        <div className="flex justify-center mx-20 mb-6">
+          <div className="flex flex-row justify-between w-full">
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Concert
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1562329265-95a6d7a83440?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2140&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Arts & Theatre
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1459865264687-595d652de67e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Sports
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1565130936029-a26a11ecc813?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Family
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-white text-[30px] ml-20 underline mb-4">
+            {" "}
+            Discover New
+          </p>
+        </div>
+        <div className="flex justify-center mx-20">
+          <div className="flex flex-row justify-between w-full">
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2148&q=80"
+                className="max-w-xs"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Concert
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1516307365426-bea591f05011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2318&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Theatre
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1471295253337-3ceaaedca402?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2336&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Sports
+                </p>
+              </div>
+            </div>
+
+            <div className="relative max-w-xs overflow-hidden bg-cover bg-no-repeat">
+              <img
+                src="https://images.unsplash.com/photo-1506918092809-0ba639cd1385?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2148&q=80"
+                className="max-w-xs h-full w-fit"
+                alt="Louvre"
+              />
+              <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-50 text-purple-900">
+                {" "}
+                <p className="text-white text-center mt-20 text-[30px]">
+                  {" "}
+                  Family
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
