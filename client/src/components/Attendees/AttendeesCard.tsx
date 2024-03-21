@@ -1,4 +1,3 @@
-import michael from "../../assets/michael.jpg";
 import noPicture from "../../assets/noPicture.png";
 import { IUser } from "../../interfaces/User";
 

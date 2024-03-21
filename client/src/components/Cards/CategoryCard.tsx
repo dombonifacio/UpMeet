@@ -1,15 +1,8 @@
-import React, { useContext, useEffect } from "react";
 import { ICategory } from "../../interfaces/Category";
 
 // images
-import artsCategory from "../../assets/artsCategory.png";
-import familyCategory from "../../assets/familyCategory.png";
-import sportsCategory from "../../assets/sportsCategory.jpg";
-import concertCategory from "../../assets/concertCategory.jpg";
-import Button from "../Buttons/ButtonCard";
-import ButtonCard from "../Buttons/ButtonCard";
-import { Link, useNavigate } from "react-router-dom";
-import { FilterContext } from "../../context/FilterContext";
+
+import { useNavigate } from "react-router-dom";
 
 type CategoryProps = {
   categoryCard: ICategory;
@@ -18,13 +11,8 @@ type CategoryProps = {
 const CategoryCard = ({ categoryCard }: CategoryProps) => {
   // make an array and make the type be Category type. intialize all the necessary data
 
-  const { country, category } = useContext(FilterContext);
   // initialize a different url parameter for arts so it does not show up as "Arts & Theatre"
   const categoryArts: string = "arts";
-
-  useEffect(() => {
-    category.setSelectedCategory(categoryCard.name);
-  }, []);
 
   const navigate = useNavigate();
   const handleCategoryNavigate = () => {

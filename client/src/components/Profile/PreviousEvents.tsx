@@ -27,7 +27,7 @@ export const PreviousEvents = ({ data, loading }: PreviousEventsProps) => {
                       {/* Image */}
 
                       <EventPicDate
-                        image={event?.images[0].url}
+                        image={(event?.images && event?.images[0].url) || ""}
                         date={event.date}
                       />
 
@@ -65,7 +65,7 @@ export const PreviousEvents = ({ data, loading }: PreviousEventsProps) => {
                           </p>
                         </div>
                         {/* Third Line guests, genre */}
-                        {event?.guests?.length > 0 ? (
+                        {event?.guests && event?.guests?.length > 0 ? (
                           <div className="flex gap-x-2 items-center">
                             <p className="text-sm text-indigo-300 font-semibold">
                               With:{" "}

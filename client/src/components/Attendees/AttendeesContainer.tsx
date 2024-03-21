@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import michael from "../../assets/michael.jpg";
+
 import AttendeesCard from "./AttendeesCard";
 import { IUser } from "../../interfaces/User";
 import { useParams } from "react-router-dom";
@@ -18,7 +18,6 @@ export default function AttendeesContainer() {
   const [attendees, setAttendees] = useState<IUser[]>([]);
   const [headerImages, setHeaderImages] = useState<string[]>([]);
   const [eventEnded, setEventEnded] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
 
   // check if one of the events in the previousEvents matches with the useParams id. If it is, then the event has ended
   const { previousEvents } = useContext(PreviousEventsContext);
@@ -58,7 +57,7 @@ export default function AttendeesContainer() {
         if (error.status === 500) {
           notifyUser(error.data.error, "error");
         } else {
-          setError(error.response?.data.error);
+          console.log("error");
         }
       })
       .finally(() => {
@@ -70,10 +69,6 @@ export default function AttendeesContainer() {
     getHeaderImages();
     getEventAttendees();
   }, []);
-
-  useEffect(() => {
-    if (attendees) console.log("attendees: ", attendees);
-  }, [attendees]);
 
   const sendInvitations = (userId: string) => {
     const data = {
@@ -135,7 +130,7 @@ export default function AttendeesContainer() {
                     sendInvitations={() =>
                       user?._id && sendInvitations(user?._id)
                     }
-                    userLoggedIn={data.user}
+                    userLoggedIn={data.user ? data.user._id || "" : ""}
                   />
                 ))}
               </div>

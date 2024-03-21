@@ -18,11 +18,9 @@ export const InvitationCard: React.FC<InvitationCardProps> = ({
   data,
   declineInvitation,
   acceptInvitation,
-  isAccepted,
-  isDeclined,
+
   isOpen,
 }) => {
-  console.log(isOpen, "isopen");
   return (
     <div className="bg-input h-full w-full rounded-lg p-4">
       {isOpen?.showReceivedInvitations ? (
@@ -109,12 +107,23 @@ export const InvitationCard: React.FC<InvitationCardProps> = ({
                 <p className="font-bold text-indigo-300 text-xl">
                   {data.toUser.name}
                 </p>
-                
-                <p className="font-bold text-indigo-300">{data.event.eventName}</p>
-                {data.status == 'pending' ? <p className="text-yellow-400  border-b-2 border-yellow-500 font-semibold mx-auto mt-3">Pending</p> : data.status == 'accepted' ? <p className="text-green-300  border-b-2 border-green-500 font-semibold mx-auto mt-3">
-                  Accepted
-                </p> : <p className="text-red-400  border-b-2 border-red-500 font-semibold mx-auto mt-3">Declined</p>}
-                
+
+                <p className="font-bold text-indigo-300">
+                  {data.event.eventName}
+                </p>
+                {data.status == "pending" ? (
+                  <p className="text-yellow-400  border-b-2 border-yellow-500 font-semibold mx-auto mt-3">
+                    Pending
+                  </p>
+                ) : data.status == "accepted" ? (
+                  <p className="text-green-300  border-b-2 border-green-500 font-semibold mx-auto mt-3">
+                    Accepted
+                  </p>
+                ) : (
+                  <p className="text-red-400  border-b-2 border-red-500 font-semibold mx-auto mt-3">
+                    Declined
+                  </p>
+                )}
               </div>
             </div>
           </div>

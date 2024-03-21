@@ -1,47 +1,31 @@
 // react hooks
-import {
-  MouseEventHandler,
-  useState,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useContext,
-} from "react";
+import { useState, Dispatch, SetStateAction, useContext } from "react";
 
 // interfaces
 import { IUser } from "../interfaces/User";
 
-import axios, { Axios, AxiosError } from "axios";
+import axios from "axios";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { InputComponent } from "../components/Form/InputComponent";
 import { ButtonComponent } from "../components/Form/ButtonComponent";
-import { Blob } from "../components/Background/Blob";
+
 import concert from "../assets/concert.jpg";
 
 // React Toastify
 import { ToastContainer } from "react-toastify";
 
-import {
-  AuthContext,
-  AuthContextProvider,
-} from "../context/isAuthenticatedContext";
 import { UserContext } from "../context/UserContext";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { IMessage, MessageType } from "../interfaces/Message";
-import { error } from "console";
+
+import { IMessage } from "../interfaces/Message";
+
 import { notifyUser } from "../utils/helpers/toastify";
 
 export const AuthPage = () => {
   const [formData, setFormData] = useState<IUser>({} as IUser);
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
 
-  const [success, setSuccess] = useState<boolean>(false);
-  const [message, setMessage] = useState<IMessage>({} as IMessage);
-
-  const { setData, data } = useContext(UserContext);
-  const navigate = useNavigate();
+  const { setData } = useContext(UserContext);
 
   const handleUserInput = (
     event: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -133,14 +117,20 @@ export const AuthPage = () => {
           // Navigate after a delay (if needed)
         } else {
           // Handle other success indicators if needed
-          console.log("Login failed: ", res);
+          notifyUser(res.data.message, "error");
+          setFormData({
+            name: "",
+            password: "",
+            confirmPassword: "",
+            age: 0,
+            email: "",
+          });
         }
       })
       .catch((error) => {
         if (error.status === 500) {
           notifyUser(error.data.error, "error");
         } else {
-          setMessage({ type: "error", message: error.response?.data.error });
           notifyUser(error.response?.data.error, "error");
         }
       });

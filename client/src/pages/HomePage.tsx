@@ -9,11 +9,10 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 // interfaces
-import { Event, IEvent, IEventData, IImage } from "../interfaces/Event";
+import { IEvent, IEventData, IImage } from "../interfaces/Event";
 import { ICategory } from "../interfaces/Category.ts";
 import { CategoryContainerComponent } from "../components/CategoryContainerComponent";
 // interfaces
-import { IError } from "../interfaces/Message.ts";
 
 // contexts
 import { FilterContext } from "../context/FilterContext.tsx";
@@ -42,21 +41,17 @@ import familyCategory from "../assets/familyCategory.png";
 import sportsCategory from "../assets/sportsCategory.jpg";
 import concertCategory from "../assets/concertCategory.jpg";
 import { EventsContext } from "../context/EventsContext.tsx";
+import { notifyUser } from "../utils/helpers/toastify.ts";
 
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
   const [eventCount, setEventCount] = useState<number>(0);
   const navigate = useNavigate();
   const { country } = useContext(FilterContext);
-  const [error, setError] = useState<IError>({
-    isError: false,
-    message: "",
-  });
 
   const [eventList, setEventList] = useState<IEvent[]>([] as IEvent[]);
   const { setEvents } = useContext(EventsContext);
 
-  console.log(country, "country");
   const query: string = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=music&countryCode=${country.selectedCountry}&page=0&size=4&apikey=${API_KEY}`;
 
   const fetchData = (): void => {
@@ -134,19 +129,15 @@ export const HomePage: React.FC = () => {
                 : { ...event };
             return result;
           });
-          console.log(data, "data");
+
           setEventList(data);
           setEvents(data);
         } else {
-          console.log("No events found");
           return [];
         }
       })
       .catch((error: AxiosError) => {
-        setError({
-          isError: true,
-          message: error.response ? "Server Error" : error.message,
-        });
+        console.log("error", error);
       });
   };
 
@@ -186,9 +177,8 @@ export const HomePage: React.FC = () => {
   const scrollToCategories = () => {
     categoriesRef.current.scrollIntoView({ behavior: "smooth" });
   };
-  
+
   useEffect(() => {
-   
     fetchData();
   }, []);
 

@@ -44,7 +44,6 @@ export const OwnEventInfoPage = () => {
     const checkIfPrevious = () => {
       const newPreviousEvents: IEvent[] = [];
       events?.forEach((event: IEvent) => {
-        console.log("events context,", events);
         const eventDateTime = event.dateTime;
         const eventDateObj = new Date(eventDateTime);
 
@@ -59,21 +58,10 @@ export const OwnEventInfoPage = () => {
 
         // convert to date obj to be able to compare dates
         const convertCurrentTimezone = new Date(currentEventTimezone);
-        // console.log(
-        //   "event date obj",
-        //   eventDateObj,
-        //   "current time zone",
-        //   currentEventTimezone,
-        //   "event",
-        //   event
-        // );
 
         // save to previous/future events
         if (convertCurrentTimezone > eventDateObj) {
-          console.log(event, "event pushed");
           newPreviousEvents.push(event);
-
-          console.log(newPreviousEvents, "previosu events");
         }
         setPreviousEvents(newPreviousEvents);
       });
@@ -116,7 +104,6 @@ export const OwnEventInfoPage = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log("Error fetching data:", error);
       })
       .finally(() => {
         setLoading(false);

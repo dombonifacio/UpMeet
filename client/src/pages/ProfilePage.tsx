@@ -8,10 +8,7 @@ import Favourites from "../components/Profile/Favourites";
 import camera from "../assets/camera.jpg";
 import michael from "../assets/michael.jpg";
 import FutureEvents from "../components/Profile/FutureEvents";
-import {
-  PastEvents,
-  PreviousEvents,
-} from "../components/Profile/PreviousEvents";
+import { PreviousEvents } from "../components/Profile/PreviousEvents";
 import { IEvent } from "../interfaces/Event";
 import moment from "moment-timezone";
 import { timezones } from "../utils/constants/Timezones";
@@ -95,15 +92,12 @@ const ProfilePage = () => {
           formData
         );
         return response.data.url;
-      } catch (error) {
-        console.log("error", error);
-      }
+      } catch (error) {}
     }
   };
 
   const handleImageUpload = async () => {
     const getImageUrl: string = await uploadImageCloudinary();
-    console.log(getImageUrl, "image url", "type of:", typeof getImageUrl);
 
     if (typeof getImageUrl !== "string" || getImageUrl == "") {
       throw Error;
@@ -185,9 +179,7 @@ const ProfilePage = () => {
           setEvents(newFutureEvents);
         }
       })
-      .catch((error: AxiosError) => {
-        console.log(error, "error");
-      })
+      .catch((error: AxiosError) => {})
       .finally(() => {
         setLoading(false);
       });

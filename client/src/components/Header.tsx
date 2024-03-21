@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import logo from "./logo.png";
@@ -11,8 +10,6 @@ import { ToastContainer } from "react-toastify";
 export default function Header() {
   const navigate = useNavigate();
   const logout = () => {
-    const userLoggedIn = JSON.parse(localStorage.getItem("user"));
-
     localStorage.removeItem("user");
     axios
       .get("/api/auth/logout")
@@ -36,19 +33,12 @@ export default function Header() {
   return (
     <>
       <ToastContainer />
-      <div className="flex flex-row justify-between sticky top-0 z-50 relative bg-black/75 items-center">
+      <div className="flex flex-row justify-between sticky top-0 z-50  bg-black/75 items-center">
         <Link to="/">
           <div className="w-[200px]">
             <img src={logo} className="h-full" />
           </div>
         </Link>
-
-        {/* <div className="text-white flex flex-row justify-between w-[600px] mt-2 bg-gray-900 p-5">
-    <p> Concert </p>
-    <p> Arts & Theatre </p>
-    <p> Sports </p>
-    <p> Family </p>
-  </div> */}
 
         <div className="p-4 flex gap-x-4 items-center">
           <Link

@@ -6,8 +6,7 @@ import { getCategoryEnum } from "../../utils/helpers/filter";
 import { FilterContext } from "../../context/FilterContext";
 import { Link } from "react-router-dom";
 
-import { FaBookmark, FaHeart, FaRegBookmark } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 
 import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
@@ -27,13 +26,20 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
   const [savedEvent, setSavedEvent] = useState<boolean>(false);
   const currentCategoryEnum = getCategoryEnum();
 
-  const [savedEventsIds, setSavedEventsIds] = useState<string[]>([]);
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.name === "country") {
+    if (
+      event.target.name === "country" &&
+      country &&
+      country.setSelectedCountry
+    ) {
       country.setSelectedCountry(event.target.value);
-    } else if (event.target.name === "genre") {
+    } else if (
+      event.target.name === "genre" &&
+      genre &&
+      genre.setSelectedGenreId
+    ) {
       genre.setSelectedGenreId(event.target.value);
-    } else if (event.target.name === "city") {
+    } else if (event.target.name === "city" && city && city.setSelectedCity) {
       city.setSelectedCity(event.target.value);
     }
   };
@@ -43,7 +49,6 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
     axios
       .get(`/api/eventAttendance/get_saved_events`)
       .then((res: AxiosResponse) => {
-        console.log(res, "response");
         const eventIds = res.data.map((event: IEvent) => event.eventId);
 
         setEvents((prevEvents) => {
@@ -119,8 +124,6 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
 
       {!loading ? (
         <div className="px-4">
-         
-
           {/* START DROPDOWN MENU */}
 
           {/* END DROPDOWN */}
@@ -136,7 +139,7 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
             </div>
 
             {events.length > 0 ? (
-              events.slice(0, eventsShown).map((event, index) => {
+              events.slice(0, eventsShown).map((event) => {
                 return (
                   <div className="bg-input rounded-lg sm:flex sm:items-center md:flex mb-6">
                     {/* Image */}
@@ -198,7 +201,6 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                           Genres: {event?.genre?.join(", ")}
                         </p>
                       </div>
-                    
                     </div>
                     {/* End of Event Information beside image */}
 

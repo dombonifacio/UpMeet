@@ -1,5 +1,5 @@
 import { FaBookmark } from "react-icons/fa";
-import { IImage } from "../../interfaces/Event";
+
 import { Link } from "react-router-dom";
 
 export const Months = {
@@ -41,10 +41,9 @@ export const EventsCard: React.FC<EventsCardProps> = ({
   date,
   eventName,
   genre,
-  guests,
-  venue,
+
   images,
-  timezone,
+
   startTime,
   unsaveEvent,
 }) => {

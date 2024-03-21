@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import axios, { Axios } from "axios";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
+import { notifyUser } from "../utils/helpers/toastify";
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState<IUser>({} as IUser);
@@ -37,17 +38,13 @@ export const SignupPage = () => {
       // ****************** Need to use the server's URL and Port Number (Specified by server)
       .post("/api/auth/register", userData)
       .then((res: AxiosResponse) => {
-        console.log(res);
+        notifyUser(res.data.message, "success");
       });
-
-    // axios.get("http://localhost:5000").then((res: AxiosResponse) => {
-    //   console.log(res)
-    // })
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
   return (
     <>
       {/* <input
@@ -183,4 +180,3 @@ export const SignupPage = () => {
     </>
   );
 };
-

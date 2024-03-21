@@ -3,12 +3,6 @@ import { countries } from "../../utils/constants/Countries";
 
 import { useContext } from "react";
 
-// helper functions
-import {
-  getCategoryEnum,
-  checkIfGenreDefault,
-} from "../../utils/helpers/filter.ts";
-
 import { cities } from "../../utils/constants/Cities.ts";
 import {
   ArtsGenre,

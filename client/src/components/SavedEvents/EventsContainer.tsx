@@ -1,17 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
-import { IEvent } from "../../interfaces/Event";
+
 import { ToastContainer } from "react-toastify";
 import { EventsCard } from "./EventsCard";
 import { UserContext } from "../../context/UserContext";
-import { SavedEventsContext } from "../../context/SavedEventsContext";
+
 import { EventsContext } from "../../context/EventsContext";
 
 export const EventsContainer = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { events, setEvents } = useContext(EventsContext);
-  const [error, setError] = useState<string>("");
 
   const { data } = useContext(UserContext);
 
@@ -26,7 +25,6 @@ export const EventsContainer = () => {
         if (error.status === 500) {
           notifyUser(error.data.error, "error");
         } else {
-          setError(error.response?.data.error);
         }
       })
       .finally(() => {
@@ -92,7 +90,7 @@ export const EventsContainer = () => {
                       genre={event.genre as string[]}
                       guests={event.guests as string[]}
                       venue={event.venue as string}
-                      images={event?.images[0].url}
+                      images={(event?.images && event?.images[0].url) || ""}
                       timezone={event.timezone}
                       startTime={event.startTime as string}
                       unsaveEvent={() => handleUnsaveEvent(event.eventId)}

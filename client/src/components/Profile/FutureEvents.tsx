@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-// import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
-import Popup from "./Popup";
 import { IEvent } from "../../interfaces/Event";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import moment from "moment-timezone";
-import { timezones } from "../../utils/constants/Timezones";
+
 import EventPicDate from "../EventList/EventPicDate";
 import { Link } from "react-router-dom";
 
@@ -38,7 +32,7 @@ export default function FutureEvents({ data, loading }: FutureEventsProps) {
                       {/* Image */}
 
                       <EventPicDate
-                        image={event?.images[0].url}
+                        image={(event?.images && event.images[0]?.url) || ""}
                         date={event.date}
                       />
 
@@ -76,7 +70,7 @@ export default function FutureEvents({ data, loading }: FutureEventsProps) {
                           </p>
                         </div>
                         {/* Third Line guests, genre */}
-                        {event?.guests?.length > 0 ? (
+                        {event?.guests && event?.guests?.length > 0 ? (
                           <div className="flex gap-x-2 items-center">
                             <p className="text-sm text-indigo-300 font-semibold">
                               With:{" "}

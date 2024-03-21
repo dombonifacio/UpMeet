@@ -1,5 +1,3 @@
-import React from "react";
-import { IEvent } from "../../interfaces/Event";
 import { Months } from "../../utils/constants/Dates";
 
 interface FeaturedCardProps {
@@ -49,7 +47,6 @@ const FeaturedCard = ({
           </p>
         </div>
       </div>
-
     </div>
   );
 };

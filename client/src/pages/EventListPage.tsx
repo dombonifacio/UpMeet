@@ -47,7 +47,7 @@ const EventListPage = () => {
 
   // checks what the category is to return the id enum for the genre selecting
   const currentCategoryEnum = getCategoryEnum();
-  console.log(API_KEY);
+
   const defaultGenreQuery: string = checkIfGenreDefault();
 
   // to prevent API from generating errors
@@ -191,10 +191,8 @@ const EventListPage = () => {
             // If pageNumber is greater than 0, concatenate tempEvents with events
 
             setEvents((prevEvents) => [...prevEvents, ...filteredData]);
-            console.log(events, "events");
           }
         } else {
-          console.log("no events");
         }
 
         setLoading(false);
@@ -213,8 +211,6 @@ const EventListPage = () => {
   };
 
   const handleSearchClick = () => {
-    console.log(searchText, "search text");
-
     fetchData();
   };
 

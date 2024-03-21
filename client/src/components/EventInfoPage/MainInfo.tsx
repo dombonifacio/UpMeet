@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { Blob } from "../Background/Blob";
 import EventPicture from "./EventPicture";
 import { Link, useParams } from "react-router-dom";
 import { EventsContext } from "../../context/EventsContext";
@@ -9,14 +8,11 @@ import { EventsContext } from "../../context/EventsContext";
 import { MdOutlineDateRange } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 import { UserContext } from "../../context/UserContext";
-import axios, { Axios, AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
 // React Toastify
 import { ToastContainer } from "react-toastify";
 import { IEvent } from "../../interfaces/Event";
-
-import { FaHeart, FaRegBookmark } from "react-icons/fa";
-import { FaRegHeart } from "react-icons/fa";
 
 export default function MainInfo() {
   const { id } = useParams();
@@ -46,8 +42,7 @@ export default function MainInfo() {
           }
           setLoading(false);
         })
-        .catch((error) => {
-          console.log(" error", error);
+        .catch(() => {
           setLoading(false);
         })
         .finally(() => {
@@ -117,7 +112,9 @@ export default function MainInfo() {
         <div className="md:flex md:justify-center md:h-full md:items-center md:px-6 relative z-1">
           <ToastContainer />
           <EventPicture
-            image={selectedEvent?.images[0]?.url}
+            image={
+              (selectedEvent?.images && selectedEvent.images[0]?.url) || ""
+            }
             eventName={selectedEvent?.eventName}
             artist={selectedEvent?.artist}
           />

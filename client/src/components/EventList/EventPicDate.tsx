@@ -1,6 +1,3 @@
-import { useContext } from "react";
-import { EventsContext } from "../../context/EventsContext";
-
 import { Months } from "../../utils/constants/Dates.ts";
 
 interface EventPicDateProps {

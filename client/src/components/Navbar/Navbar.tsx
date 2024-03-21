@@ -4,14 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineXMark } from "react-icons/hi2";
 import { CgMenuRight } from "react-icons/cg";
 import { Logo } from "../Logo/Logo";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
 import { UserContext } from "../../context/UserContext";
 
 export const Navbar = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const { data, setData } = useContext(UserContext)
+  const { data, setData } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleShowMenu = () => {
@@ -21,13 +21,11 @@ export const Navbar = () => {
   const logout = () => {
     axios
       .get("api/auth/logout")
-      .then((res: AxiosResponse) => {
-       
-        
-        navigate("/logout")
-        localStorage.removeItem("authenticated")
+      .then(() => {
+        navigate("/logout");
+        localStorage.removeItem("authenticated");
         setTimeout(() => {
-          setData({...data, isLoggedIn: false})
+          setData({ ...data, isLoggedIn: false });
           navigate("/");
         }, 2000);
       })
@@ -40,11 +38,14 @@ export const Navbar = () => {
       });
   };
 
-
   return (
     <>
       {/* MOBILE RESPONSIVE DESIGN */}
-      <div className={`flex justify-between h-full w-full ${showMenu && "absolute z-50"} `}>
+      <div
+        className={`flex justify-between h-full w-full ${
+          showMenu && "absolute z-50"
+        } `}
+      >
         <div className={`p-4 ${showMenu ? "hidden" : "block"} md:block`}>
           <Logo />
         </div>
@@ -98,7 +99,6 @@ export const Navbar = () => {
               </Link>
             </li>
             <li>
-
               <button
                 onClick={logout}
                 className="text-slate-200 text-lg transition-colors duration-150 hover:text-indigo-300"

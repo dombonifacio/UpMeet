@@ -3,11 +3,9 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
-  useEffect,
   useState,
 } from "react";
 import { IUser } from "../interfaces/User";
-import axios from "axios";
 
 interface UserAuthenticate {
   user: IUser | null;
