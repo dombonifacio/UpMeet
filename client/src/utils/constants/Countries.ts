@@ -30,11 +30,7 @@ export const countries: ICountry[] = [
     abbreviation: "NZ",
     image: "",
   },
-  {
-    country: "Spain",
-    abbreviation: "ES",
-    image: "",
-  },
+
   {
     country: "United States of America",
     abbreviation: "US",

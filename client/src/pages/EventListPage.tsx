@@ -5,13 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import { FilterContext } from "../context/FilterContext";
 
 // react router
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 // axios
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 // interfaces
-import { IError } from "../interfaces/Message.ts";
+
 import { IEvent, IEventData, IImage } from "../interfaces/Event.ts";
 
 import MainInfo from "../components/EventList/MainBody.tsx";
@@ -32,6 +32,8 @@ import { NavbarSearch } from "../components/Navbar/NavbarSearch.tsx";
 
 import MainBody from "../components/EventList/MainBody.tsx";
 import { Navbar } from "../components/Navbar/Navbar.tsx";
+import { notifyUser } from "../utils/helpers/toastify.ts";
+import { ToastContainer } from "react-toastify";
 
 const EventListPage = () => {
   const { genre, country, city } = useContext(FilterContext);
@@ -52,25 +54,28 @@ const EventListPage = () => {
 
   // to prevent API from generating errors
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<IError>({
-    isError: false,
-    message: "",
-  });
+
   const [sortBy, setSortBy] = useState<String>("");
   const [totalPages, setTotalPages] = useState<number>(0);
   const [showSeeMoreBtn, setShowSeeMoreBtn] = useState<boolean>(false);
 
   // if a country is selected, show the cities for only that particular country
+  // TODO: UNCOMMENT
   useEffect(() => {
-    if (country.selectedCountry) {
+    if (country.selectedCountry && cities.length > 0) {
       const countryIndex = cities.findIndex(
         (countryArr) => countryArr.country === country.selectedCountry
       );
-      const cityIndex = cities[countryIndex].cities;
-      const defaultCityVal = Object.values(cityIndex)[0];
-      city.setSelectedCity(defaultCityVal);
+      if (countryIndex !== -1 && cities[countryIndex]?.cities) {
+        const cityIndex = cities[countryIndex].cities;
+        const defaultCityVal = Object.values(cityIndex)[0];
+        if (city.setSelectedCity) {
+          // Check if city.setSelectedCity is defined
+          city.setSelectedCity(defaultCityVal);
+        }
+      }
     }
-  }, [country.selectedCountry]);
+  }, [country.selectedCountry, cities]);
 
   const fetchDataWithSearch: string = `https://app.ticketmaster.com/discovery/v2/events.json?classificationName=${
     category === "concerts"
@@ -142,8 +147,6 @@ const EventListPage = () => {
 
             // destructuring venues and attractions
             const { venues, attractions } = _embedded;
-
-            // imageAPI returns duplicated images, we must remove duplicates and only get one of each ratio
             const imagesArr: IImage[] = [];
             const imageAPI: IImage[] = obj.images;
             const checkIfAdded = {
@@ -168,15 +171,16 @@ const EventListPage = () => {
               startTime: localTime,
               dateTime: dateTime,
               timezone: timezone,
-              country: venues[0].country.name,
-              city: venues[0].city.name,
-              venue: venues[0].name,
+              // Defautl will be string
+              country: (venues && venues[0]?.country?.name) || "",
+              city: (venues && venues[0]?.city?.name) || "",
+              venue: (venues && venues[0]?.name) || "",
               genre: [...genreArray, obj.classifications[0].genre.name],
             };
             // only define guests property if there are guests, otherwise only return event object with no guests property
             const result =
-              attractionsArrLength > 1
-                ? { guests: attractions[1].name, ...event }
+              attractionsArrLength > 0
+                ? { guests: attractions && attractions[0]?.name, ...event }
                 : { ...event };
             return result;
           });
@@ -199,10 +203,7 @@ const EventListPage = () => {
       })
       .catch((error: AxiosError) => {
         setLoading(false);
-        setError({
-          isError: true,
-          message: error.response ? "Server Error" : error.message,
-        });
+        notifyUser(error.message, "error");
       });
   };
 
@@ -215,23 +216,25 @@ const EventListPage = () => {
   };
 
   // when event list page renders for the first time, selected genre is back to default or reset
-  useEffect(() => {
-    genre.setSelectedGenreId("Default");
-    genre.setSelectedTitle("All");
-  }, []);
+  // TODO: UNCOMMENT
+  // useEffect(() => {
+  //   genre.setSelectedGenreId("Default");
+  //   genre.setSelectedTitle("All");
+  // }, []);
 
   // call the api everytime genre is changed
   // clear the events data when new genre is selected so we don't mix pop data with blues/rock data
   useEffect(() => {
-    if (genre.selectedGenreId) {
-      const selectedId = genre.selectedGenreId;
-      // typeof creates an interface for the Genres enum behind the scenes. keyof indicates that the selectedId is a key of Genres
-      // get Genre Enum value by Genres['Value']
-      genre.setSelectedTitle(
-        currentCategoryEnum[selectedId as keyof typeof currentCategoryEnum]
-      );
-      setEvents([]);
-    }
+    // TODO: UNCOMMENT
+    // if (genre.selectedGenreId) {
+    //   const selectedId = genre.selectedGenreId;
+    //   // typeof creates an interface for the Genres enum behind the scenes. keyof indicates that the selectedId is a key of Genres
+    //   // get Genre Enum value by Genres['Value']
+    //   genre.setSelectedTitle(
+    //     currentCategoryEnum[selectedId as keyof typeof currentCategoryEnum]
+    //   );
+    //   setEvents([]);
+    // }
     fetchData();
     setEventsShown(5);
     setPageNumber(0);
@@ -241,10 +244,6 @@ const EventListPage = () => {
     country.selectedCountry,
     city.selectedCity,
   ]);
-
-  const handleSortByChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(event.target.value);
-  };
 
   // Example of resetting state when navigating back to EventListPage
   useEffect(() => {
@@ -287,6 +286,7 @@ const EventListPage = () => {
 
   return (
     <>
+      <ToastContainer />
       <div className="max-w-[1260px] mx-auto z-1 relative mb-6">
         <Navbar />
 
@@ -326,11 +326,14 @@ const EventListPage = () => {
             searchText={searchText}
           />
         </div>
-
-        <MainBody
-          currentCategoryEnum={currentCategoryEnum}
-          eventsShown={eventsShown}
-        />
+        {eventsShown > 0 ? (
+          <MainBody
+            currentCategoryEnum={currentCategoryEnum}
+            eventsShown={eventsShown}
+          />
+        ) : (
+          <p>No events available</p>
+        )}
 
         {showSeeMoreBtn ? (
           <div className="px-4">

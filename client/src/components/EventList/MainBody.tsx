@@ -13,18 +13,31 @@ import { notifyUser } from "../../utils/helpers/toastify";
 import { UserContext } from "../../context/UserContext";
 import { IEvent } from "../../interfaces/Event";
 import { ToastContainer } from "react-toastify";
+import {
+  ArtsGenre,
+  FamilyGenre,
+  MusicGenre,
+  SportsGenre,
+} from "../../utils/constants/Genres";
 interface IMainBodyProps {
   eventsShown: number;
+  currentCategoryEnum:
+    | typeof MusicGenre
+    | typeof SportsGenre
+    | typeof ArtsGenre
+    | typeof FamilyGenre;
 }
 
-export default function MainBody({ eventsShown }: IMainBodyProps) {
+export default function MainBody({
+  eventsShown,
+  currentCategoryEnum,
+}: IMainBodyProps) {
   const { events, setEvents } = useContext(EventsContext);
   const { country, city, genre } = useContext(FilterContext);
   const { data } = useContext(UserContext);
 
   const [loading, setLoading] = useState<boolean>(false);
   const [savedEvent, setSavedEvent] = useState<boolean>(false);
-  const currentCategoryEnum = getCategoryEnum();
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (
@@ -140,14 +153,12 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
 
             {events.length > 0 ? (
               events.slice(0, eventsShown).map((event) => {
+                const imageUrl = event?.images?.[0]?.url || "";
                 return (
                   <div className="bg-input rounded-lg sm:flex sm:items-center md:flex mb-6">
                     {/* Image */}
 
-                    <EventPicDate
-                      image={event?.images[0].url}
-                      date={event.date}
-                    />
+                    <EventPicDate image={imageUrl} date={event.date} />
 
                     {/* Event Information beside image */}
                     <div className="px-2 my-2 sm:my-0 md:px-4 flex flex-col  grow flex-wrap">
@@ -183,7 +194,7 @@ export default function MainBody({ eventsShown }: IMainBodyProps) {
                       </div>
 
                       {/* Third Line guests, genre */}
-                      {event?.guests?.length > 0 ? (
+                      {event?.guests && event.guests.length > 0 ? (
                         <div className="flex gap-x-2 items-center">
                           <p className="text-sm text-indigo-300 font-semibold">
                             With:{" "}

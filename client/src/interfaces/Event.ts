@@ -1,8 +1,8 @@
 export interface IImage {
-  ratio: String;
+  ratio: string;
   url: string;
+  // Add any other properties if necessary
 }
-
 export interface IEvent {
   eventId: string;
   artist: String;
@@ -26,13 +26,10 @@ export interface IEventData {
   _embedded: {
     attractions?: [{ name: String }];
     venues?: [
-      { country: { name: String }; city: { name: String }; name: String }
+      { country: { name: String }; city: { name: String }; name: string }
     ];
   };
-  images: {
-    ratio: String;
-    url: String;
-  };
+  images: IImage[];
   dates: {
     start: {
       localDate: Date;

@@ -117,15 +117,16 @@ export const HomePage: React.FC = () => {
               startTime: localTime,
               dateTime: dateTime,
               timezone: timezone,
-              country: venues[0].country.name,
-              city: venues[0].city.name,
-              venue: venues[0].name,
+              // Defautl will be string
+              country: (venues && venues[0]?.country?.name) || "",
+              city: (venues && venues[0]?.city?.name) || "",
+              venue: (venues && venues[0]?.name) || "",
               genre: [...genreArray, obj.classifications[0].genre.name],
             };
             // only define guests property if there are guests, otherwise only return event object with no guests property
             const result =
-              attractionsArrLength > 1
-                ? { guests: attractions[1].name, ...event }
+              attractionsArrLength > 0
+                ? { guests: attractions && attractions[0]?.name, ...event }
                 : { ...event };
             return result;
           });
@@ -175,7 +176,11 @@ export const HomePage: React.FC = () => {
   const categoriesRef = useRef(null);
 
   const scrollToCategories = () => {
-    categoriesRef.current.scrollIntoView({ behavior: "smooth" });
+    if (categoriesRef.current) {
+      (categoriesRef.current as HTMLElement).scrollIntoView({
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
@@ -278,7 +283,9 @@ export const HomePage: React.FC = () => {
                     </button>
                   </div>
                   <img
-                    src={eventList[eventCount]?.images[0].url}
+                    src={
+                      (eventList && eventList[eventCount]?.images[0]?.url) || ""
+                    }
                     className="min-h-[150px] max-h-[450px] w-full object-cover"
                   />
                 </div>
