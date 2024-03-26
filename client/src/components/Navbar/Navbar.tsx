@@ -5,7 +5,7 @@ import { HiOutlineXMark } from "react-icons/hi2";
 import { CgMenuRight } from "react-icons/cg";
 import { Logo } from "../Logo/Logo";
 import { useContext, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { notifyUser } from "../../utils/helpers/toastify";
 import { UserContext } from "../../context/UserContext";
 
