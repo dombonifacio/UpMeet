@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react'
-import { ToastContainer } from 'react-toastify'
-import { notifyUser } from '../utils/helpers/toastify';
-
 const LogoutPage = () => {
-
-    
   return (
-    <div className='mx-auto max-w-[1260px] flex justify-center items-center h-screen'>
- 
-
-        <p className=' text-center text-xl sm:text-2xl md:text-3xl font-bold text-white'>Logging out...</p>
+    <div className="mx-auto max-w-[1260px] flex justify-center items-center h-screen">
+      <p className=" text-center text-xl sm:text-2xl md:text-3xl font-bold text-white">
+        Logging out...
+      </p>
     </div>
-  )
-}
+  );
+};
 
-export default LogoutPage
+export default LogoutPage;
