@@ -25,7 +25,7 @@ export const OwnEventInfoPage = () => {
   const selectedEventArr = events.filter((event) => event.eventId === id);
   const selectedEvent = selectedEventArr[0];
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+
   const [isAttending, setIsAttending] = useState<boolean>(false);
   const [isPrevious, setIsPrevious] = useState<boolean>(false);
 
@@ -90,9 +90,6 @@ export const OwnEventInfoPage = () => {
         const checkIfPrevious = previousEvents?.some(
           (event: IEvent) => event.eventId === id
         );
-        const checkIfSavedPrevious = events?.some(
-          (event: IEvent) => event.eventId === id
-        );
 
         if (getCurrentEvent) {
           setIsAttending(true);
@@ -102,7 +99,7 @@ export const OwnEventInfoPage = () => {
           setIsPrevious(true);
         }
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       })
       .finally(() => {

@@ -1,8 +1,5 @@
-import { useContext, useEffect, useState } from "react";
 import { Navbar } from "../components/Navbar/Navbar";
 import { EventsContainer } from "../components/SavedEvents/EventsContainer";
-import { UserContext } from "../context/UserContext";
-import axios from "axios";
 
 export const SavedEvents = () => {
   return (

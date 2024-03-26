@@ -1,12 +1,8 @@
-import axios, { Axios, AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 
-import ProfileHeader from "../components/Profile/ProfileHeader";
-import Events from "../components/Profile/FutureEvents";
-import Favourites from "../components/Profile/Favourites";
-
 import camera from "../assets/camera.jpg";
-import michael from "../assets/michael.jpg";
+
 import FutureEvents from "../components/Profile/FutureEvents";
 import { PreviousEvents } from "../components/Profile/PreviousEvents";
 import { IEvent } from "../interfaces/Event";
@@ -67,8 +63,6 @@ const ProfilePage = () => {
   const [selectedImage, setSelectedImage] = useState<
     Blob | MediaSource | string
   >("");
-  const [uploadedImage, setUploadedImage] = useState<string>("");
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedImage(event.target.files[0]);
@@ -179,7 +173,7 @@ const ProfilePage = () => {
           setEvents(newFutureEvents);
         }
       })
-      .catch((error: AxiosError) => {})
+      .catch(() => {})
       .finally(() => {
         setLoading(false);
       });

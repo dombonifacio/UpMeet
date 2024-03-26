@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import EventPicDate from "./EventPicDate";
 import { EventsContext } from "../../context/EventsContext";
 import { FilterComponent } from "../Filter/FilterComponent";
-import { getCategoryEnum } from "../../utils/helpers/filter";
-import { FilterContext } from "../../context/FilterContext";
+
 import { Link } from "react-router-dom";
 
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
@@ -19,6 +18,7 @@ import {
   MusicGenre,
   SportsGenre,
 } from "../../utils/constants/Genres";
+import { FilterContext } from "../../context/FilterContext";
 interface IMainBodyProps {
   eventsShown: number;
   currentCategoryEnum:

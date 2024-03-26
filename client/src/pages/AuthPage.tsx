@@ -6,7 +6,6 @@ import { IUser } from "../interfaces/User";
 
 import axios from "axios";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
 import { InputComponent } from "../components/Form/InputComponent";
 import { ButtonComponent } from "../components/Form/ButtonComponent";
 
@@ -16,8 +15,6 @@ import concert from "../assets/concert.jpg";
 import { ToastContainer } from "react-toastify";
 
 import { UserContext } from "../context/UserContext";
-
-import { IMessage } from "../interfaces/Message";
 
 import { notifyUser } from "../utils/helpers/toastify";
 

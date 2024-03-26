@@ -1,5 +1,3 @@
-import { IImage } from "../../interfaces/Event";
-
 interface IEventPictureProps {
   image: string;
   eventName: String;

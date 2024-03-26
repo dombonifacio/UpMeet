@@ -1,5 +1,5 @@
 import IInvitation from "../../interfaces/Invitation";
-import defaultProf from "../../assets/defaultProf.jpg"
+import defaultProf from "../../assets/defaultProf.jpg";
 
 interface SentInvitationsProps {
   sentInvitations: IInvitation[];
@@ -9,7 +9,7 @@ export const SentInvitations = ({ sentInvitations }: SentInvitationsProps) => {
   return (
     <>
       <div className="grid grid-cols-1 w-full place-items-center gap-y-5 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-3 mt-4">
-        {sentInvitations.map((invitation) => (
+        {sentInvitations.map((data) => (
           <div className="bg-input h-full w-full rounded-lg p-4">
             <div className="flex flex-col items-center gap-y-5">
               <div className="flex gap-x-3">
