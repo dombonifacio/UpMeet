@@ -1,5 +1,3 @@
-import Header from "../components/Header";
-import logo from "../components/logo.png";
 import header from "../assets/header.png";
 
 // react hooks
@@ -11,26 +9,22 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 // interfaces
 import { IEvent, IEventData, IImage } from "../interfaces/Event";
 import { ICategory } from "../interfaces/Category.ts";
-import { CategoryContainerComponent } from "../components/CategoryContainerComponent";
+
 // interfaces
 
 // contexts
 import { FilterContext } from "../context/FilterContext.tsx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // icons
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
-import { MdOutlineDateRange } from "react-icons/md";
-// countries utils
-import { countries } from "../utils/constants/Countries.ts";
-import { CategoryCardComponent } from "../components/CategoryCardComponent.tsx";
-import { UserContext } from "../context/UserContext.tsx";
+
 import { Navbar } from "../components/Navbar/Navbar.tsx";
-import { Logo } from "../components/Logo/Logo.tsx";
+
 import Title from "../components/Texts/Title.tsx";
 import CategoryCard from "../components/Cards/CategoryCard.tsx";
-import ButtonCard from "../components/Buttons/ButtonCard.tsx";
+
 import FeaturedCard from "../components/FeaturedEvents/FeaturedCard.tsx";
 import FooterComponent from "../components/Footer/FooterComponent.tsx";
 
@@ -41,12 +35,11 @@ import familyCategory from "../assets/familyCategory.png";
 import sportsCategory from "../assets/sportsCategory.jpg";
 import concertCategory from "../assets/concertCategory.jpg";
 import { EventsContext } from "../context/EventsContext.tsx";
-import { notifyUser } from "../utils/helpers/toastify.ts";
 
 export const HomePage: React.FC = () => {
   const API_KEY = "YG3ugvNGItpEUSyLn8m4eb4I8mlUzVXK";
   const [eventCount, setEventCount] = useState<number>(0);
-  const navigate = useNavigate();
+
   const { country } = useContext(FilterContext);
 
   const [eventList, setEventList] = useState<IEvent[]>([] as IEvent[]);
@@ -246,13 +239,6 @@ export const HomePage: React.FC = () => {
                         <FaArrowCircleLeft className="text-white text-3xl md:text-4xl" />
                       </button>
                       <div className="">
-                        <div className="flex flex-col">
-                          <p className="font-bold text-xs md:text-sm">
-                            {eventList[eventCount]?.date}
-                          </p>
-                          <div className="h-1 bg-lavender w-[15%]"></div>
-                        </div>
-
                         <h1 className="text-white font-bold text-3xl sm:text-4xl">
                           {eventList[eventCount]?.artist}
                         </h1>
@@ -283,9 +269,7 @@ export const HomePage: React.FC = () => {
                     </button>
                   </div>
                   <img
-                    src={
-                      (eventList && eventList[eventCount]?.images[0]?.url) || ""
-                    }
+                    src={eventList?.[eventCount]?.images?.[0]?.url ?? ""}
                     className="min-h-[150px] max-h-[450px] w-full object-cover"
                   />
                 </div>

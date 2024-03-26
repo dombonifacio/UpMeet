@@ -5,8 +5,8 @@ import { useState } from "react";
 import { IUser } from "../interfaces/User";
 
 // uuid third party library
-import { v4 as uuid } from "uuid";
-import axios, { Axios } from "axios";
+
+import axios from "axios";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { notifyUser } from "../utils/helpers/toastify";
