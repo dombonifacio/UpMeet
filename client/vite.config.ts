@@ -7,5 +7,13 @@ export default defineConfig({
   define: {
     "process.env.API_KEY": JSON.stringify(process.env.API_KEY),
   },
-  
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://upmeet.onrender.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
