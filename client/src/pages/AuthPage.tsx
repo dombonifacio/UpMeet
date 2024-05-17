@@ -78,7 +78,7 @@ export const AuthPage = () => {
       image: "",
     };
     axios
-      .post("api/auth/register", userData)
+      .post("https://upmeet.onrender.com/api/auth/register", userData)
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           notifyUser(res.data.message, "success");
@@ -98,7 +98,7 @@ export const AuthPage = () => {
 
   const handleLogin = () => {
     axios
-      .post("/api/auth/login", formData, {
+      .post("https://upmeet.onrender.com/api/auth/login", formData, {
         withCredentials: true,
       })
       .then((res: AxiosResponse) => {
