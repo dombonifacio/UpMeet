@@ -16,8 +16,8 @@ dotenv.config();
 
 // creates an instance of Express application. Sets up a basic Express web server
 const app = express();
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 // Server's Port Number
 const PORT = process.env.PORT || 5000;
