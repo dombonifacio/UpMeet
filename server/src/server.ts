@@ -22,7 +22,9 @@ import cookieParser from "cookie-parser";
 // Server's Port Number
 const PORT = process.env.PORT || 5000;
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://dominique:7Y6PutEeEnKnH7Tk@cluster0.sc5j7yq.mongodb.net/JamConDB?retryWrites=true&w=majority";
 
 // allows us to parse cookies
 app.use(cookieParser());
@@ -32,7 +34,7 @@ app.use(
     // don't forget the colon between base url and base port
     // listen for incoming requests in this url
     // origin: `${BASE_URL}:${BASE_PORT}`,
-      origin: '*',
+    origin: "https://up-meet.vercel.app/",
     // include credentials such as cookies
     credentials: true,
   })
