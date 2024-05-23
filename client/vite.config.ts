@@ -11,18 +11,28 @@ export default defineConfig({
     proxy: {
       "/api/auth": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
       },
       "/api/users": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
       },
       "/api/eventAttendance": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
       },
       "/api/events": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
       },
       "/api/invitation": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
       },
     },
   },
