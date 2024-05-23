@@ -41,6 +41,14 @@ app.use(
   })
 );
 
+app.options("/api/auth/login", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "https://up-meet.vercel.app");
+  res.header("Access-Control-Allow-Methods", "POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.sendStatus(200);
+});
+
 // automatically parse incoming JSON  data
 app.use(express.json());
 app.use("/api/auth", authRouter);
