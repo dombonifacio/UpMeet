@@ -9,7 +9,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
+      "/api/*": {
         target: "https://upmeet.onrender.com",
         changeOrigin: true,
    
