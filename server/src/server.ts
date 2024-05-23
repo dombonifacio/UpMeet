@@ -34,7 +34,7 @@ app.use(
     // don't forget the colon between base url and base port
     // listen for incoming requests in this url
     // origin: `${BASE_URL}:${BASE_PORT}`,
-    origin: "https://up-meet.vercel.app/",
+    origin: "https://up-meet.vercel.app",
     // include credentials such as cookies
     credentials: true,
   })
