@@ -35,7 +35,7 @@ app.use(
     // listen for incoming requests in this url
     // origin: `${BASE_URL}:${BASE_PORT}`,
     origin: "https://up-meet.vercel.app/",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    
     // include credentials such as cookies
     credentials: true,
   })
