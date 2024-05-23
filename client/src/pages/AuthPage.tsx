@@ -99,6 +99,7 @@ export const AuthPage = () => {
   const handleLogin = () => {
     axios
       .post("https://upmeet.onrender.com/api/auth/login", formData, {
+        withCredentials: true
        
       })
       .then((res: AxiosResponse) => {

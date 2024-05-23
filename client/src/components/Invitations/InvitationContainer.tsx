@@ -35,6 +35,7 @@ export const InvitationContainer = () => {
     axios
       .get("/api/invitation/get_received_invitations")
       .then((res: AxiosResponse) => {
+        console.log(res.data); // Check the data received from the API
         setInvitations(res.data);
       })
       .catch(() => {})
