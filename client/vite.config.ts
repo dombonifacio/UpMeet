@@ -13,7 +13,7 @@ export default defineConfig({
         target: "https://upmeet.onrender.com",
         changeOrigin: true,
    
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        
       },
     },
   },
