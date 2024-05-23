@@ -11,7 +11,9 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "https://upmeet.onrender.com",
-       
+        changeOrigin: true,
+   
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },
