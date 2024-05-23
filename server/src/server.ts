@@ -29,17 +29,7 @@ const MONGODB_URI =
 // allows us to parse cookies
 app.use(cookieParser());
 // allows which domains are able to make requests to a web server
-app.use(
-  cors({
-    // don't forget the colon between base url and base port
-    // listen for incoming requests in this url
-    // origin: `${BASE_URL}:${BASE_PORT}`,
-    origin: "https://up-meet.vercel.app/",
-    
-    // include credentials such as cookies
-    credentials: true,
-  })
-);
+app.use(cors())
 
 // automatically parse incoming JSON  data
 app.use(express.json());
