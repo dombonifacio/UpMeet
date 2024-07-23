@@ -29,14 +29,16 @@ const MONGODB_URI =
 // allows us to parse cookies
 app.use(cookieParser());
 // allows which domains are able to make requests to a web server
-app.use(
-  cors({
-    // don't forget the colon between base url and base port
-    // listen for incoming requests in this url
-    // origin: `${BASE_URL}:${BASE_PORT}`,
-   origin: "*"
-  })
-);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://up-meet.vercel.app");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 
 
