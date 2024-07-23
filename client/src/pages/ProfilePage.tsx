@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import { Navbar } from "../components/Navbar/Navbar";
 import { EventsContext } from "../context/EventsContext";
 import { PreviousEventsContext } from "../context/SavedEventsContext";
+import { error } from "console";
 
 interface IUser {
   _id: string;
@@ -57,7 +58,10 @@ const ProfilePage = () => {
       })
       .then((res: AxiosResponse) => {
         setUser(res.data);
-      });
+        console.log("response", res)
+      }).catch((error) => {
+        console.log("error", error)
+      })
   };
 
   useEffect(() => {
