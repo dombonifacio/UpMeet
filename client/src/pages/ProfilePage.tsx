@@ -54,14 +54,19 @@ const ProfilePage = () => {
   const getUserInfo = () => {
     axios
       .get("https://upmeet.onrender.com/api/users/profile", {
-        withCredentials:true
+        withCredentials: true,
       })
       .then((res: AxiosResponse) => {
         setUser(res.data);
-        console.log("response", res)
-      }).catch((error) => {
-        console.log("error", error)
+        console.log("response", res);
       })
+      .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser(error.response?.data.error, "error");
+        }
+      });
   };
 
   useEffect(() => {
