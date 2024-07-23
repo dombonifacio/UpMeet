@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 
 import camera from "../assets/camera.jpg";
@@ -13,7 +13,6 @@ import { ToastContainer } from "react-toastify";
 import { Navbar } from "../components/Navbar/Navbar";
 import { EventsContext } from "../context/EventsContext";
 import { PreviousEventsContext } from "../context/SavedEventsContext";
-import { error } from "console";
 
 interface IUser {
   _id: string;
@@ -60,12 +59,8 @@ const ProfilePage = () => {
         setUser(res.data);
         console.log("response", res);
       })
-      .catch((error) => {
-        if (error.status === 500) {
-          notifyUser(error.data.error, "error");
-        } else {
-          notifyUser(error.response?.data.error, "error");
-        }
+      .catch((error: AxiosError) => {
+       console.log("error", error)
       });
   };
 
