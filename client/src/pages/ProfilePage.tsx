@@ -51,9 +51,11 @@ const ProfilePage = () => {
   }
 
   const getUserInfo = () => {
-    axios.get("/api/users/profile").then((res: AxiosResponse) => {
-      setUser(res.data);
-    });
+    axios
+      .get("https://upmeet.onrender.com/api/users/profile")
+      .then((res: AxiosResponse) => {
+        setUser(res.data);
+      });
   };
 
   useEffect(() => {
@@ -97,7 +99,9 @@ const ProfilePage = () => {
       throw Error;
     }
     axios
-      .patch("/api/users/update_image", { image: getImageUrl })
+      .patch("https://upmeet.onrender.com/api/users/update_image", {
+        image: getImageUrl,
+      })
       .then((res: AxiosResponse) => {
         notifyUser(
           res.data.message + " Redirecting you to login page...",
@@ -134,7 +138,9 @@ const ProfilePage = () => {
   const getSelfEvents = () => {
     setLoading(true);
     axios
-      .get("/api/eventAttendance/get_attending_events")
+      .get(
+        "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
+      )
       .then((res: AxiosResponse) => {
         // Separate arrays for previous and future events
         const newPreviousEvents: IEvent[] = [];
