@@ -52,7 +52,9 @@ const ProfilePage = () => {
 
   const getUserInfo = () => {
     axios
-      .get("https://upmeet.onrender.com/api/users/profile")
+      .get("https://upmeet.onrender.com/api/users/profile", {
+        withCredentials:true
+      })
       .then((res: AxiosResponse) => {
         setUser(res.data);
       });
