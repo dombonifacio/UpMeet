@@ -12,6 +12,10 @@ export const getUserInfo = async (
       "_id email name country age image"
     );
 
+    console.log("User:", user);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     return res.status(200).json(user);
   } catch (err) {
     return next(err);
