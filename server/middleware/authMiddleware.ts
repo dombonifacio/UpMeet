@@ -23,7 +23,7 @@ declare global {
 export default (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.access_token;
   if (!token) {
-    return res.json(false);
+    return res.json({message: "no token"});
   }
 
   const SECRET_KEY = process.env.SECRET_KEY || "";
