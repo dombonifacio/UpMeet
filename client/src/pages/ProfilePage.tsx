@@ -52,7 +52,7 @@ const ProfilePage = () => {
 
   const getUserInfo = () => {
     axios
-      .get("/api/users/profile", {
+      .get("https://upmeet.onrender.com/api/users/profile", {
         withCredentials: true,
       })
       .then((res: AxiosResponse) => {
@@ -60,7 +60,7 @@ const ProfilePage = () => {
         console.log("response", res);
       })
       .catch((error: AxiosError) => {
-       console.log("error", error)
+        console.log("error", error);
       });
   };
 
