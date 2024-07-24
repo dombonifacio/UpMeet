@@ -96,7 +96,8 @@ export const loginUsers = async (req: Request, res: Response) => {
       res
         .cookie("access_token", token, {
           secure: true,
-          httpOnly: true
+          httpOnly: true,
+          sameSite: "none"
         })
         .status(200)
         .json({ message: `Welcome Back, ${user.name}!`, userId: user._id });
