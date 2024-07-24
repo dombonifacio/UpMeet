@@ -6,7 +6,9 @@ export const getUserInfo = async (
   req: Request,
   res: Response,
   next: NextFunction
+  
 ) => {
+  console.log("req.user", req.user)
   try {
     const user = await UserModel.findById(req.user.id).select(
       "_id email name country age image"
