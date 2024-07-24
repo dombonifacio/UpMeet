@@ -74,7 +74,7 @@ export const registerUsers = async (req: Request, res: Response) => {
 // @desc   Login a User
 // @route  POST /users/login
 export const loginUsers = async (req: Request, res: Response) => {
- 
+  console.log("logging in...")
   const { email, password } = req.body;
 
   // Check if user exists and the password is the same

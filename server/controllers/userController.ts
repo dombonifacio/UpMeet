@@ -16,7 +16,7 @@ export const getUserInfo = async (
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    return res.status(200).json({data: user});
+    return res.status(200).json({data: user, message: "data is here"});
   } catch (err) {
     return next(err);
   }
