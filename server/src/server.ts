@@ -44,7 +44,7 @@ app.use(cookieParser());
 // allows which domains are able to make requests to a web server
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your local client URL
+    origin: "https://up-meet.vercel.app/", // Replace with your local client URL
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true, // Allow cookies to be sent
   })
