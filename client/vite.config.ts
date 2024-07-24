@@ -11,11 +11,20 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
-        target: "https://upmeet.onrender.com",
-        
-      
-      
+      "/api/auth": {
+        target: "http://localhost:5000",
+      },
+      "/api/users": {
+        target: "http://localhost:5000",
+      },
+      "/api/eventAttendance": {
+        target: "http://localhost:5000",
+      },
+      "/api/events": {
+        target: "http://localhost:5000",
+      },
+      "/api/invitation": {
+        target: "http://localhost:5000",
       },
     },
   },

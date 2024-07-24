@@ -52,7 +52,7 @@ const ProfilePage = () => {
 
   const getUserInfo = () => {
     axios
-      .get("https://upmeet.onrender.com/api/users/profile", {
+      .get("/api/users/profile", {
         withCredentials: true,
       })
       .then((res: AxiosResponse) => {
@@ -66,7 +66,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getUserInfo();
-  });
+  }, []);
 
   const [selectedImage, setSelectedImage] = useState<
     Blob | MediaSource | string

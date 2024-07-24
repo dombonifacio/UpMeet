@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs")
 import { UserModel } from "../models/userModel";
 import { ObjectId } from "mongodb";
 
-const SECRET_KEY = process.env.SECRET_KEY || "";
+
 
 // @desc   Register a User
 // @route  POST /users/register
@@ -66,7 +66,7 @@ export const registerUsers = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid User Data" });
     }
   } catch (error) {
-    console.error(error); // Log the error
+  
     res.status(500).json({ error: "Server Internal Error" });
   }
 };
@@ -74,10 +74,12 @@ export const registerUsers = async (req: Request, res: Response) => {
 // @desc   Login a User
 // @route  POST /users/login
 export const loginUsers = async (req: Request, res: Response) => {
+ 
   const { email, password } = req.body;
 
   // Check if user exists and the password is the same
   try {
+    
     const user = await UserModel.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -87,7 +89,7 @@ export const loginUsers = async (req: Request, res: Response) => {
       };
 
       // create token
-      const token = jwt.sign(payload, SECRET_KEY, {
+      const token = jwt.sign(payload, "123", {
         expiresIn: "1d",
       });
 
@@ -103,11 +105,13 @@ export const loginUsers = async (req: Request, res: Response) => {
       res.status(400).json({ error: "Wrong Password!" });
     }
   } catch (error) {
-    console.log(error);
+    
+    res.status(500).json({ error: "Server Internal Error" });
   }
 };
 
 export const logoutUsers = (req: Request, res: Response) => {
+  console.log("logging out...");
   res.clearCookie("access_token");
   res.status(200).json({ message: "You have logged out." });
 };
@@ -118,7 +122,7 @@ export const isLoggedIn = (req: Request, res: Response) => {
   if (!token) {
     return res.json(false);
   }
-  return jwt.verify(token, SECRET_KEY, (err: any) => {
+  return jwt.verify(token, "123", (err: any) => {
     if (err) {
       return res.json(false);
     }

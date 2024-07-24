@@ -29,19 +29,26 @@ const MONGODB_URI =
 // allows us to parse cookies
 app.use(cookieParser());
 // allows which domains are able to make requests to a web server
-app.use((req, res, next) => {
-  // res.header('Access-Control-Allow-Origin', 'https://up-meet.vercel.app');
-  res.header('Access-Control-Allow-Origin', 'https://up-meet.vercel.app');
-  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   // res.header('Access-Control-Allow-Origin', 'https://up-meet.vercel.app');
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.header("Access-Control-Allow-Credentials", "true");
+//   if (req.method === "OPTIONS") {
+//     return res.sendStatus(200);
+//   }
+//   next();
+// });
 
-
+// allows which domains are able to make requests to a web server
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your local client URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 // automatically parse incoming JSON  data
 app.use(express.json());
