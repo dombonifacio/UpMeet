@@ -62,13 +62,14 @@ export default function MainInfo() {
 
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
     if (data.user) {
       axios
         .post(
-          "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
+          `${backendUrl}/api/eventAttendance/create_attending_events`,
           selectedEvent,
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
 

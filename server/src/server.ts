@@ -14,6 +14,7 @@ import { eventRouter } from "../routes/eventRoute";
 // allows our project to read environment variables
 dotenv.config();
 
+
 // creates an instance of Express application. Sets up a basic Express web server
 const app = express();
 import cors from "cors";
@@ -45,7 +46,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://up-meet.vercel.app", // Replace with your local client URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true, // Allow cookies to be sent
   })
 );
