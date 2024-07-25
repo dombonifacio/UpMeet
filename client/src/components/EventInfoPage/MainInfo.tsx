@@ -86,7 +86,7 @@ export default function MainInfo() {
           }
         });
     } else {
-      console.log("No user is logged in.");
+     notifyUser("Please sign in first to join the event.", "error")
     }
   };
 
