@@ -17,7 +17,7 @@ export const EventsContainer = () => {
   const getSavedEvents = () => {
     setLoading(true);
     axios
-      .get("/api/eventAttendance/get_saved_events")
+      .get("https://upmeet.onrender.com/api/eventAttendance/get_saved_events")
       .then((res: AxiosResponse) => {
         setEvents(res.data);
       })
@@ -36,7 +36,9 @@ export const EventsContainer = () => {
     const userId = data?.user?._id;
 
     axios
-      .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
+      .delete(
+        `https://upmeet.onrender.com/api/eventAttendance/delete_saved/${eventId}/${userId}`
+      )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           notifyUser(res.data.message, "success");

@@ -59,8 +59,12 @@ const ProfilePage = () => {
         setUser(res.data);
         console.log("response", res);
       })
-      .catch((error: AxiosError) => {
-        console.log("error", error);
+      .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser(error.response?.data.error, "error");
+        }
       });
   };
 
@@ -93,8 +97,13 @@ const ProfilePage = () => {
           "https://api.cloudinary.com/v1_1/dpj2su9ea/upload",
           formData
         );
-        return response.data.url;
-      } catch (error) {}
+        return response.data.url
+      } catch (error) {
+       
+          notifyUser("An unexpected error occured.", "error");
+        
+        return null;
+      }
     }
   };
 
@@ -185,7 +194,13 @@ const ProfilePage = () => {
           setEvents(newFutureEvents);
         }
       })
-      .catch(() => {})
+     .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser(error.response?.data.error, "error");
+        }
+      })
       .finally(() => {
         setLoading(false);
       });

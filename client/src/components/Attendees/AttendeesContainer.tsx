@@ -47,7 +47,9 @@ export default function AttendeesContainer() {
   const getEventAttendees = () => {
     setLoading(true);
     axios
-      .get(`/api/eventAttendance/get_event_attendees/${id}`)
+      .get(
+        `https://upmeet.onrender.com/api/eventAttendance/get_event_attendees/${id}`
+      )
       .then((res: AxiosResponse) => {
         if (res.data.count > 0) {
           setAttendees(res.data.eventAttendeesInfo);
@@ -76,7 +78,7 @@ export default function AttendeesContainer() {
       toUserId: userId,
     };
     axios
-      .post("/api/invitation/send_invitation", data)
+      .post("https://upmeet.onrender.com/api/invitation/send_invitation", data)
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           notifyUser(res.data.message, "success");

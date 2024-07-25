@@ -35,8 +35,8 @@ export const SignupPage = () => {
       image: "",
     };
     axios
-      // ****************** Need to use the server's URL and Port Number (Specified by server)
-      .post("/api/auth/register", userData)
+  
+      .post("https://upmeet.onrender.com/api/auth/register", userData)
       .then((res: AxiosResponse) => {
         notifyUser(res.data.message, "success");
       });

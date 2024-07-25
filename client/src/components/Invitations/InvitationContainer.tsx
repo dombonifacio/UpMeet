@@ -33,7 +33,9 @@ export const InvitationContainer = () => {
   const getReceivedInvitations = () => {
     setLoading(true);
     axios
-      .get("/api/invitation/get_received_invitations")
+      .get(
+        "https://upmeet.onrender.com/api/invitation/get_received_invitations"
+      )
       .then((res: AxiosResponse) => {
         console.log(res.data); // Check the data received from the API
         setInvitations(res.data);
@@ -47,7 +49,7 @@ export const InvitationContainer = () => {
   const getSentInvitations = () => {
     setLoading(true);
     axios
-      .get("/api/invitation/get_sent_invitations")
+      .get("https://upmeet.onrender.com/api/invitation/get_sent_invitations")
       .then((res: AxiosResponse) => {
         setSentInvitations(res.data);
       })
@@ -63,7 +65,10 @@ export const InvitationContainer = () => {
       eventId: eventId,
     };
     axios
-      .patch("/api/invitation/accept_invitation", data)
+      .patch(
+        "https://upmeet.onrender.com/api/invitation/accept_invitation",
+        data
+      )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           notifyUser(res.data.message, "success");
@@ -84,7 +89,10 @@ export const InvitationContainer = () => {
       eventId: eventId,
     };
     axios
-      .patch("/api/invitation/decline_invitation", data)
+      .patch(
+        "https://upmeet.onrender.com/api/invitation/decline_invitation",
+        data
+      )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           notifyUser(res.data.message, "success");

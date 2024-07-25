@@ -79,7 +79,9 @@ export const OwnEventInfoPage = () => {
   const getSelfEvents = () => {
     setLoading(true);
     axios
-      .get("/api/eventAttendance/get_attending_events")
+      .get(
+        "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
+      )
       .then((res: AxiosResponse) => {
         setLoading(false);
 
@@ -99,8 +101,12 @@ export const OwnEventInfoPage = () => {
           setIsPrevious(true);
         }
       })
-      .catch(() => {
-        setLoading(false);
+      .catch((error) => {
+        if (error.status === 500) {
+          notifyUser(error.data.error, "error");
+        } else {
+          notifyUser("An unexpected erorr occured", "error");
+        }
       })
       .finally(() => {
         setLoading(false);
@@ -114,7 +120,10 @@ export const OwnEventInfoPage = () => {
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
     axios
-      .post("/api/eventAttendance/create_attending_events", selectedEvent)
+      .post(
+        "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
+        selectedEvent
+      )
 
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
@@ -136,7 +145,9 @@ export const OwnEventInfoPage = () => {
     const userId = data.user?._id;
 
     axios
-      .delete(`/api/eventAttendance/delete_attending/${id}/${userId}`)
+      .delete(
+        `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`
+      )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           setIsAttending((prevState) => !prevState);

@@ -31,7 +31,9 @@ export default function MainInfo() {
     if (data.user) {
       setLoading(true);
       axios
-        .get("/api/eventAttendance/get_attending_events")
+        .get(
+          "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
+        )
         .then((res: AxiosResponse) => {
           const getCurrentEvent = res.data?.some(
             (event: IEvent) => event.eventId === id
@@ -59,7 +61,10 @@ export default function MainInfo() {
   const handleGoingEvent = () => {
     if (data.user) {
       axios
-        .post("/api/eventAttendance/create_attending_events", selectedEvent)
+        .post(
+          "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
+          selectedEvent
+        )
 
         .then((res: AxiosResponse) => {
           if (res.status === 201 || 200) {
@@ -85,7 +90,9 @@ export default function MainInfo() {
 
     if (data.user) {
       axios
-        .delete(`/api/eventAttendance/delete_attending/${id}/${userId}`)
+        .delete(
+          `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`
+        )
         .then((res: AxiosResponse) => {
           if (res.status === 201 || 200) {
             setIsAttending((prevState) => !prevState);
