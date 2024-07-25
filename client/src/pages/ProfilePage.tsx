@@ -97,11 +97,10 @@ const ProfilePage = () => {
           "https://api.cloudinary.com/v1_1/dpj2su9ea/upload",
           formData
         );
-        return response.data.url
+        return response.data.url;
       } catch (error) {
-       
-          notifyUser("An unexpected error occured.", "error");
-        
+        notifyUser("An unexpected error occured.", "error");
+
         return null;
       }
     }
@@ -114,9 +113,13 @@ const ProfilePage = () => {
       throw Error;
     }
     axios
-      .patch("https://upmeet.onrender.com/api/users/update_image", {
-        image: getImageUrl,
-      })
+      .patch(
+        "https://upmeet.onrender.com/api/users/update_image",
+        {
+          image: getImageUrl,
+        },
+        { withCredentials: true }
+      )
       .then((res: AxiosResponse) => {
         notifyUser(
           res.data.message + " Redirecting you to login page...",
@@ -194,7 +197,7 @@ const ProfilePage = () => {
           setEvents(newFutureEvents);
         }
       })
-     .catch((error) => {
+      .catch((error) => {
         if (error.status === 500) {
           notifyUser(error.data.error, "error");
         } else {

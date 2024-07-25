@@ -34,7 +34,10 @@ export const InvitationContainer = () => {
     setLoading(true);
     axios
       .get(
-        "https://upmeet.onrender.com/api/invitation/get_received_invitations"
+        "https://upmeet.onrender.com/api/invitation/get_received_invitations",
+        {
+          withCredentials: true
+        }
       )
       .then((res: AxiosResponse) => {
         console.log(res.data); // Check the data received from the API
@@ -49,7 +52,9 @@ export const InvitationContainer = () => {
   const getSentInvitations = () => {
     setLoading(true);
     axios
-      .get("https://upmeet.onrender.com/api/invitation/get_sent_invitations")
+      .get("https://upmeet.onrender.com/api/invitation/get_sent_invitations", {
+        withCredentials: true
+      })
       .then((res: AxiosResponse) => {
         setSentInvitations(res.data);
       })
@@ -67,7 +72,10 @@ export const InvitationContainer = () => {
     axios
       .patch(
         "https://upmeet.onrender.com/api/invitation/accept_invitation",
-        data
+        data,
+        {
+          withCredentials: true
+        }
       )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
@@ -91,7 +99,10 @@ export const InvitationContainer = () => {
     axios
       .patch(
         "https://upmeet.onrender.com/api/invitation/decline_invitation",
-        data
+        data,
+        {
+          withCredentials: true
+        }
       )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {

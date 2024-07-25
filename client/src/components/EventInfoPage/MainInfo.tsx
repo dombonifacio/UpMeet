@@ -32,7 +32,10 @@ export default function MainInfo() {
       setLoading(true);
       axios
         .get(
-          "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
+          "https://upmeet.onrender.com/api/eventAttendance/get_attending_events",
+          {
+            withCredentials: true
+          }
         )
         .then((res: AxiosResponse) => {
           const getCurrentEvent = res.data?.some(
@@ -63,7 +66,10 @@ export default function MainInfo() {
       axios
         .post(
           "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
-          selectedEvent
+          selectedEvent,
+          {
+            withCredentials: true
+          }
         )
 
         .then((res: AxiosResponse) => {
@@ -91,7 +97,10 @@ export default function MainInfo() {
     if (data.user) {
       axios
         .delete(
-          `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`
+          `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`,
+          {
+            withCredentials: true
+          }
         )
         .then((res: AxiosResponse) => {
           if (res.status === 201 || 200) {

@@ -36,7 +36,9 @@ export const SignupPage = () => {
     };
     axios
   
-      .post("https://upmeet.onrender.com/api/auth/register", userData)
+      .post("https://upmeet.onrender.com/api/auth/register", userData, {
+        withCredentials: true
+      })
       .then((res: AxiosResponse) => {
         notifyUser(res.data.message, "success");
       });

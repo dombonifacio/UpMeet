@@ -60,7 +60,9 @@ export default function MainBody({
   const getSavedEvents = () => {
     setLoading(true);
     axios
-      .get(`/api/eventAttendance/get_saved_events`)
+      .get(`/api/eventAttendance/get_saved_events`, {
+        withCredentials: true
+      })
       .then((res: AxiosResponse) => {
         const eventIds = res.data.map((event: IEvent) => event.eventId);
 
@@ -95,7 +97,9 @@ export default function MainBody({
 
   const handleSaveEvents = (selectedEvent: IEvent) => {
     axios
-      .post(`/api/eventAttendance/create_saved_events`, selectedEvent)
+      .post(`/api/eventAttendance/create_saved_events`, selectedEvent, {
+        withCredentials: true
+      })
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           setSavedEvent((prevState) => !prevState);
@@ -115,7 +119,9 @@ export default function MainBody({
     const userId = data?.user?._id;
 
     axios
-      .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`)
+      .delete(`/api/eventAttendance/delete_saved/${eventId}/${userId}`, {
+        withCredentials: true
+      })
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           setSavedEvent((prevState) => !prevState);

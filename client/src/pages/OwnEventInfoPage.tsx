@@ -122,7 +122,10 @@ export const OwnEventInfoPage = () => {
     axios
       .post(
         "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
-        selectedEvent
+        selectedEvent,
+        {
+          withCredentials: true
+        }
       )
 
       .then((res: AxiosResponse) => {
@@ -146,7 +149,10 @@ export const OwnEventInfoPage = () => {
 
     axios
       .delete(
-        `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`
+        `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`,
+        {
+          withCredentials: true
+        }
       )
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
