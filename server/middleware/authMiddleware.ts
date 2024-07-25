@@ -28,7 +28,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   // const SECRET_KEY = process.env.SECRET_KEY || "";
 
-  // particular
   // Verify and decode the JWT
   return jwt.verify(token, "123", (err: any, decoded: any) => {
     if (err) {

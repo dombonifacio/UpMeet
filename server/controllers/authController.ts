@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const bcrypt = require("bcryptjs")
 
 import { UserModel } from "../models/userModel";
-import { ObjectId } from "mongodb";
+
 
 
 
@@ -90,7 +90,7 @@ export const loginUsers = async (req: Request, res: Response) => {
 
       // create token
       const token = jwt.sign(payload, "123", {
-        expiresIn: "2d",
+        expiresIn: 24 * 60 * 60 * 1000
       });
 
       res
@@ -98,7 +98,7 @@ export const loginUsers = async (req: Request, res: Response) => {
           secure: true,
           httpOnly: true,
           sameSite: "none",
-          domain: "https://up-meet.vercel.app/",
+      
         })
         .status(200)
         .json({ message: `Welcome Back, ${user.name}!`, userId: user._id });
