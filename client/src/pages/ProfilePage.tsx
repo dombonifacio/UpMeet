@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import { Navbar } from "../components/Navbar/Navbar";
 import { EventsContext } from "../context/EventsContext";
 import { PreviousEventsContext } from "../context/SavedEventsContext";
+import { UserContext } from "../context/UserContext";
 
 interface IUser {
   _id: string;
@@ -25,6 +26,8 @@ interface IUser {
 
 const ProfilePage = () => {
   const [user, setUser] = useState<IUser>({} as IUser);
+  const { data } = useContext(UserContext)
+  console.log('user context', data)
 
   const defaultState = {
     showEvents: true,
