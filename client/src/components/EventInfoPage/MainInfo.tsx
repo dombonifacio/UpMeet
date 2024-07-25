@@ -22,6 +22,7 @@ export default function MainInfo() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [isAttending, setIsAttending] = useState<boolean>(false);
+  console.log(data, 'user context')
 
   // collect only the event selected
   const selectedEventArr = events.filter((event) => event.eventId === id);
