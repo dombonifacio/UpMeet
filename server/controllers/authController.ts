@@ -90,14 +90,15 @@ export const loginUsers = async (req: Request, res: Response) => {
 
       // create token
       const token = jwt.sign(payload, "123", {
-        expiresIn: "1d",
+        expiresIn: "2d",
       });
 
       res
         .cookie("access_token", token, {
           secure: true,
           httpOnly: true,
-          sameSite: "none"
+          sameSite: "none",
+          domain: "https://up-meet.vercel.app/",
         })
         .status(200)
         .json({ message: `Welcome Back, ${user.name}!`, userId: user._id });

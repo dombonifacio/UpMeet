@@ -46,7 +46,7 @@ app.use(
   cors({
     origin: "https://up-meet.vercel.app/", // Replace with your local client URL
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true, // Allow cookies to be sentim
+    credentials: true, // Allow cookies to be sent
   })
 );
 
