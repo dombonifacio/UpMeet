@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, {  AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 
 import camera from "../assets/camera.jpg";
