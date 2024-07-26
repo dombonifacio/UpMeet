@@ -22,20 +22,21 @@ export default function MainInfo() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [isAttending, setIsAttending] = useState<boolean>(false);
-  console.log(data, 'user context')
+
 
   // collect only the event selected
   const selectedEventArr = events.filter((event) => event.eventId === id);
   const selectedEvent = selectedEventArr[0];
 
   const getSelfEvents = () => {
+    // https://upmeet.onrender.com/api/eventAttendance/get_attending_events
     if (data.user) {
       setLoading(true);
       axios
         .get(
-          "https://upmeet.onrender.com/api/eventAttendance/get_attending_events",
+          "/api/eventAttendance/get_attending_events",
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
         .then((res: AxiosResponse) => {
@@ -63,16 +64,13 @@ export default function MainInfo() {
 
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+   // const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    // ${backendUrl}/api/eventAttendance/create_attending_events
     if (data.user) {
       axios
-        .post(
-          `${backendUrl}/api/eventAttendance/create_attending_events`,
-          selectedEvent,
-          {
-            withCredentials: true,
-          }
-        )
+        .post(`/api/eventAttendance/create_attending_events`, selectedEvent, {
+          withCredentials: true,
+        })
 
         .then((res: AxiosResponse) => {
           if (res.status === 201 || 200) {
@@ -88,20 +86,21 @@ export default function MainInfo() {
           }
         });
     } else {
-     notifyUser("Please sign in first to join the event.", "error")
+      notifyUser("Please sign in first to join the event.", "error");
     }
   };
 
   // Handle "Delete to I'm Going to the event" logic
   const handleDeleteEvent = () => {
     const userId = data?.user?._id;
+    // https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}
 
     if (data.user) {
       axios
         .delete(
-          `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`,
+          `/api/eventAttendance/delete_attending/${id}/${userId}`,
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
         .then((res: AxiosResponse) => {

@@ -97,11 +97,14 @@ export const AuthPage = () => {
   };
 
   const handleLogin = () => {
+
+    // https://upmeet.onrender.com/api/auth/login
     axios
-      .post("https://upmeet.onrender.com/api/auth/login", formData, {
-        withCredentials: true,
+      .post("/api/auth/login", formData, {
+        // withCredentials: true,
       })
       .then((res: AxiosResponse) => {
+        console.log("logging in");
         // Check if the response status is 200 or another success indicator
 
         if (res.status === 200) {

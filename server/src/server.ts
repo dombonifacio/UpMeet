@@ -43,13 +43,15 @@ app.use(cookieParser());
 // });
 
 // allows which domains are able to make requests to a web server
-app.use(
-  cors({
-    origin: "https://up-meet.vercel.app", // Replace with your local client URL
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    credentials: true, // Allow cookies to be sent
-  })
-);
+// app.use(
+//   cors({
+//     origin: "https://up-meet.vercel.app", // Replace with your local client URL
+//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+//     credentials: true, // Allow cookies to be sent
+//   })
+// );
+
+app.use(cors())
 
 // automatically parse incoming JSON  data
 app.use(express.json());

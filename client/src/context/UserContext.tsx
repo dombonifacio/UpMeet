@@ -5,10 +5,9 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { IUser } from "../interfaces/User";
 
 interface UserAuthenticate {
-  user: IUser | null;
+  user: string | null;
   isLoggedIn: boolean;
 }
 

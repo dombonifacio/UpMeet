@@ -54,8 +54,9 @@ const ProfilePage = () => {
   }
 
   const getUserInfo = () => {
+    // https://upmeet.onrender.com/api/users/profile
     axios
-      .get("https://upmeet.onrender.com/api/users/profile", {
+      .get("/api/users/profile", {
         withCredentials: true,
       })
       .then((res: AxiosResponse) => {
@@ -157,10 +158,11 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const getSelfEvents = () => {
+    // https://upmeet.onrender.com/api/eventAttendance/get_attending_events
     setLoading(true);
     axios
       .get(
-        "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
+        "/api/eventAttendance/get_attending_events"
       )
       .then((res: AxiosResponse) => {
         // Separate arrays for previous and future events

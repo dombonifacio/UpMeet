@@ -39,6 +39,7 @@ export const OwnEventInfoPage = () => {
 
     return convertedTimezone;
   };
+  console.log(data, "user context");
 
   useEffect(() => {
     const checkIfPrevious = () => {
@@ -77,11 +78,10 @@ export const OwnEventInfoPage = () => {
   }, []);
 
   const getSelfEvents = () => {
+    //upmeet.onrender.com/api/eventAttendance/get_attending_events
     setLoading(true);
     axios
-      .get(
-        "https://upmeet.onrender.com/api/eventAttendance/get_attending_events"
-      )
+      .get("/api/eventAttendance/get_attending_events")
       .then((res: AxiosResponse) => {
         setLoading(false);
 
@@ -119,14 +119,11 @@ export const OwnEventInfoPage = () => {
 
   // Handle "I'm Going to the Event" Logic
   const handleGoingEvent = () => {
+    // https://upmeet.onrender.com/api/eventAttendance/create_attending_events
     axios
-      .post(
-        "https://upmeet.onrender.com/api/eventAttendance/create_attending_events",
-        selectedEvent,
-        {
-          withCredentials: true
-        }
-      )
+      .post("/api/eventAttendance/create_attending_events", selectedEvent, {
+        withCredentials: true,
+      })
 
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
@@ -145,15 +142,13 @@ export const OwnEventInfoPage = () => {
 
   // Handle "Delete to I'm Going to the event" logic
   const handleDeleteEvent = () => {
-    const userId = data.user?._id;
+    const userId = data?.user;
+    //upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}
 
     axios
-      .delete(
-        `https://upmeet.onrender.com/api/eventAttendance/delete_attending/${id}/${userId}`,
-        {
-          withCredentials: true
-        }
-      )
+      .delete(`/api/eventAttendance/delete_attending/${id}/${userId}`, {
+        withCredentials: true,
+      })
       .then((res: AxiosResponse) => {
         if (res.status === 201 || 200) {
           setIsAttending((prevState) => !prevState);

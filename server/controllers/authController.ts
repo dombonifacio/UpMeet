@@ -95,9 +95,9 @@ export const loginUsers = async (req: Request, res: Response) => {
 
       res
         .cookie("access_token", token, {
-          secure: true,
-          httpOnly: true,
-          sameSite: "none",
+          // secure: true,
+          // httpOnly: true,
+          // sameSite: "none",
       
         })
         .status(200)
